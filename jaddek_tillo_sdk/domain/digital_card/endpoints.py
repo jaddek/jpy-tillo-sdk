@@ -116,10 +116,10 @@ class CheckStockEndpoint(Endpoint):
     _route: str = "/api/v2/check-stock"
 
     @dataclass(frozen=True)
-    class QueryParams:
+    class QueryParams(QP):
         brand: str = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             return (self.brand,) if self.brand is not None else ()
 
 
@@ -137,7 +137,7 @@ class CancelDigitalCodeEndpoint(Endpoint):
         code: Optional[str] = (None,)
         sector: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
                 return (
                     self.client_request_id,
@@ -163,7 +163,7 @@ class CancelDigitalUrlEndpoint(Endpoint):
         url: Optional[str] = (None,)
         sector: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
                 return (
                     self.client_request_id,
@@ -188,7 +188,7 @@ class ReverseDigitalCodeEndpoint(Endpoint):
         face_value: Optional[FaceValue] = None
         sector: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
                 return (
                     self.client_request_id,
@@ -212,7 +212,7 @@ class CheckBalanceEndpoint(Endpoint):
         face_value: Optional[FaceValue] = None
         reference: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
                 return (
                     self.client_request_id,
@@ -261,7 +261,7 @@ class OrderDigitalCodeAsyncEndpoint(Endpoint):
         sector: Optional[str] = None
         personalisation: Optional[Personalisation] = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
                 return (
                     self.client_request_id,
@@ -282,5 +282,5 @@ class CheckDigitalOrderStatusAsyncEndpoint(Endpoint):
     class QueryParams(QP):
         reference: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             return ()

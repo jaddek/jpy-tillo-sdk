@@ -72,12 +72,16 @@ class IssueDigitalCodeEndpoint(Endpoint):
         personalisation: Optional[Union[Personalisation, PersonalisationExtended]] = None
 
         def get_sign_attrs(self) -> tuple:
-            return (
-                self.client_request_id,
-                self.brand,
-                self.face_value.currency,
-                self.face_value.amount,
-            )
+
+            if self.client_request_id and self.brand and self.face_value:
+                return (
+                    self.client_request_id,
+                    self.brand,
+                    self.face_value.currency,
+                    self.face_value.amount
+                )
+
+            return ()
 
 
 class TopUpDigitalCodeEndpoint(Endpoint):
@@ -95,12 +99,15 @@ class TopUpDigitalCodeEndpoint(Endpoint):
         sector: Optional[str] = None
 
         def get_sign_attrs(self) -> tuple:
-            return (
-                self.client_request_id,
-                self.brand,
-                self.face_value.currency,
-                self.face_value.amount,
-            )
+            if self.client_request_id and self.brand and self.face_value:
+                return (
+                    self.client_request_id,
+                    self.brand,
+                    self.face_value.currency,
+                    self.face_value.amount
+                )
+
+            return ()
 
 
 class CheckStockEndpoint(Endpoint):
@@ -109,10 +116,10 @@ class CheckStockEndpoint(Endpoint):
     _route: str = "/api/v2/check-stock"
 
     @dataclass(frozen=True)
-    class QueryParams:
+    class QueryParams(QP):
         brand: str = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             return (self.brand,) if self.brand is not None else ()
 
 
@@ -130,13 +137,16 @@ class CancelDigitalCodeEndpoint(Endpoint):
         code: Optional[str] = (None,)
         sector: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
-            return (
-                self.client_request_id,
-                self.brand,
-                self.face_value.currency,
-                self.face_value.amount,
-            )
+        def get_sign_attrs(self) -> tuple:
+            if self.client_request_id and self.brand and self.face_value:
+                return (
+                    self.client_request_id,
+                    self.brand,
+                    self.face_value.currency,
+                    self.face_value.amount
+                )
+
+            return ()
 
 
 class CancelDigitalUrlEndpoint(Endpoint):
@@ -153,13 +163,16 @@ class CancelDigitalUrlEndpoint(Endpoint):
         url: Optional[str] = (None,)
         sector: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
-            return (
-                self.client_request_id,
-                self.brand,
-                self.face_value.currency,
-                self.face_value.amount,
-            )
+        def get_sign_attrs(self) -> tuple:
+            if self.client_request_id and self.brand and self.face_value:
+                return (
+                    self.client_request_id,
+                    self.brand,
+                    self.face_value.currency,
+                    self.face_value.amount
+                )
+
+            return ()
 
 
 class ReverseDigitalCodeEndpoint(Endpoint):
@@ -175,13 +188,16 @@ class ReverseDigitalCodeEndpoint(Endpoint):
         face_value: Optional[FaceValue] = None
         sector: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
-            return (
-                self.client_request_id,
-                self.brand,
-                self.face_value.currency,
-                self.face_value.amount,
-            )
+        def get_sign_attrs(self) -> tuple:
+            if self.client_request_id and self.brand and self.face_value:
+                return (
+                    self.client_request_id,
+                    self.brand,
+                    self.face_value.currency,
+                    self.face_value.amount
+                )
+
+            return ()
 
 
 class CheckBalanceEndpoint(Endpoint):
@@ -196,12 +212,15 @@ class CheckBalanceEndpoint(Endpoint):
         face_value: Optional[FaceValue] = None
         reference: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
-            return (
-                self.client_request_id,
-                self.brand,
-                self.face_value.currency,
-            )
+        def get_sign_attrs(self) -> tuple:
+            if self.client_request_id and self.brand and self.face_value:
+                return (
+                    self.client_request_id,
+                    self.brand,
+                    self.face_value.currency,
+                )
+
+            return ()
 
 
 class OrderDigitalCodeAsyncEndpoint(Endpoint):
@@ -242,13 +261,16 @@ class OrderDigitalCodeAsyncEndpoint(Endpoint):
         sector: Optional[str] = None
         personalisation: Optional[Personalisation] = None
 
-        def get_sign_attr(self) -> tuple:
-            return (
-                self.client_request_id,
-                self.brand,
-                self.face_value.currency,
-                self.face_value.amount,
-            )
+        def get_sign_attrs(self) -> tuple:
+            if self.client_request_id and self.brand and self.face_value:
+                return (
+                    self.client_request_id,
+                    self.brand,
+                    self.face_value.currency,
+                    self.face_value.amount,
+                )
+
+            return ()
 
 
 class CheckDigitalOrderStatusAsyncEndpoint(Endpoint):
@@ -260,5 +282,5 @@ class CheckDigitalOrderStatusAsyncEndpoint(Endpoint):
     class QueryParams(QP):
         reference: Optional[str] = None
 
-        def get_sign_attr(self) -> tuple:
+        def get_sign_attrs(self) -> tuple:
             return ()

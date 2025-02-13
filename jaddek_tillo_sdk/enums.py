@@ -4,6 +4,8 @@ class Domains(Enum):
     BRANDS = 'brands'
     TEMPLATES = 'templates'
     TEMPLATE = 'template'
+    DIGITAL_CARD = 'digital'
+    CHECK_STOCK = 'check-stock'
 
 
 class Status(Enum):

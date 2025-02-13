@@ -1,17 +1,15 @@
-import pytest
+from jaddek_tillo_sdk.domain.float.endpoints import CheckFloatsEndpoint
+from jaddek_tillo_sdk.enums import Domains
+from jaddek_tillo_sdk.http_methods import HttpMethods
 
-@pytest.mark.skip(reason="Test not implemented yet.")
+
 def test_check_floats_endpoint():
-    raise NotImplementedError
+    endpoint = CheckFloatsEndpoint()
 
-@pytest.mark.skip(reason="Test not implemented yet.")
-def test_check_floats_endpoint_body():
-    raise NotImplementedError
-
-@pytest.mark.skip(reason="Test not implemented yet.")
-def test_check_floats_endpoint_query():
-    raise NotImplementedError
-
-@pytest.mark.skip(reason="Test not implemented yet.")
-def test_check_floats_endpoint_request_sign_attrs():
-    raise NotImplementedError
+    assert endpoint.method == HttpMethods.GET.value
+    assert endpoint.endpoint == Domains.CHECK_FLOATS.value
+    assert endpoint.route == "/api/v2/" + Domains.CHECK_FLOATS.value
+    assert endpoint.body == {}
+    assert endpoint.sign_attrs is None
+    assert endpoint.is_body_not_empty() is False
+    assert endpoint.params == {}

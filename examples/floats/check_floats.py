@@ -1,6 +1,6 @@
 import asyncio
 
-from jaddek_tillo_sdk.domain.float.services import FloatService
+from jaddek_tillo_sdk.domain import FloatService
 from jaddek_tillo_sdk.http_client_factory import (
     create_client,
     create_client_async,

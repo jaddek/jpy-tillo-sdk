@@ -3,7 +3,7 @@ from unittest.mock import Mock, AsyncMock
 import pytest
 from httpx import Response
 
-from jaddek_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
 
 
 @pytest.fixture

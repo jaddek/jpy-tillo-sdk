@@ -3,14 +3,14 @@ import uuid
 
 from httpx import Response
 
-from jaddek_tillo_sdk.domain.physical_card.factory import (
+from jpy_tillo_sdk.domain.physical_card.factory import (
     create_order_new_card_request,
     create_order_status_request,
 )
-from jaddek_tillo_sdk.domain.physical_card.services import (
+from jpy_tillo_sdk.domain.physical_card.services import (
     PhysicalGiftCardsService,
 )
-from jaddek_tillo_sdk.http_client_factory import (
+from jpy_tillo_sdk.http_client_factory import (
     create_client,
     create_client_async,
 )

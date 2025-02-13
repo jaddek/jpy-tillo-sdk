@@ -1,12 +1,12 @@
 import pytest
 from httpx import Response
 
-from jaddek_tillo_sdk.domain.brand.endpoints import (
+from jpy_tillo_sdk.domain.brand.endpoints import (
     BrandEndpoint,
     TemplateListEndpoint,
     TemplateEndpoint,
 )
-from jaddek_tillo_sdk.domain.brand.services import BrandService, TemplateService
+from jpy_tillo_sdk.domain.brand.services import BrandService, TemplateService
 
 
 class TestBrandAssetsService:

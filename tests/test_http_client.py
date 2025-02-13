@@ -3,7 +3,7 @@ from unittest.mock import Mock, AsyncMock
 import pytest
 from httpx import Response
 
-from jaddek_tillo_sdk.endpoint import Endpoint
+from jpy_tillo_sdk.endpoint import Endpoint
 
 
 class MockEndpoint(Endpoint):
@@ -48,7 +48,7 @@ def test_http_client_request(http_client, monkeypatch):
             pass
 
     monkeypatch.setattr(
-        "jaddek_tillo_sdk.http_client.Client", lambda **kwargs: MockClientContext()
+        "jpy_tillo_sdk.http_client.Client", lambda **kwargs: MockClientContext()
     )
 
     response = http_client.request(endpoint)
@@ -78,7 +78,7 @@ async def test_async_http_client_request(async_http_client, monkeypatch):
             pass
 
     monkeypatch.setattr(
-        "jaddek_tillo_sdk.http_client.AsyncClient",
+        "jpy_tillo_sdk.http_client.AsyncClient",
         lambda **kwargs: MockAsyncClientContext(),
     )
 
@@ -113,7 +113,7 @@ def test_request_with_body(http_client, monkeypatch):
             pass
 
     monkeypatch.setattr(
-        "jaddek_tillo_sdk.http_client.Client", lambda **kwargs: MockClientContext()
+        "jpy_tillo_sdk.http_client.Client", lambda **kwargs: MockClientContext()
     )
 
     response = http_client.request(endpoint)

@@ -1,7 +1,7 @@
 import pytest
 from httpx import Response
 
-from jaddek_tillo_sdk.domain.float.services import FloatService
+from jpy_tillo_sdk.domain.float.services import FloatService
 
 
 def test_check_floats(mock_http_client, mock_query_params):

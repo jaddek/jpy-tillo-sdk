@@ -2,8 +2,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from jaddek_tillo_sdk.http_client import HttpClient, AsyncHttpClient
-from jaddek_tillo_sdk.signature import SignatureBridge, SignatureGenerator
+from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.signature import SignatureBridge, SignatureGenerator
 
 
 @pytest.fixture

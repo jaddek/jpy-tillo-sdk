@@ -16,18 +16,23 @@ Provide step-by-step instructions on how to install your project. Example for a 
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/jaddek/tillo-sdk-python.git
+    git clone https://github.com/jaddek/jpy-tillo-sdk.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd tillo-sdk-python
+    cd jpy-tillo-sdk
     ```
 
 3. Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+   ```bash
+   uv sync
+   ```
+
+4. Tests
+   ```bash
+   uv run pytest test
+   ```
 ---
 
 ## Usage

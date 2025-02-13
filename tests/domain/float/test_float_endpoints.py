@@ -1,6 +1,6 @@
-from jaddek_tillo_sdk.domain.float.endpoints import CheckFloatsEndpoint
-from jaddek_tillo_sdk.enums import Domains
-from jaddek_tillo_sdk.http_methods import HttpMethods
+from jpy_tillo_sdk.domain.float.endpoints import CheckFloatsEndpoint
+from jpy_tillo_sdk.enums import Domains
+from jpy_tillo_sdk.http_methods import HttpMethods
 
 
 def test_check_floats_endpoint():

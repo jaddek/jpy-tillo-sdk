@@ -1,8 +1,8 @@
 import asyncio
 
-from jaddek_tillo_sdk.domain.brand.services import BrandService
-from jaddek_tillo_sdk.http_client import AsyncHttpClient, HttpClient
-from jaddek_tillo_sdk.http_client_factory import (
+from jpy_tillo_sdk.domain.brand.services import BrandService
+from jpy_tillo_sdk.http_client import AsyncHttpClient, HttpClient
+from jpy_tillo_sdk.http_client_factory import (
     create_client_async,
     create_client,
 )

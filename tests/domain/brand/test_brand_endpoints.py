@@ -1,13 +1,13 @@
 import pytest
 
-from jaddek_tillo_sdk.domain.brand.endpoints import (
+from jpy_tillo_sdk.domain.brand.endpoints import (
     BrandEndpoint,
     TemplateListEndpoint,
     TemplateEndpoint,
 )
-from jaddek_tillo_sdk.endpoint import QP
-from jaddek_tillo_sdk.enums import Domains
-from jaddek_tillo_sdk.http_methods import HttpMethods
+from jpy_tillo_sdk.endpoint import QP
+from jpy_tillo_sdk.enums import Domains
+from jpy_tillo_sdk.http_methods import HttpMethods
 
 
 @pytest.fixture

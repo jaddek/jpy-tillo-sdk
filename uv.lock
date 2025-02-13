@@ -171,9 +171,9 @@ wheels = [
 ]
 
 [[package]]
-name = "jaddek-tillo-sdk"
-version = "0.1.4"
-source = { virtual = "." }
+name = "jpy-tillo-sdk"
+version = "0.1.6"
+source = { editable = "." }
 dependencies = [
     { name = "httpx", extra = ["http2"] },
 ]

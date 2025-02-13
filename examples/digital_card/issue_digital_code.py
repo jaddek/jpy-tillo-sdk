@@ -1,14 +1,14 @@
 import asyncio
 import uuid
 
-from jaddek_tillo_sdk.domain.digital_card.factory import (
+from jpy_tillo_sdk.domain.digital_card.factory import (
     create_standard_issue_request,
 )
-from jaddek_tillo_sdk.domain.digital_card.services import (
+from jpy_tillo_sdk.domain.digital_card.services import (
     IssueDigitalCodeService,
 )
-from jaddek_tillo_sdk import Currency
-from jaddek_tillo_sdk.http_client_factory import (
+from jpy_tillo_sdk import Currency
+from jpy_tillo_sdk.http_client_factory import (
     create_client,
     create_client_async,
 )

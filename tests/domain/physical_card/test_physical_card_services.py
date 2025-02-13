@@ -1,8 +1,8 @@
 import pytest
 from httpx import Response
 from unittest.mock import Mock, AsyncMock
-from jaddek_tillo_sdk.http_client import HttpClient, AsyncHttpClient
-from jaddek_tillo_sdk.domain.physical_card.services import PhysicalGiftCardsService
+from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.domain.physical_card.services import PhysicalGiftCardsService
 
 @pytest.fixture
 def mock_async_http_client():

@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "jaddek_tillo_sdk"
-version = "0.1.4"
+name = "jpy-tillo-sdk"
+version = "0.1.6"
 description = "The package for developers to interact with the Tillo APIv2"
 authors = [
     { name = "Anton Nazarov", email = "tonynazarov@gmail.com" }
@@ -27,8 +27,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/jaddek/tillo-sdk-python"
-Issues = "https://github.com/jaddek/tillo-sdk-python/issues"
+Homepage = "https://github.com/jaddek/jpy-tillo-sdk"
+Issues = "https://github.com/jaddek/jpy-tillo-sdk/issues"
 
 
 [tool.bumpversion]

@@ -1,11 +1,11 @@
 import pytest
 
-from jaddek_tillo_sdk.domain.digital_card.endpoints import IssueDigitalCodeEndpoint, TopUpDigitalCodeEndpoint, \
+from jpy_tillo_sdk.domain.digital_card.endpoints import IssueDigitalCodeEndpoint, TopUpDigitalCodeEndpoint, \
     CheckStockEndpoint, CancelDigitalCodeEndpoint, CancelDigitalUrlEndpoint, ReverseDigitalCodeEndpoint, \
     CheckBalanceEndpoint, OrderDigitalCodeAsyncEndpoint, CheckDigitalOrderStatusAsyncEndpoint
-from jaddek_tillo_sdk.domain.digital_card.models import FaceValue
-from jaddek_tillo_sdk.enums import Domains
-from jaddek_tillo_sdk.http_methods import HttpMethods
+from jpy_tillo_sdk.domain.digital_card.models import FaceValue
+from jpy_tillo_sdk.enums import Domains
+from jpy_tillo_sdk.http_methods import HttpMethods
 
 
 def test_issue_digital_code_endpoint():

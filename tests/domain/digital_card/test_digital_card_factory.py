@@ -3,14 +3,14 @@ from unittest.mock import AsyncMock, Mock
 import pytest
 from httpx import Response
 
-from jaddek_tillo_sdk.domain.digital_card.endpoints import IssueDigitalCodeEndpoint, TopUpDigitalCodeEndpoint
-from jaddek_tillo_sdk.domain.digital_card.factory import (
+from jpy_tillo_sdk.domain.digital_card.endpoints import IssueDigitalCodeEndpoint, TopUpDigitalCodeEndpoint
+from jpy_tillo_sdk.domain.digital_card.factory import (
     create_standard_issue_request,
     create_personalised_issue_request, create_issue_request_fulfilment_by_tillo, create_issue_reward_pass_by_email,
     create_issue_reward_pass_by_url, create_card_top_up_request
 )
-from jaddek_tillo_sdk.enums import Currency, Sector, DeliveryMethod, FulfilmentType
-from jaddek_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.enums import Currency, Sector, DeliveryMethod, FulfilmentType
+from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
 
 
 @pytest.fixture

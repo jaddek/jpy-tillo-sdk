@@ -1,7 +1,7 @@
 import pytest
 from httpx import Response
 
-from jaddek_tillo_sdk.domain.digital_card.services import IssueDigitalCodeService
+from jpy_tillo_sdk.domain.digital_card.services import IssueDigitalCodeService
 
 
 class TestIssueDigitalCodeService:

@@ -9,7 +9,7 @@ from jaddek_tillo_sdk.domain.physical_card.factory import (
 from jaddek_tillo_sdk.domain.physical_card.services import (
     PhysicalGiftCardsService,
 )
-from jaddek_tillo_sdk.enums import Currency
+from jaddek_tillo_sdk import Currency
 from jaddek_tillo_sdk.http_client_factory import (
     create_client,
     create_client_async,

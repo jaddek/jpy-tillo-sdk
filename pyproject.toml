@@ -1,6 +1,6 @@
 [project]
 name = "jaddek_tillo_sdk"
-version = "0.1.0"
+version = "0.1.4"
 description = "Tillo SDK"
 authors = [
     { name = "Anton Nazarov", email = "tonynazarov@gmail.com" }

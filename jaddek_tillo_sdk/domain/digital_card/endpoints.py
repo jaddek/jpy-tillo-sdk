@@ -21,9 +21,9 @@ class IssueDigitalCodeEndpoint(Endpoint):
 
         @dataclass(frozen=True)
         class PersonalisationExtended(Personalisation):
-            email_message: Optional[str] = (None,)
-            redemption_message: Optional[str] = (None,)
-            carrier_message: Optional[str] = (None,)
+            email_message: Optional[str] = None
+            redemption_message: Optional[str] = None
+            carrier_message: Optional[str] = None,
 
         @dataclass(frozen=True)
         class FulfilmentParameters:

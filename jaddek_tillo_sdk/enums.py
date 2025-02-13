@@ -6,6 +6,7 @@ class Domains(Enum):
     TEMPLATE = 'template'
     DIGITAL_CARD = 'digital'
     CHECK_STOCK = 'check-stock'
+    CHECK_FLOATS = 'check-floats'
 
 
 class Status(Enum):

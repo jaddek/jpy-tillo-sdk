@@ -98,8 +98,6 @@ class TestBrandFactory:
             assert params.get_sign_attrs() == ()
 
     def test_get_not_empty_values(self):
-        """Test that get_not_empty_values works correctly for all factory functions"""
-
         brands_params = create_brands_query_params(
             detail=True, currency="USD", country=None
         )

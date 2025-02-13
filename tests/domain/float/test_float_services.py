@@ -11,7 +11,6 @@ def test_check_floats(mock_http_client, mock_query_params):
     assert isinstance(response, Response)
 
 
-@pytest.mark.skip(reason="Test not implemented yet.")
 @pytest.mark.asyncio
 async def test_check_floats_async(mock_async_http_client):
     response = await FloatService.check_floats_async(mock_async_http_client)
@@ -20,7 +19,6 @@ async def test_check_floats_async(mock_async_http_client):
     assert isinstance(response, Response)
 
 
-@pytest.mark.skip(reason="Test not implemented yet.")
 def test_request_payment_transfer():
     service = FloatService()
     with pytest.raises(NotImplementedError):

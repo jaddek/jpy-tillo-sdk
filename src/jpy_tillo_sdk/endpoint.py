@@ -63,7 +63,7 @@ class Endpoint(ABC):
         return self._sign_attrs
 
     @property
-    def query(self) -> QP:
+    def query(self) -> QP|None:
         return self._query
 
     @property

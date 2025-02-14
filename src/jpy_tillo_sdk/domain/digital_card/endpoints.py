@@ -72,7 +72,6 @@ class IssueDigitalCodeEndpoint(Endpoint):
         personalisation: Optional[Union[Personalisation, PersonalisationExtended]] = None
 
         def get_sign_attrs(self) -> tuple:
-
             if self.client_request_id and self.brand and self.face_value:
                 return (
                     self.client_request_id,
@@ -122,6 +121,9 @@ class CheckStockEndpoint(Endpoint):
         def get_sign_attrs(self) -> tuple:
             return (self.brand,) if self.brand is not None else ()
 
+    @property
+    def query(self) -> QueryParams|None:
+        return self._query
 
 class CancelDigitalCodeEndpoint(Endpoint):
     _method: str = "DELETE"
@@ -284,3 +286,7 @@ class CheckDigitalOrderStatusAsyncEndpoint(Endpoint):
 
         def get_sign_attrs(self) -> tuple:
             return ()
+
+    @property
+    def query(self) -> QueryParams|None:
+        return self._query

@@ -13,3 +13,7 @@ class CheckFloatsEndpoint(Endpoint):
     @dataclass(frozen=True)
     class QueryParams(QP):
         currency: Optional[Currency] = None
+
+    @property
+    def query(self) -> QueryParams|None:
+        return self._query

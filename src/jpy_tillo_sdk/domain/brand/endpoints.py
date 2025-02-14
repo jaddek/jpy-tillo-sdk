@@ -18,9 +18,8 @@ class BrandEndpoint(Endpoint):
         category: Optional[str] = None
 
     @property
-    def query(self) -> QueryParams:
-        return self.QueryParams(**(self._query or {}))
-
+    def query(self) -> QueryParams|None:
+        return self._query
 
 class TemplateListEndpoint(Endpoint):
     _method = "GET"
@@ -35,9 +34,8 @@ class TemplateListEndpoint(Endpoint):
             return (self.brand,) if self.brand is not None else ()
 
     @property
-    def query(self) -> QueryParams:
-        return self.QueryParams(**(self._query or {}))
-
+    def query(self) -> QueryParams|None:
+        return self._query
 
 class TemplateEndpoint(Endpoint):
     _method = "GET"
@@ -53,5 +51,5 @@ class TemplateEndpoint(Endpoint):
             return (self.brand,) if self.brand else ()
 
     @property
-    def query(self) -> QueryParams:
-        return self.QueryParams(**(self._query or {}))
+    def query(self) -> QueryParams|None:
+        return self._query

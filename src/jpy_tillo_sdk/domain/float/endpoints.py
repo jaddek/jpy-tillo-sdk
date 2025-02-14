@@ -12,4 +12,3 @@ class CheckFloatsEndpoint(Endpoint):
     @dataclass(frozen=True)
     class QueryParams(QP):
         currency: Optional[str] = None
-        template: Optional[str] = None

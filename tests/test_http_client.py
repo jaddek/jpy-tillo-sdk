@@ -8,7 +8,7 @@ from jpy_tillo_sdk.endpoint import Endpoint
 
 class MockEndpoint(Endpoint):
     def __init__(
-        self, method="GET", endpoint="/test", route="https://api.test.com/test"
+            self, method="GET", endpoint="/test", route="https://api.test.com/test"
     ):
         super().__init__()
         self._method = method
@@ -22,7 +22,6 @@ class MockEndpoint(Endpoint):
         return False
 
 
-
 def test_get_request_headers(http_client):
     headers = http_client._get_request_headers("GET", "/test")
 
@@ -31,7 +30,7 @@ def test_get_request_headers(http_client):
     assert headers["API-Key"] == "test_api_key"
     assert headers["Signature"] == "test_signature"
     assert headers["Timestamp"] == "test_timestamp"
-    assert headers["User-Agent"] == "TilloSDKPython/0.1"
+    assert headers["User-Agent"] == "JpyTilloSDKClient/0.2"
 
 
 def test_http_client_request(http_client, monkeypatch):

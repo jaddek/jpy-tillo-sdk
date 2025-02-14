@@ -172,7 +172,7 @@ wheels = [
 
 [[package]]
 name = "jpy-tillo-sdk"
-version = "0.1.6"
+version = "0.2.1"
 source = { editable = "." }
 dependencies = [
     { name = "httpx", extra = ["http2"] },

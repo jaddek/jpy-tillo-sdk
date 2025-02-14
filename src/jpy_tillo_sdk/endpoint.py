@@ -31,7 +31,7 @@ class Endpoint(ABC):
 
     def __init__(
             self,
-            query: Optional[dict] = None,
+            query: Optional[QP] = None,
             body: Optional[AbstractBodyRequest] = None,
             sign_attrs: Optional[tuple] = None,
     ):
@@ -64,8 +64,8 @@ class Endpoint(ABC):
 
     @property
     def query(self) -> QP:
-        return QP()
+        return self._query
 
     @property
     def params(self) -> dict:
-        return self.query.get_not_empty_values()
+        return self._query.get_not_empty_values() if self._query is not None else {}

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from ...endpoint import Endpoint, QP
+from ...enums import Currency
 
 
 class CheckFloatsEndpoint(Endpoint):
@@ -11,4 +12,4 @@ class CheckFloatsEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class QueryParams(QP):
-        currency: Optional[str] = None
+        currency: Optional[Currency] = None

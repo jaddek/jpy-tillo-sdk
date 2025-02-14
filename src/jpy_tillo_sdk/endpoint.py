@@ -68,4 +68,4 @@ class Endpoint(ABC):
 
     @property
     def params(self) -> dict:
-        return self._query.get_not_empty_values()
+        return self._query.get_not_empty_values() if self._query is not None else {}

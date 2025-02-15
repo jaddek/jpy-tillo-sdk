@@ -17,9 +17,9 @@ def create_payment_transfer_request(
         proforma_invoice: Optional[RequestPaymentTransferEndpoint.RequestBody.ProformaInvoiceParams] = None
 ):
     return RequestPaymentTransferEndpoint.RequestBody(
-        currency=Currency.EUR,
-        amount="100",
-        payment_reference="PAY_REF",
-        finance_email="<EMAIL>",
+        currency=currency,
+        amount=amount,
+        payment_reference=payment_reference,
+        finance_email=finance_email,
         proforma_invoice=proforma_invoice,
     )

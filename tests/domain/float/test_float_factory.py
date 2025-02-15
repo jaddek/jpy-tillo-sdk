@@ -22,3 +22,8 @@ def test_create_payment_transfer_request():
 
     assert isinstance(request, RequestPaymentTransferEndpoint.RequestBody)
     assert request.currency == Currency.EUR
+    assert request.amount == "100"
+    assert request.payment_reference == "ref"
+    assert request.finance_email == "finance_email"
+    assert request.proforma_invoice is None
+

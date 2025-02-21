@@ -122,7 +122,7 @@ def test_brand_endpoint_query_params(query, not_empty_values, sign_attrs):
     )
 
     assert qp.get_not_empty_values() == not_empty_values
-    assert qp.get_sign_attrs() is None
+    assert qp.get_sign_attrs() == ()
 
 
 def test_template_list_endpoint():

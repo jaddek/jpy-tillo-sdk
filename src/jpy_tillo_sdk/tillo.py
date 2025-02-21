@@ -24,7 +24,7 @@ class TilloClient:
         self._floats: FloatServiceAsyncInstance | None = None
 
     @property
-    def floats(self) -> FloatServiceAsyncInstance:
+    def floats_async(self) -> FloatServiceAsyncInstance:
         if self._floats is None:
             self._floats = FloatServiceAsyncInstance(
                 client=self.__async_http_client

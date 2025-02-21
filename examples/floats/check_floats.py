@@ -13,7 +13,7 @@ async def check_floats_async():
         TILLO_HTTP_CLIENT_OPTIONS
     )
 
-    response = await client.floats.check_floats_async()
+    response = await client.floats_async.check_floats_async()
 
     print(response.text)
 

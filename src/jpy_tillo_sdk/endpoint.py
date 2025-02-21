@@ -2,13 +2,14 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, asdict
 from typing import Optional
 
+
 @dataclass(frozen=True)
 class QP(ABC):
     def get_not_empty_values(self) -> dict:
         return {k: v for k, v in self.__dict__.items() if v is not None}
 
-    def get_sign_attrs(self) -> Optional[tuple]:
-        return None
+    def get_sign_attrs(self) -> tuple:
+        return ()
 
 
 @dataclass(frozen=True)
@@ -63,9 +64,19 @@ class Endpoint(ABC):
         return self._sign_attrs
 
     @property
-    def query(self) -> QP|None:
+    def query(self) -> QP | None:
         return self._query
 
     @property
     def params(self) -> dict:
         return self._query.get_not_empty_values() if self._query is not None else {}
+
+    def get_sign_attrs(self) -> tuple:
+        sign_attrs: tuple = ()
+
+        if self.is_body_not_empty():
+            sign_attrs += self.body.get_sign_attrs() if self.is_body_not_empty() else ()
+        else:
+            sign_attrs += self.query.get_sign_attrs() if self.query is not None else ()
+
+        return sign_attrs

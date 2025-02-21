@@ -59,14 +59,7 @@ class AsyncHttpClient(AbstractClient):
 
         logger.debug("Requesting endpoint %s", endpoint)
 
-        # Probably the best option here is to check for POST or GET to identify which parameters should be signed
-        if endpoint.is_body_not_empty():
-            logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)
-            sign_attrs = endpoint.body.get_sign_attrs()
-            json = endpoint.body.get_as_dict()
-        else:
-            logger.debug("Requesting endpoint using query for signing: %s", endpoint.query)
-            sign_attrs = endpoint.query.get_sign_attrs()
+        sign_attrs = endpoint.get_sign_attrs()
 
         headers = self._get_request_headers(
             endpoint.method,

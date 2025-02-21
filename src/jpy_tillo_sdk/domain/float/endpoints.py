@@ -14,9 +14,13 @@ class CheckFloatsEndpoint(Endpoint):
     class QueryParams(QP):
         currency: Optional[Currency] = None
 
+        def get_sign_attrs(self) -> tuple:
+            return ()
+
     @property
     def query(self) -> QueryParams | None:
         return self._query
+
 
 
 class RequestPaymentTransferEndpoint(Endpoint):

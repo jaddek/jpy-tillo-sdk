@@ -16,7 +16,7 @@ class QP(ABC):
 class AbstractBodyRequest(ABC):
     @abstractmethod
     def get_sign_attrs(self) -> tuple:
-        pass
+        return ()
 
     def get_as_dict(self) -> dict:
         return asdict(self)

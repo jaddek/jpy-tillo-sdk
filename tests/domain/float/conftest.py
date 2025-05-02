@@ -7,16 +7,6 @@ from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
 
 
 @pytest.fixture
-def mock_query_params():
-    return {"currency": "EUR", "template": "standard"}
-
-
-@pytest.fixture
-def mock_empty_query_params():
-    return {}
-
-
-@pytest.fixture
 def mock_http_client():
     client = Mock(spec=HttpClient)
     client.request.return_value = Mock(spec=Response)

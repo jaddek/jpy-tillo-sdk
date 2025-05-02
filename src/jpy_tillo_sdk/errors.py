@@ -17,7 +17,24 @@ class TilloException(Exception):
         return f"{self.message} (Tillo Error {self.tillo_error_code}, HTTP {self.http_error_code})"
 
 
-# Specific exceptions
+'''
+Library exceptions
+'''
+
+
+class AuthenticationError(TilloException):
+    TILLO_ERROR_CODE = None
+    HTTP_ERROR_CODE = 401
+    MESSAGE = "Pair API-Token or Secret-key not provided."
+    DESCRIPTION = "No API key provided. (HINT: set your API key using 'client = jpy_tillo_sdk.TilloClient(<API-KEY>, <SECRET-KEY>)')"
+    API_VERSION = 1
+
+class AuthorizationErrorInvalidAPITokenOrSecret(AuthenticationError):
+    pass
+
+'''
+Tillo exceptions
+'''
 
 
 class InvalidApiToken(TilloException):

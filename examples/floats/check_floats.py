@@ -1,34 +1,19 @@
 import asyncio
 
-from jpy_tillo_sdk.domain.float.services import FloatService
-from jpy_tillo_sdk.http_client_factory import (
-    create_client,
-    create_client_async,
-)
+from jpy_tillo_sdk import tillo
 
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
 TILLO_HTTP_CLIENT_OPTIONS = {}
 
-
-def check_floats():
-    sync_client = create_client(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
-
-    response = FloatService.check_floats(sync_client)
-
-    print(response.text)
-
-
-check_floats()
-
-
 async def check_floats_async():
-    async_client = create_client_async(
-        TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS
+    client = tillo.TilloClient(
+        TILLO_API_KEY,
+        TILLO_SECRET,
+        TILLO_HTTP_CLIENT_OPTIONS
     )
 
-    response = await FloatService.check_floats_async(async_client)
+    response = await client.floats_async.check_floats_async()
 
     print(response.text)
 

@@ -83,6 +83,7 @@ class FloatServiceAsyncInstance:
             self,
             query_params: Optional[CheckFloatsEndpoint.QueryParams] = None,
     ) -> Response:
+
         response = await FloatService.check_floats_async(
             self.client,
             query_params=query_params

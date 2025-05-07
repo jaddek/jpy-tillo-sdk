@@ -1,4 +1,30 @@
+"""Tillo SDK Error Classes.
+
+This module contains all error classes used in the Tillo SDK. These errors are raised
+when API requests fail or when invalid operations are attempted. Each error class
+includes specific error codes, HTTP status codes, and descriptive messages.
+
+The error hierarchy is organized as follows:
+- TilloException (base class)
+  - AuthenticationError
+    - AuthorizationErrorInvalidAPITokenOrSecret
+  - Various API-specific exceptions
+"""
+
 class TilloException(Exception):
+    """Base exception class for all Tillo SDK errors.
+    
+    This class provides a standardized format for all Tillo-related errors,
+    including error codes, HTTP status codes, and descriptive messages.
+
+    Attributes:
+        TILLO_ERROR_CODE (str): The Tillo-specific error code.
+        HTTP_ERROR_CODE (int): The HTTP status code associated with the error.
+        MESSAGE (str): A short, user-friendly error message.
+        DESCRIPTION (str): A detailed description of the error and how to resolve it.
+        API_VERSION (int): The API version where this error is applicable.
+    """
+
     TILLO_ERROR_CODE: str = None
     HTTP_ERROR_CODE: int = None
     MESSAGE: str = None
@@ -17,27 +43,38 @@ class TilloException(Exception):
         return f"{self.message} (Tillo Error {self.tillo_error_code}, HTTP {self.http_error_code})"
 
 
-'''
-Library exceptions
-'''
-
-
+# Authentication Errors
 class AuthenticationError(TilloException):
+    """Base class for authentication-related errors.
+    
+    This error is raised when there are issues with API authentication,
+    such as missing or invalid credentials.
+    """
+
     TILLO_ERROR_CODE = None
     HTTP_ERROR_CODE = 401
     MESSAGE = "Pair API-Token or Secret-key not provided."
     DESCRIPTION = "No API key provided. (HINT: set your API key using 'client = jpy_tillo_sdk.TilloClient(<API-KEY>, <SECRET-KEY>)')"
     API_VERSION = 1
 
+
 class AuthorizationErrorInvalidAPITokenOrSecret(AuthenticationError):
+    """Raised when the provided API token or secret is invalid.
+    
+    This error occurs when either the API token or secret key is missing,
+    invalid, or expired.
+    """
     pass
 
-'''
-Tillo exceptions
-'''
 
-
+# API-Specific Errors
 class InvalidApiToken(TilloException):
+    """Raised when the API token is invalid or expired.
+    
+    This error occurs when the provided API token is either invalid or has expired.
+    A new valid API token should be obtained from the Tillo dashboard.
+    """
+
     TILLO_ERROR_CODE = "060"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Token mismatch error"
@@ -46,6 +83,12 @@ class InvalidApiToken(TilloException):
 
 
 class MissingParameters(TilloException):
+    """Raised when required parameters are missing from the request.
+    
+    This error occurs when essential parameters like amount or personalization
+    are not provided in the API request.
+    """
+
     TILLO_ERROR_CODE = "070"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Missing parameter"
@@ -54,6 +97,12 @@ class MissingParameters(TilloException):
 
 
 class MissingParameterAmount(TilloException):
+    """Raised when the amount parameter is missing.
+    
+    This error occurs when the additionalParams parameter is not provided
+    in the API request.
+    """
+
     TILLO_ERROR_CODE = "071"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Missing parameter"
@@ -62,6 +111,12 @@ class MissingParameterAmount(TilloException):
 
 
 class BrandNotFound(TilloException):
+    """Raised when the requested brand does not exist.
+    
+    This error occurs when attempting to access a brand that doesn't exist
+    in the Tillo system.
+    """
+
     TILLO_ERROR_CODE = "072"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Brand not found"
@@ -70,6 +125,12 @@ class BrandNotFound(TilloException):
 
 
 class InvalidBrandForPartner(TilloException):
+    """Raised when the brand is not available for the partner.
+    
+    This error occurs when a partner attempts to access a brand they
+    don't have permission to use.
+    """
+
     TILLO_ERROR_CODE = "072"
     HTTP_ERROR_CODE = 401
     MESSAGE = "Invalid brand for partner"
@@ -78,6 +139,12 @@ class InvalidBrandForPartner(TilloException):
 
 
 class GiftCodeCancelled(TilloException):
+    """Raised when attempting to perform an action on a cancelled gift code.
+    
+    This error occurs when trying to perform operations on a gift code
+    that has already been cancelled.
+    """
+
     TILLO_ERROR_CODE = "100"
     HTTP_ERROR_CODE = 422
     MESSAGE = "The gift code has already been cancelled"
@@ -86,6 +153,12 @@ class GiftCodeCancelled(TilloException):
 
 
 class InvalidIpAddress(TilloException):
+    """Raised when the request comes from an unauthorized IP address.
+    
+    This error occurs when the request originates from an IP address
+    that is not whitelisted in the Tillo system.
+    """
+
     TILLO_ERROR_CODE = "210"
     HTTP_ERROR_CODE = 401
     MESSAGE = "Invalid IP address"
@@ -94,6 +167,12 @@ class InvalidIpAddress(TilloException):
 
 
 class InsufficientMonies(TilloException):
+    """Raised when there are insufficient funds in the account.
+    
+    This error occurs when attempting to perform an operation that
+    requires more funds than are available in the account.
+    """
+
     TILLO_ERROR_CODE = "610"
     HTTP_ERROR_CODE = 403
     MESSAGE = "Insufficient Monies"
@@ -102,6 +181,12 @@ class InsufficientMonies(TilloException):
 
 
 class InsufficientMoniesOnAccount(TilloException):
+    """Raised when there are insufficient funds for the operation.
+    
+    This error occurs when the account balance is too low to complete
+    the requested operation.
+    """
+
     TILLO_ERROR_CODE = "610"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Insufficient balance"
@@ -110,6 +195,12 @@ class InsufficientMoniesOnAccount(TilloException):
 
 
 class InvalidValue(TilloException):
+    """Raised when an invalid or unsupported value is provided.
+    
+    This error occurs when a parameter value is outside the allowed
+    range or format.
+    """
+
     TILLO_ERROR_CODE = "704"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Invalid value"
@@ -118,6 +209,12 @@ class InvalidValue(TilloException):
 
 
 class SaleDisabled(TilloException):
+    """Raised when attempting to make a sale for a disabled brand.
+    
+    This error occurs when trying to process a sale for a brand that
+    is currently not available for sale.
+    """
+
     TILLO_ERROR_CODE = "706"
     HTTP_ERROR_CODE = 401
     MESSAGE = "Sale is disabled"
@@ -126,6 +223,12 @@ class SaleDisabled(TilloException):
 
 
 class DuplicateClientRequest(TilloException):
+    """Raised when a duplicate clientRequestID is detected.
+    
+    This error occurs when attempting to use a clientRequestID that
+    already exists with different brand or value parameters.
+    """
+
     TILLO_ERROR_CODE = "708"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Duplicate clientRequestID"
@@ -134,6 +237,12 @@ class DuplicateClientRequest(TilloException):
 
 
 class RelationshipNotFound(TilloException):
+    """Raised when no relationship exists between partner and brand.
+    
+    This error occurs when attempting to perform operations that require
+    an established relationship between the partner and brand.
+    """
+
     TILLO_ERROR_CODE = "709"
     HTTP_ERROR_CODE = 404
     MESSAGE = "No relationship found"
@@ -142,6 +251,12 @@ class RelationshipNotFound(TilloException):
 
 
 class CancelNotActive(TilloException):
+    """Raised when attempting to cancel an inactive card.
+    
+    This error occurs when trying to cancel a card that is no longer
+    in an active state.
+    """
+
     TILLO_ERROR_CODE = "711"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Cancel not active"
@@ -150,6 +265,12 @@ class CancelNotActive(TilloException):
 
 
 class DeliveryMethodNotFound(TilloException):
+    """Raised when the requested delivery method doesn't exist.
+    
+    This error occurs when attempting to use a delivery method that
+    is not available in the system.
+    """
+
     TILLO_ERROR_CODE = "712"
     HTTP_ERROR_CODE = 404
     MESSAGE = "Delivery method not found"
@@ -158,6 +279,12 @@ class DeliveryMethodNotFound(TilloException):
 
 
 class InvalidDeliveryMethod(TilloException):
+    """Raised when the delivery method is not allowed.
+    
+    This error occurs when attempting to use a delivery method that
+    is not permitted for the current operation.
+    """
+
     TILLO_ERROR_CODE = "713"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Invalid delivery method"
@@ -166,6 +293,12 @@ class InvalidDeliveryMethod(TilloException):
 
 
 class MissingDeliveryMethod(TilloException):
+    """Raised when no delivery method is specified.
+    
+    This error occurs when a delivery method is required but not
+    provided in the request.
+    """
+
     TILLO_ERROR_CODE = "714"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Missing delivery method"
@@ -174,6 +307,12 @@ class MissingDeliveryMethod(TilloException):
 
 
 class UrlHostingServiceUnavailable(TilloException):
+    """Raised when the URL hosting service is unavailable.
+    
+    This error occurs when the service responsible for hosting URLs
+    is temporarily unavailable.
+    """
+
     TILLO_ERROR_CODE = "715"
     HTTP_ERROR_CODE = 503
     MESSAGE = "URL hosting service unavailable"
@@ -182,6 +321,12 @@ class UrlHostingServiceUnavailable(TilloException):
 
 
 class TemplateNotFound(TilloException):
+    """Raised when the requested template doesn't exist.
+    
+    This error occurs when attempting to use a template that
+    is not found in the system.
+    """
+
     TILLO_ERROR_CODE = "716"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Template not found"
@@ -190,16 +335,26 @@ class TemplateNotFound(TilloException):
 
 
 class TemplateAccessDenied(TilloException):
+    """Raised when access to the template is denied.
+    
+    This error occurs when the partner doesn't have permission
+    to access the requested template for the brand.
+    """
+
     TILLO_ERROR_CODE = "717"
     HTTP_ERROR_CODE = 401
     MESSAGE = "Template access denied"
-    DESCRIPTION = (
-        "The partner does not have access to the template for the requested brand"
-    )
+    DESCRIPTION = "The partner does not have access to the template for the requested brand"
     API_VERSION = 2
 
 
 class UnsupportedTransactionType(TilloException):
+    """Raised when the transaction type is not supported.
+    
+    This error occurs when attempting to perform a transaction type
+    that is not supported by the partner.
+    """
+
     TILLO_ERROR_CODE = "719"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Transaction type not supported"
@@ -208,6 +363,12 @@ class UnsupportedTransactionType(TilloException):
 
 
 class UnsupportedBrandTransactionType(TilloException):
+    """Raised when the transaction type is not supported for the brand.
+    
+    This error occurs when attempting to perform a transaction type
+    that is not supported for the requested brand.
+    """
+
     TILLO_ERROR_CODE = "720"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Brand transaction type not supported"
@@ -216,6 +377,12 @@ class UnsupportedBrandTransactionType(TilloException):
 
 
 class CurrencyIsoCodeNotFound(TilloException):
+    """Raised when the requested currency is not found.
+    
+    This error occurs when attempting to use a currency that
+    is not available in the system.
+    """
+
     TILLO_ERROR_CODE = "721"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Currency ISO code not found"
@@ -224,6 +391,12 @@ class CurrencyIsoCodeNotFound(TilloException):
 
 
 class MissingCurrencyIsoCode(TilloException):
+    """Raised when no currency is specified.
+    
+    This error occurs when a currency is required but not
+    provided in the request.
+    """
+
     TILLO_ERROR_CODE = "722"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Missing currency iso code"
@@ -232,6 +405,12 @@ class MissingCurrencyIsoCode(TilloException):
 
 
 class UnsupportedCurrencyIsoCode(TilloException):
+    """Raised when the currency is not supported for the brand.
+    
+    This error occurs when attempting to use a currency that
+    is not supported by the requested brand.
+    """
+
     TILLO_ERROR_CODE = "723"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Unsupported currency iso code"
@@ -240,6 +419,12 @@ class UnsupportedCurrencyIsoCode(TilloException):
 
 
 class SaleNotFound(TilloException):
+    """Raised when the sale reference cannot be found.
+    
+    This error occurs when attempting to access a sale that
+    doesn't exist in the system.
+    """
+
     TILLO_ERROR_CODE = "724"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Sale reference not found"
@@ -248,6 +433,12 @@ class SaleNotFound(TilloException):
 
 
 class DenominationNotInStock(TilloException):
+    """Raised when the requested denomination is out of stock.
+    
+    This error occurs when attempting to use a denomination that
+    is currently not available in stock.
+    """
+
     TILLO_ERROR_CODE = "725"
     HTTP_ERROR_CODE = 500
     MESSAGE = "Denomination not in stock"
@@ -256,6 +447,12 @@ class DenominationNotInStock(TilloException):
 
 
 class FeatureNotEnabled(TilloException):
+    """Raised when the requested feature is not enabled.
+    
+    This error occurs when attempting to use a feature that
+    has not been enabled for the account.
+    """
+
     TILLO_ERROR_CODE = "726"
     HTTP_ERROR_CODE = 503
     MESSAGE = "Feature not enabled"
@@ -264,6 +461,12 @@ class FeatureNotEnabled(TilloException):
 
 
 class InsufficientBalanceOnCard(TilloException):
+    """Raised when there are insufficient funds on the card.
+    
+    This error occurs when attempting to perform an operation that
+    requires more funds than are available on the card.
+    """
+
     TILLO_ERROR_CODE = "728"
     HTTP_ERROR_CODE = 403
     MESSAGE = "Insufficient balance on card"
@@ -272,6 +475,12 @@ class InsufficientBalanceOnCard(TilloException):
 
 
 class DuplicateRequestIncomplete(TilloException):
+    """Raised when a duplicate request is still being processed.
+    
+    This error occurs when attempting to submit a request that
+    is identical to one that is still being processed.
+    """
+
     TILLO_ERROR_CODE = "729"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Duplicate request"
@@ -280,6 +489,12 @@ class DuplicateRequestIncomplete(TilloException):
 
 
 class InvalidSaleReference(TilloException):
+    """Raised when the sale reference is invalid.
+    
+    This error occurs when attempting to use a sale reference that
+    is not in the correct format or is invalid.
+    """
+
     TILLO_ERROR_CODE = "730"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Invalid sale reference"
@@ -288,6 +503,12 @@ class InvalidSaleReference(TilloException):
 
 
 class SaleRedemptionInProgress(TilloException):
+    """Raised when redemption is already in progress for the sale.
+    
+    This error occurs when attempting to start a redemption process
+    for a sale that is already being redeemed.
+    """
+
     TILLO_ERROR_CODE = "732"
     HTTP_ERROR_CODE = 425
     MESSAGE = "Sale redemption in progress"
@@ -296,6 +517,12 @@ class SaleRedemptionInProgress(TilloException):
 
 
 class InvalidOrderStatus(TilloException):
+    """Raised when the order status is invalid for the operation.
+    
+    This error occurs when attempting to perform an operation that
+    is not allowed in the current order status.
+    """
+
     TILLO_ERROR_CODE = "733"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Invalid order status"
@@ -304,6 +531,12 @@ class InvalidOrderStatus(TilloException):
 
 
 class InvalidRedemptionStatus(TilloException):
+    """Raised when the redemption status is invalid for the operation.
+    
+    This error occurs when attempting to perform an operation that
+    is not allowed in the current redemption status.
+    """
+
     TILLO_ERROR_CODE = "734"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Invalid redemption status"
@@ -312,6 +545,12 @@ class InvalidRedemptionStatus(TilloException):
 
 
 class SaleExpired(TilloException):
+    """Raised when attempting to perform an action on an expired sale.
+    
+    This error occurs when trying to perform operations on a sale
+    that has passed its expiration date.
+    """
+
     TILLO_ERROR_CODE = "735"
     HTTP_ERROR_CODE = 410
     MESSAGE = "Sale expired"
@@ -320,6 +559,12 @@ class SaleExpired(TilloException):
 
 
 class InvalidFinancialRelationship(TilloException):
+    """Raised when the financial relationship is invalid.
+    
+    This error occurs when attempting to perform an operation that
+    requires a valid financial relationship that doesn't exist.
+    """
+
     TILLO_ERROR_CODE = "736"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Invalid financial relationship"
@@ -328,6 +573,12 @@ class InvalidFinancialRelationship(TilloException):
 
 
 class CurrencyForInternationalPaymentsOnly(TilloException):
+    """Raised when the currency is only available for international payments.
+    
+    This error occurs when attempting to use a currency that is
+    restricted to international payment operations only.
+    """
+
     TILLO_ERROR_CODE = "738"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Currency only for international payments"
@@ -336,6 +587,12 @@ class CurrencyForInternationalPaymentsOnly(TilloException):
 
 
 class UnsupportedBrandForInternationalPayments(TilloException):
+    """Raised when the brand is not supported for international payments.
+    
+    This error occurs when attempting to use a brand that is not
+    supported for international payment operations.
+    """
+
     TILLO_ERROR_CODE = "739"
     HTTP_ERROR_CODE = 422
     MESSAGE = "Brand not supported for international payments"
@@ -344,6 +601,12 @@ class UnsupportedBrandForInternationalPayments(TilloException):
 
 
 class FeatureOnlyAvailableInApiV2(TilloException):
+    """Raised when attempting to use a feature only available in API v2.
+    
+    This error occurs when trying to use a feature that is
+    exclusively available in API version 2.
+    """
+
     TILLO_ERROR_CODE = "740"
     HTTP_ERROR_CODE = 400
     MESSAGE = "Feature only available in API v2"
@@ -352,6 +615,12 @@ class FeatureOnlyAvailableInApiV2(TilloException):
 
 
 class EndpointNotFound(TilloException):
+    """Raised when the requested endpoint doesn't exist.
+    
+    This error occurs when attempting to access an API endpoint
+    that is not available in the system.
+    """
+
     TILLO_ERROR_CODE = "999"
     HTTP_ERROR_CODE = 404
     MESSAGE = "Endpoint not found"
@@ -360,6 +629,12 @@ class EndpointNotFound(TilloException):
 
 
 class MethodNotAllowed(TilloException):
+    """Raised when the HTTP method is not allowed for the endpoint.
+    
+    This error occurs when attempting to use an HTTP method that
+    is not supported for the requested endpoint.
+    """
+
     TILLO_ERROR_CODE = "999"
     HTTP_ERROR_CODE = 405
     MESSAGE = "Method not allowed"
@@ -368,6 +643,12 @@ class MethodNotAllowed(TilloException):
 
 
 class InternalServerError(TilloException):
+    """Raised when an internal server error occurs.
+    
+    This error occurs when there is an unexpected error on the
+    Tillo server side.
+    """
+
     TILLO_ERROR_CODE = "999"
     HTTP_ERROR_CODE = 500
     MESSAGE = "Internal error"

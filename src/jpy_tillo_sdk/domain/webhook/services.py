@@ -1,0 +1,2 @@
+class WebhookService:
+    pass

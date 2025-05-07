@@ -27,6 +27,7 @@ def http_client(mock_signer, client_options):
 def async_http_client(mock_signer, client_options):
     return AsyncHttpClient(client_options, mock_signer)
 
+
 @pytest.fixture
 def api_key():
     return "test_api_key"

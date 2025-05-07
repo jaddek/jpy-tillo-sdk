@@ -8,19 +8,16 @@ TILLO_API_KEY = ""
 TILLO_SECRET = ""
 TILLO_HTTP_CLIENT_OPTIONS = {}
 
+
 async def request_payment_transfer_async():
-    client = tillo.TilloClient(
-        TILLO_API_KEY,
-        TILLO_SECRET,
-        TILLO_HTTP_CLIENT_OPTIONS
-    )
+    client = tillo.TilloClient(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
     response = await client.floats_async.request_payment_transfer_async(
         create_payment_transfer_request(
             currency=Currency.EUR,
             amount="100",
             payment_reference="ref",
-            finance_email="email"
+            finance_email="email",
         )
     )
 

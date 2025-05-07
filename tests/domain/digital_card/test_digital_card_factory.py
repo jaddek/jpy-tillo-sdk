@@ -3,11 +3,17 @@ from unittest.mock import AsyncMock, Mock
 import pytest
 from httpx import Response
 
-from jpy_tillo_sdk.domain.digital_card.endpoints import IssueDigitalCodeEndpoint, TopUpDigitalCodeEndpoint
+from jpy_tillo_sdk.domain.digital_card.endpoints import (
+    IssueDigitalCodeEndpoint,
+    TopUpDigitalCodeEndpoint,
+)
 from jpy_tillo_sdk.domain.digital_card.factory import (
     create_standard_issue_request,
-    create_personalised_issue_request, create_issue_request_fulfilment_by_tillo, create_issue_reward_pass_by_email,
-    create_issue_reward_pass_by_url, create_card_top_up_request
+    create_personalised_issue_request,
+    create_issue_request_fulfilment_by_tillo,
+    create_issue_reward_pass_by_email,
+    create_issue_reward_pass_by_url,
+    create_card_top_up_request,
 )
 from jpy_tillo_sdk.enums import Currency, Sector, DeliveryMethod, FulfilmentType
 from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
@@ -35,7 +41,7 @@ def test_create_standard_issue_request():
         currency=Currency.EUR,
         sector=Sector.GIFT_CARD_MALL,
         delivery_method=DeliveryMethod.URL,
-        fulfilment_by=FulfilmentType.PARTNER
+        fulfilment_by=FulfilmentType.PARTNER,
     )
 
     assert isinstance(request, IssueDigitalCodeEndpoint.RequestBody)
@@ -51,16 +57,16 @@ def test_create_standard_issue_request():
 
 def test_create_personalised_issue_request():
     personalisation = IssueDigitalCodeEndpoint.RequestBody.Personalisation(
-        to_name='to Name',
-        from_name='from Name',
-        message='message',
+        to_name="to Name",
+        from_name="from Name",
+        message="message",
     )
 
     request = create_personalised_issue_request(
         client_request_id="test-123",
         brand="test-brand",
         amount="100.00",
-        personalisation=personalisation
+        personalisation=personalisation,
     )
 
     assert isinstance(request, IssueDigitalCodeEndpoint.RequestBody)
@@ -73,14 +79,14 @@ def test_create_personalised_issue_request():
 
 def test_create_issue_request_fulfilment_by_tillo():
     personalisation = IssueDigitalCodeEndpoint.RequestBody.PersonalisationExtended(
-        to_name='to Name',
-        from_name='from Name',
-        message='message',
+        to_name="to Name",
+        from_name="from Name",
+        message="message",
     )
 
     fulfilment = IssueDigitalCodeEndpoint.RequestBody.FulfilmentParameters(
-        to_name='to Name',
-        from_name='from Name',
+        to_name="to Name",
+        from_name="from Name",
     )
 
     request = create_issue_request_fulfilment_by_tillo(
@@ -92,7 +98,7 @@ def test_create_issue_request_fulfilment_by_tillo():
         currency=Currency.EUR,
         sector=Sector.GIFT_CARD_MALL,
         delivery_method=DeliveryMethod.URL,
-        fulfilment_by=FulfilmentType.PARTNER
+        fulfilment_by=FulfilmentType.PARTNER,
     )
 
     assert isinstance(request, IssueDigitalCodeEndpoint.RequestBody)
@@ -106,16 +112,17 @@ def test_create_issue_request_fulfilment_by_tillo():
     assert request.personalisation == personalisation
     assert request.fulfilment_parameters == fulfilment
 
+
 def test_create_issue_reward_pass_by_email():
     personalisation = IssueDigitalCodeEndpoint.RequestBody.PersonalisationExtended(
-        to_name='to Name',
-        from_name='from Name',
-        message='message',
+        to_name="to Name",
+        from_name="from Name",
+        message="message",
     )
 
     fulfilment = IssueDigitalCodeEndpoint.RequestBody.FulfilmentParametersForRewardPassUsingEmail(
-        to_name='to Name',
-        from_name='from Name',
+        to_name="to Name",
+        from_name="from Name",
     )
 
     request = create_issue_reward_pass_by_email(
@@ -127,7 +134,7 @@ def test_create_issue_reward_pass_by_email():
         currency=Currency.EUR,
         sector=Sector.GIFT_CARD_MALL,
         delivery_method=DeliveryMethod.URL,
-        fulfilment_by=FulfilmentType.PARTNER
+        fulfilment_by=FulfilmentType.PARTNER,
     )
 
     assert isinstance(request, IssueDigitalCodeEndpoint.RequestBody)
@@ -144,13 +151,15 @@ def test_create_issue_reward_pass_by_email():
 
 def test_create_issue_reward_pass_by_url():
     personalisation = IssueDigitalCodeEndpoint.RequestBody.PersonalisationExtended(
-        to_name='to Name',
-        from_name='from Name',
-        message='message',
+        to_name="to Name",
+        from_name="from Name",
+        message="message",
     )
 
-    fulfilment = IssueDigitalCodeEndpoint.RequestBody.FulfilmentParametersForRewardPassUsingUrl(
-        to_name='to Name',
+    fulfilment = (
+        IssueDigitalCodeEndpoint.RequestBody.FulfilmentParametersForRewardPassUsingUrl(
+            to_name="to Name",
+        )
     )
 
     request = create_issue_reward_pass_by_url(
@@ -162,7 +171,7 @@ def test_create_issue_reward_pass_by_url():
         currency=Currency.EUR,
         sector=Sector.GIFT_CARD_MALL,
         delivery_method=DeliveryMethod.URL,
-        fulfilment_by=FulfilmentType.PARTNER
+        fulfilment_by=FulfilmentType.PARTNER,
     )
 
     assert isinstance(request, IssueDigitalCodeEndpoint.RequestBody)
@@ -175,6 +184,7 @@ def test_create_issue_reward_pass_by_url():
     assert request.fulfilment_by == FulfilmentType.PARTNER.value
     assert request.personalisation == personalisation
     assert request.fulfilment_parameters == fulfilment
+
 
 def test_create_card_top_up_request():
     request = create_card_top_up_request(

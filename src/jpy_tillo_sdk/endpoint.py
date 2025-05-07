@@ -31,10 +31,10 @@ class Endpoint(ABC):
     _sign_attrs = None
 
     def __init__(
-            self,
-            query: Optional[QP] = None,
-            body: Optional[AbstractBodyRequest] = None,
-            sign_attrs: Optional[tuple] = None,
+        self,
+        query: Optional[QP] = None,
+        body: Optional[AbstractBodyRequest] = None,
+        sign_attrs: Optional[tuple] = None,
     ):
         self._query = query
         self._body = body

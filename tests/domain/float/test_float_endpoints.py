@@ -1,4 +1,7 @@
-from jpy_tillo_sdk.domain.float.endpoints import CheckFloatsEndpoint, RequestPaymentTransferEndpoint
+from jpy_tillo_sdk.domain.float.endpoints import (
+    CheckFloatsEndpoint,
+    RequestPaymentTransferEndpoint,
+)
 from jpy_tillo_sdk.enums import Domains
 from jpy_tillo_sdk.http_methods import HttpMethods
 
@@ -19,7 +22,7 @@ def test_request_payment_transfer_endpoint():
     endpoint = RequestPaymentTransferEndpoint()
 
     assert endpoint.method == HttpMethods.POST.value
-    assert endpoint.endpoint == 'float-request-payment-transfer'
+    assert endpoint.endpoint == "float-request-payment-transfer"
     assert endpoint.route == "/api/v2/float/request-payment-transfer"
     assert endpoint.body == {}
     assert endpoint.sign_attrs is None

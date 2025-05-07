@@ -13,7 +13,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_issue_digital_code_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.issue_digital_code_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.issue_digital_code_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -26,7 +28,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_order_digital_code_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.issue_digital_code_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.issue_digital_code_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -39,7 +43,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_check_digital_order_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.check_digital_order_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.check_digital_order_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -52,7 +58,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_top_up_digital_code_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.top_up_digital_code_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.top_up_digital_code_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -65,7 +73,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_cancel_digital_url_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.cancel_digital_url_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.cancel_digital_url_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -78,7 +88,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_cancel_digital_code_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.cancel_digital_code_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.cancel_digital_code_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -91,7 +103,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_reverse_order_digital_code_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.reverse_digital_code_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.reverse_digital_code_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -104,7 +118,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_check_stock_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.check_stock_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.check_stock_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -117,7 +133,9 @@ class TestIssueDigitalCodeService:
 
     @pytest.mark.asyncio
     async def test_check_balance_async(self, mock_async_http_client):
-        response = await IssueDigitalCodeService.check_balance_async(mock_async_http_client)
+        response = await IssueDigitalCodeService.check_balance_async(
+            mock_async_http_client
+        )
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)

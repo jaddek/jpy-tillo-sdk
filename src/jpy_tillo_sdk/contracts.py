@@ -23,7 +23,7 @@ class SignatureGeneratorInterface(ABC):
 
     @abstractmethod
     def generate_signature_string(
-            self, endpoint: str, request_type: str, timestamp: str, params: tuple
+        self, endpoint: str, request_type: str, timestamp: str, params: tuple
     ) -> str:
         pass
 
@@ -35,10 +35,10 @@ class SignatureGeneratorInterface(ABC):
 class SignatureBridgeInterface(ABC):
     @abstractmethod
     def sign(
-            self,
-            endpoint: str,
-            method: str,
-            sign_attrs: tuple,
+        self,
+        endpoint: str,
+        method: str,
+        sign_attrs: tuple,
     ):
         pass
 

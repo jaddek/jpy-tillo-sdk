@@ -41,7 +41,7 @@ logger = logging.getLogger("tillo.http_client")
 
 class AbstractClient:
     """Abstract base class for HTTP clients.
-    
+
     This class provides common functionality for both synchronous and asynchronous
     HTTP clients, including request signing and header generation. It handles the
     core HTTP request lifecycle and authentication.
@@ -57,13 +57,9 @@ class AbstractClient:
 
     _signer: SignatureBridge
 
-    def __init__(
-            self,
-            tillo_client_options: dict,
-            signer: SignatureBridge
-    ):
+    def __init__(self, tillo_client_options: dict, signer: SignatureBridge):
         """Initialize the HTTP client.
-        
+
         Args:
             tillo_client_options (dict): Configuration options for the HTTP client.
                 Supported options include:
@@ -83,18 +79,18 @@ class AbstractClient:
 
     @abstractmethod
     def request(
-            self,
-            endpoint: Endpoint,
+        self,
+        endpoint: Endpoint,
     ):
         """Make an HTTP request to the specified endpoint.
-        
+
         Args:
             endpoint (Endpoint): The endpoint to request. This includes:
                 - method: HTTP method (GET, POST, etc.)
                 - endpoint: API endpoint path
                 - params: Query parameters
                 - body: Request body (for POST requests)
-            
+
         Returns:
             Response: The HTTP response from the Tillo API.
 
@@ -105,13 +101,13 @@ class AbstractClient:
         pass
 
     def _get_request_headers(
-            self,
-            method: str,
-            endpoint: str,
-            sign_attrs: Optional[tuple] = None,
+        self,
+        method: str,
+        endpoint: str,
+        sign_attrs: Optional[tuple] = None,
     ) -> dict:
         """Generate headers for the HTTP request including authentication.
-        
+
         This method creates the necessary headers for authenticating requests
         to the Tillo API, including the API key, signature, and timestamp.
 
@@ -120,7 +116,7 @@ class AbstractClient:
             endpoint (str): API endpoint path
             sign_attrs (Optional[tuple]): Attributes to include in signature.
                 These are used to generate a unique signature for the request.
-            
+
         Returns:
             dict: Headers for the HTTP request, including:
                 - Accept: application/json
@@ -131,7 +127,7 @@ class AbstractClient:
                 - User-Agent: SDK identifier
         """
         logger.debug("Generating headers for %s %s", method, endpoint)
-        
+
         (request_api_key, request_signature, request_timestamp) = self._signer.sign(
             endpoint,
             method,
@@ -146,19 +142,22 @@ class AbstractClient:
             "Timestamp": request_timestamp,
             "User-Agent": "JpyTilloSDKClient/0.2",
         }
-        
-        logger.debug("Generated headers: %s", {k: v for k, v in headers.items() if k != "Signature"})
+
+        logger.debug(
+            "Generated headers: %s",
+            {k: v for k, v in headers.items() if k != "Signature"},
+        )
         return headers
 
     def _catch_non_200_response(self, code: int) -> None:
         """Handle non-200 HTTP response codes.
-        
+
         This method checks the response code and raises appropriate exceptions
         for specific error conditions.
 
         Args:
             code (int): HTTP status code from the response
-            
+
         Raises:
             InvalidIpAddress: If the response code is 201, indicating an IP
                 address validation error
@@ -171,7 +170,7 @@ class AbstractClient:
 
 class AsyncHttpClient(AbstractClient):
     """Asynchronous HTTP client for making API requests.
-    
+
     This client provides asynchronous methods for making HTTP requests to the
     Tillo API. It uses httpx.AsyncClient for non-blocking I/O operations.
 
@@ -185,11 +184,11 @@ class AsyncHttpClient(AbstractClient):
     """
 
     async def request(
-            self,
-            endpoint: Endpoint,
+        self,
+        endpoint: Endpoint,
     ) -> Response:
         """Make an asynchronous HTTP request to the specified endpoint.
-        
+
         This method handles the complete request lifecycle for asynchronous
         requests, including header generation, request signing, and response
         processing.
@@ -200,7 +199,7 @@ class AsyncHttpClient(AbstractClient):
                 - endpoint: API endpoint path
                 - params: Query parameters
                 - body: Request body (for POST requests)
-            
+
         Returns:
             Response: The HTTP response from the Tillo API.
 
@@ -214,12 +213,15 @@ class AsyncHttpClient(AbstractClient):
         json: Optional[dict] = None
 
         logger.info("Making async request to %s %s", endpoint.method, endpoint.endpoint)
-        logger.debug("Request details: %s", {
-            "method": endpoint.method,
-            "endpoint": endpoint.endpoint,
-            "params": endpoint.params,
-            "route": endpoint.route
-        })
+        logger.debug(
+            "Request details: %s",
+            {
+                "method": endpoint.method,
+                "endpoint": endpoint.endpoint,
+                "params": endpoint.params,
+                "route": endpoint.route,
+            },
+        )
 
         sign_attrs = endpoint.get_sign_attrs()
 
@@ -246,21 +248,25 @@ class AsyncHttpClient(AbstractClient):
                     json=json,
                     headers=headers,
                 )
-                logger.debug("Received response with status code: %d", response.status_code)
-                
+                logger.debug(
+                    "Received response with status code: %d", response.status_code
+                )
+
             self._catch_non_200_response(response.status_code)
-            
+
             logger.info("Successfully completed async request to %s", endpoint.endpoint)
             return response
-            
+
         except Exception as e:
-            logger.error("Error during async request to %s: %s", endpoint.endpoint, str(e))
+            logger.error(
+                "Error during async request to %s: %s", endpoint.endpoint, str(e)
+            )
             raise
 
 
 class HttpClient(AbstractClient):
     """Synchronous HTTP client for making API requests.
-    
+
     This client provides synchronous methods for making HTTP requests to the
     Tillo API. It uses httpx.Client for blocking I/O operations.
 
@@ -274,11 +280,11 @@ class HttpClient(AbstractClient):
     """
 
     def request(
-            self,
-            endpoint: Endpoint,
+        self,
+        endpoint: Endpoint,
     ) -> Response:
         """Make a synchronous HTTP request to the specified endpoint.
-        
+
         This method handles the complete request lifecycle for synchronous
         requests, including header generation, request signing, and response
         processing.
@@ -289,7 +295,7 @@ class HttpClient(AbstractClient):
                 - endpoint: API endpoint path
                 - params: Query parameters
                 - body: Request body (for POST requests)
-            
+
         Returns:
             Response: The HTTP response from the Tillo API.
 
@@ -302,12 +308,15 @@ class HttpClient(AbstractClient):
         json: Optional[dict] = None
 
         logger.info("Making sync request to %s %s", endpoint.method, endpoint.endpoint)
-        logger.debug("Request details: %s", {
-            "method": endpoint.method,
-            "endpoint": endpoint.endpoint,
-            "params": endpoint.params,
-            "route": endpoint.route
-        })
+        logger.debug(
+            "Request details: %s",
+            {
+                "method": endpoint.method,
+                "endpoint": endpoint.endpoint,
+                "params": endpoint.params,
+                "route": endpoint.route,
+            },
+        )
 
         # Determine whether to use body or query parameters for signing
         if endpoint.is_body_not_empty():
@@ -341,11 +350,15 @@ class HttpClient(AbstractClient):
                     json=json,
                     headers=headers,
                 )
-                logger.debug("Received response with status code: %d", response.status_code)
-                
+                logger.debug(
+                    "Received response with status code: %d", response.status_code
+                )
+
             logger.info("Successfully completed sync request to %s", endpoint.endpoint)
             return response
-            
+
         except Exception as e:
-            logger.error("Error during sync request to %s: %s", endpoint.endpoint, str(e))
+            logger.error(
+                "Error during sync request to %s: %s", endpoint.endpoint, str(e)
+            )
             raise

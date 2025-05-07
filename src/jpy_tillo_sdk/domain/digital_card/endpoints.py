@@ -23,7 +23,7 @@ class IssueDigitalCodeEndpoint(Endpoint):
         class PersonalisationExtended(Personalisation):
             email_message: Optional[str] = None
             redemption_message: Optional[str] = None
-            carrier_message: Optional[str] = None,
+            carrier_message: Optional[str] = (None,)
 
         @dataclass(frozen=True)
         class FulfilmentParameters:
@@ -63,13 +63,17 @@ class IssueDigitalCodeEndpoint(Endpoint):
         face_value: Optional[FaceValue] = None
         delivery_method: Optional[str] = None
         fulfilment_by: Optional[str] = None
-        fulfilment_parameters: Optional[Union[
-            FulfilmentParameters,
-            FulfilmentParametersForRewardPassUsingEmail,
-            FulfilmentParametersForRewardPassUsingUrl
-        ]] = None
+        fulfilment_parameters: Optional[
+            Union[
+                FulfilmentParameters,
+                FulfilmentParametersForRewardPassUsingEmail,
+                FulfilmentParametersForRewardPassUsingUrl,
+            ]
+        ] = None
         sector: Optional[str] = None
-        personalisation: Optional[Union[Personalisation, PersonalisationExtended]] = None
+        personalisation: Optional[Union[Personalisation, PersonalisationExtended]] = (
+            None
+        )
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
@@ -77,7 +81,7 @@ class IssueDigitalCodeEndpoint(Endpoint):
                     self.client_request_id,
                     self.brand,
                     self.face_value.currency,
-                    self.face_value.amount
+                    self.face_value.amount,
                 )
 
             return ()
@@ -103,7 +107,7 @@ class TopUpDigitalCodeEndpoint(Endpoint):
                     self.client_request_id,
                     self.brand,
                     self.face_value.currency,
-                    self.face_value.amount
+                    self.face_value.amount,
                 )
 
             return ()
@@ -122,8 +126,9 @@ class CheckStockEndpoint(Endpoint):
             return (self.brand,) if self.brand is not None else ()
 
     @property
-    def query(self) -> QueryParams|None:
+    def query(self) -> QueryParams | None:
         return self._query
+
 
 class CancelDigitalCodeEndpoint(Endpoint):
     _method: str = "DELETE"
@@ -145,7 +150,7 @@ class CancelDigitalCodeEndpoint(Endpoint):
                     self.client_request_id,
                     self.brand,
                     self.face_value.currency,
-                    self.face_value.amount
+                    self.face_value.amount,
                 )
 
             return ()
@@ -171,7 +176,7 @@ class CancelDigitalUrlEndpoint(Endpoint):
                     self.client_request_id,
                     self.brand,
                     self.face_value.currency,
-                    self.face_value.amount
+                    self.face_value.amount,
                 )
 
             return ()
@@ -196,7 +201,7 @@ class ReverseDigitalCodeEndpoint(Endpoint):
                     self.client_request_id,
                     self.brand,
                     self.face_value.currency,
-                    self.face_value.amount
+                    self.face_value.amount,
                 )
 
             return ()
@@ -288,5 +293,5 @@ class CheckDigitalOrderStatusAsyncEndpoint(Endpoint):
             return ()
 
     @property
-    def query(self) -> QueryParams|None:
+    def query(self) -> QueryParams | None:
         return self._query

@@ -28,8 +28,8 @@ def test_request_payment_transfer(mock_http_client):
             currency=Currency.EUR,
             amount="100",
             payment_reference="PAY_REF",
-            finance_email="<EMAIL>"
-        )
+            finance_email="<EMAIL>",
+        ),
     )
     mock_http_client.request.assert_called_once()
     assert isinstance(response, Response)
@@ -43,8 +43,8 @@ async def test_request_payment_transfer_async(mock_async_http_client):
             currency=Currency.EUR,
             amount="100",
             payment_reference="PAY_REF",
-            finance_email="<EMAIL>"
-        )
+            finance_email="<EMAIL>",
+        ),
     )
 
     mock_async_http_client.request.assert_called_once()

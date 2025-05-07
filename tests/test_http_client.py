@@ -8,7 +8,7 @@ from jpy_tillo_sdk.endpoint import Endpoint
 
 class MockEndpoint(Endpoint):
     def __init__(
-            self, method="GET", endpoint="/test", route="https://api.test.com/test"
+        self, method="GET", endpoint="/test", route="https://api.test.com/test"
     ):
         super().__init__()
         self._method = method

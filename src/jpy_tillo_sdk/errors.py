@@ -11,9 +11,10 @@ The error hierarchy is organized as follows:
   - Various API-specific exceptions
 """
 
+
 class TilloException(Exception):
     """Base exception class for all Tillo SDK errors.
-    
+
     This class provides a standardized format for all Tillo-related errors,
     including error codes, HTTP status codes, and descriptive messages.
 
@@ -46,7 +47,7 @@ class TilloException(Exception):
 # Authentication Errors
 class AuthenticationError(TilloException):
     """Base class for authentication-related errors.
-    
+
     This error is raised when there are issues with API authentication,
     such as missing or invalid credentials.
     """
@@ -60,17 +61,18 @@ class AuthenticationError(TilloException):
 
 class AuthorizationErrorInvalidAPITokenOrSecret(AuthenticationError):
     """Raised when the provided API token or secret is invalid.
-    
+
     This error occurs when either the API token or secret key is missing,
     invalid, or expired.
     """
+
     pass
 
 
 # API-Specific Errors
 class InvalidApiToken(TilloException):
     """Raised when the API token is invalid or expired.
-    
+
     This error occurs when the provided API token is either invalid or has expired.
     A new valid API token should be obtained from the Tillo dashboard.
     """
@@ -84,7 +86,7 @@ class InvalidApiToken(TilloException):
 
 class MissingParameters(TilloException):
     """Raised when required parameters are missing from the request.
-    
+
     This error occurs when essential parameters like amount or personalization
     are not provided in the API request.
     """
@@ -98,7 +100,7 @@ class MissingParameters(TilloException):
 
 class MissingParameterAmount(TilloException):
     """Raised when the amount parameter is missing.
-    
+
     This error occurs when the additionalParams parameter is not provided
     in the API request.
     """
@@ -112,7 +114,7 @@ class MissingParameterAmount(TilloException):
 
 class BrandNotFound(TilloException):
     """Raised when the requested brand does not exist.
-    
+
     This error occurs when attempting to access a brand that doesn't exist
     in the Tillo system.
     """
@@ -126,7 +128,7 @@ class BrandNotFound(TilloException):
 
 class InvalidBrandForPartner(TilloException):
     """Raised when the brand is not available for the partner.
-    
+
     This error occurs when a partner attempts to access a brand they
     don't have permission to use.
     """
@@ -140,7 +142,7 @@ class InvalidBrandForPartner(TilloException):
 
 class GiftCodeCancelled(TilloException):
     """Raised when attempting to perform an action on a cancelled gift code.
-    
+
     This error occurs when trying to perform operations on a gift code
     that has already been cancelled.
     """
@@ -154,7 +156,7 @@ class GiftCodeCancelled(TilloException):
 
 class InvalidIpAddress(TilloException):
     """Raised when the request comes from an unauthorized IP address.
-    
+
     This error occurs when the request originates from an IP address
     that is not whitelisted in the Tillo system.
     """
@@ -168,7 +170,7 @@ class InvalidIpAddress(TilloException):
 
 class InsufficientMonies(TilloException):
     """Raised when there are insufficient funds in the account.
-    
+
     This error occurs when attempting to perform an operation that
     requires more funds than are available in the account.
     """
@@ -182,7 +184,7 @@ class InsufficientMonies(TilloException):
 
 class InsufficientMoniesOnAccount(TilloException):
     """Raised when there are insufficient funds for the operation.
-    
+
     This error occurs when the account balance is too low to complete
     the requested operation.
     """
@@ -196,7 +198,7 @@ class InsufficientMoniesOnAccount(TilloException):
 
 class InvalidValue(TilloException):
     """Raised when an invalid or unsupported value is provided.
-    
+
     This error occurs when a parameter value is outside the allowed
     range or format.
     """
@@ -210,7 +212,7 @@ class InvalidValue(TilloException):
 
 class SaleDisabled(TilloException):
     """Raised when attempting to make a sale for a disabled brand.
-    
+
     This error occurs when trying to process a sale for a brand that
     is currently not available for sale.
     """
@@ -224,7 +226,7 @@ class SaleDisabled(TilloException):
 
 class DuplicateClientRequest(TilloException):
     """Raised when a duplicate clientRequestID is detected.
-    
+
     This error occurs when attempting to use a clientRequestID that
     already exists with different brand or value parameters.
     """
@@ -238,7 +240,7 @@ class DuplicateClientRequest(TilloException):
 
 class RelationshipNotFound(TilloException):
     """Raised when no relationship exists between partner and brand.
-    
+
     This error occurs when attempting to perform operations that require
     an established relationship between the partner and brand.
     """
@@ -252,7 +254,7 @@ class RelationshipNotFound(TilloException):
 
 class CancelNotActive(TilloException):
     """Raised when attempting to cancel an inactive card.
-    
+
     This error occurs when trying to cancel a card that is no longer
     in an active state.
     """
@@ -266,7 +268,7 @@ class CancelNotActive(TilloException):
 
 class DeliveryMethodNotFound(TilloException):
     """Raised when the requested delivery method doesn't exist.
-    
+
     This error occurs when attempting to use a delivery method that
     is not available in the system.
     """
@@ -280,7 +282,7 @@ class DeliveryMethodNotFound(TilloException):
 
 class InvalidDeliveryMethod(TilloException):
     """Raised when the delivery method is not allowed.
-    
+
     This error occurs when attempting to use a delivery method that
     is not permitted for the current operation.
     """
@@ -294,7 +296,7 @@ class InvalidDeliveryMethod(TilloException):
 
 class MissingDeliveryMethod(TilloException):
     """Raised when no delivery method is specified.
-    
+
     This error occurs when a delivery method is required but not
     provided in the request.
     """
@@ -308,7 +310,7 @@ class MissingDeliveryMethod(TilloException):
 
 class UrlHostingServiceUnavailable(TilloException):
     """Raised when the URL hosting service is unavailable.
-    
+
     This error occurs when the service responsible for hosting URLs
     is temporarily unavailable.
     """
@@ -322,7 +324,7 @@ class UrlHostingServiceUnavailable(TilloException):
 
 class TemplateNotFound(TilloException):
     """Raised when the requested template doesn't exist.
-    
+
     This error occurs when attempting to use a template that
     is not found in the system.
     """
@@ -336,7 +338,7 @@ class TemplateNotFound(TilloException):
 
 class TemplateAccessDenied(TilloException):
     """Raised when access to the template is denied.
-    
+
     This error occurs when the partner doesn't have permission
     to access the requested template for the brand.
     """
@@ -344,13 +346,15 @@ class TemplateAccessDenied(TilloException):
     TILLO_ERROR_CODE = "717"
     HTTP_ERROR_CODE = 401
     MESSAGE = "Template access denied"
-    DESCRIPTION = "The partner does not have access to the template for the requested brand"
+    DESCRIPTION = (
+        "The partner does not have access to the template for the requested brand"
+    )
     API_VERSION = 2
 
 
 class UnsupportedTransactionType(TilloException):
     """Raised when the transaction type is not supported.
-    
+
     This error occurs when attempting to perform a transaction type
     that is not supported by the partner.
     """
@@ -364,7 +368,7 @@ class UnsupportedTransactionType(TilloException):
 
 class UnsupportedBrandTransactionType(TilloException):
     """Raised when the transaction type is not supported for the brand.
-    
+
     This error occurs when attempting to perform a transaction type
     that is not supported for the requested brand.
     """
@@ -378,7 +382,7 @@ class UnsupportedBrandTransactionType(TilloException):
 
 class CurrencyIsoCodeNotFound(TilloException):
     """Raised when the requested currency is not found.
-    
+
     This error occurs when attempting to use a currency that
     is not available in the system.
     """
@@ -392,7 +396,7 @@ class CurrencyIsoCodeNotFound(TilloException):
 
 class MissingCurrencyIsoCode(TilloException):
     """Raised when no currency is specified.
-    
+
     This error occurs when a currency is required but not
     provided in the request.
     """
@@ -406,7 +410,7 @@ class MissingCurrencyIsoCode(TilloException):
 
 class UnsupportedCurrencyIsoCode(TilloException):
     """Raised when the currency is not supported for the brand.
-    
+
     This error occurs when attempting to use a currency that
     is not supported by the requested brand.
     """
@@ -420,7 +424,7 @@ class UnsupportedCurrencyIsoCode(TilloException):
 
 class SaleNotFound(TilloException):
     """Raised when the sale reference cannot be found.
-    
+
     This error occurs when attempting to access a sale that
     doesn't exist in the system.
     """
@@ -434,7 +438,7 @@ class SaleNotFound(TilloException):
 
 class DenominationNotInStock(TilloException):
     """Raised when the requested denomination is out of stock.
-    
+
     This error occurs when attempting to use a denomination that
     is currently not available in stock.
     """
@@ -448,7 +452,7 @@ class DenominationNotInStock(TilloException):
 
 class FeatureNotEnabled(TilloException):
     """Raised when the requested feature is not enabled.
-    
+
     This error occurs when attempting to use a feature that
     has not been enabled for the account.
     """
@@ -462,7 +466,7 @@ class FeatureNotEnabled(TilloException):
 
 class InsufficientBalanceOnCard(TilloException):
     """Raised when there are insufficient funds on the card.
-    
+
     This error occurs when attempting to perform an operation that
     requires more funds than are available on the card.
     """
@@ -476,7 +480,7 @@ class InsufficientBalanceOnCard(TilloException):
 
 class DuplicateRequestIncomplete(TilloException):
     """Raised when a duplicate request is still being processed.
-    
+
     This error occurs when attempting to submit a request that
     is identical to one that is still being processed.
     """
@@ -490,7 +494,7 @@ class DuplicateRequestIncomplete(TilloException):
 
 class InvalidSaleReference(TilloException):
     """Raised when the sale reference is invalid.
-    
+
     This error occurs when attempting to use a sale reference that
     is not in the correct format or is invalid.
     """
@@ -504,7 +508,7 @@ class InvalidSaleReference(TilloException):
 
 class SaleRedemptionInProgress(TilloException):
     """Raised when redemption is already in progress for the sale.
-    
+
     This error occurs when attempting to start a redemption process
     for a sale that is already being redeemed.
     """
@@ -518,7 +522,7 @@ class SaleRedemptionInProgress(TilloException):
 
 class InvalidOrderStatus(TilloException):
     """Raised when the order status is invalid for the operation.
-    
+
     This error occurs when attempting to perform an operation that
     is not allowed in the current order status.
     """
@@ -532,7 +536,7 @@ class InvalidOrderStatus(TilloException):
 
 class InvalidRedemptionStatus(TilloException):
     """Raised when the redemption status is invalid for the operation.
-    
+
     This error occurs when attempting to perform an operation that
     is not allowed in the current redemption status.
     """
@@ -546,7 +550,7 @@ class InvalidRedemptionStatus(TilloException):
 
 class SaleExpired(TilloException):
     """Raised when attempting to perform an action on an expired sale.
-    
+
     This error occurs when trying to perform operations on a sale
     that has passed its expiration date.
     """
@@ -560,7 +564,7 @@ class SaleExpired(TilloException):
 
 class InvalidFinancialRelationship(TilloException):
     """Raised when the financial relationship is invalid.
-    
+
     This error occurs when attempting to perform an operation that
     requires a valid financial relationship that doesn't exist.
     """
@@ -574,7 +578,7 @@ class InvalidFinancialRelationship(TilloException):
 
 class CurrencyForInternationalPaymentsOnly(TilloException):
     """Raised when the currency is only available for international payments.
-    
+
     This error occurs when attempting to use a currency that is
     restricted to international payment operations only.
     """
@@ -588,7 +592,7 @@ class CurrencyForInternationalPaymentsOnly(TilloException):
 
 class UnsupportedBrandForInternationalPayments(TilloException):
     """Raised when the brand is not supported for international payments.
-    
+
     This error occurs when attempting to use a brand that is not
     supported for international payment operations.
     """
@@ -602,7 +606,7 @@ class UnsupportedBrandForInternationalPayments(TilloException):
 
 class FeatureOnlyAvailableInApiV2(TilloException):
     """Raised when attempting to use a feature only available in API v2.
-    
+
     This error occurs when trying to use a feature that is
     exclusively available in API version 2.
     """
@@ -616,7 +620,7 @@ class FeatureOnlyAvailableInApiV2(TilloException):
 
 class EndpointNotFound(TilloException):
     """Raised when the requested endpoint doesn't exist.
-    
+
     This error occurs when attempting to access an API endpoint
     that is not available in the system.
     """
@@ -630,7 +634,7 @@ class EndpointNotFound(TilloException):
 
 class MethodNotAllowed(TilloException):
     """Raised when the HTTP method is not allowed for the endpoint.
-    
+
     This error occurs when attempting to use an HTTP method that
     is not supported for the requested endpoint.
     """
@@ -644,7 +648,7 @@ class MethodNotAllowed(TilloException):
 
 class InternalServerError(TilloException):
     """Raised when an internal server error occurs.
-    
+
     This error occurs when there is an unexpected error on the
     Tillo server side.
     """

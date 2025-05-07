@@ -12,10 +12,10 @@ Example:
     ```python
     # Initialize signature generator
     generator = SignatureGenerator(api_key="your_api_key", secret_key="your_secret_key")
-    
+
     # Create signature bridge
     bridge = SignatureBridge(generator)
-    
+
     # Generate signature for a request
     api_key, signature, timestamp = bridge.sign(
         endpoint="/api/v1/endpoint",
@@ -35,7 +35,7 @@ from .contracts import SignatureBridgeInterface, SignatureGeneratorInterface
 
 class SignatureGenerator(SignatureGeneratorInterface):
     """Core class for generating secure signatures for Tillo API requests.
-    
+
     This class handles the generation of HMAC-SHA256 signatures using the provided
     API key and secret key. It implements the signature algorithm required by the
     Tillo API for request authentication.
@@ -51,7 +51,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
 
     def __init__(self, api_key: str, secret_key: str):
         """Initialize the signature generator with API credentials.
-        
+
         Args:
             api_key (str): Your Tillo API key
             secret_key (str): Your Tillo secret key
@@ -61,7 +61,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
 
     def get_api_key(self) -> str:
         """Get the API key used for authentication.
-        
+
         Returns:
             str: The API key
         """
@@ -69,7 +69,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
 
     def get_secret_key_as_bytes(self) -> bytearray:
         """Get the secret key as bytes for HMAC generation.
-        
+
         Returns:
             bytes: The secret key encoded as UTF-8 bytes
         """
@@ -78,7 +78,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
     @staticmethod
     def generate_timestamp() -> str:
         """Generate a Unix timestamp in milliseconds.
-        
+
         Returns:
             str: Current timestamp in milliseconds as a string
         """
@@ -87,17 +87,17 @@ class SignatureGenerator(SignatureGeneratorInterface):
     @staticmethod
     def generate_unique_client_request_id() -> uuid.UUID:
         """Generate a unique identifier for client requests.
-        
+
         Returns:
             uuid.UUID: A new UUID v4
         """
         return uuid.uuid4()
 
     def generate_signature_string(
-            self, endpoint: str, request_type: str, timestamp: str, params: tuple
+        self, endpoint: str, request_type: str, timestamp: str, params: tuple
     ) -> str:
         """Generate the string to be signed for the request.
-        
+
         This method creates the signature string according to Tillo's specification:
         {api_key}-{request_type}-{endpoint}{params}-{timestamp}
 
@@ -106,7 +106,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
             request_type (str): HTTP method (GET, POST, etc.)
             timestamp (str): Current timestamp in milliseconds
             params (tuple): Parameters to include in the signature
-            
+
         Returns:
             str: The string to be signed
         """
@@ -121,10 +121,10 @@ class SignatureGenerator(SignatureGeneratorInterface):
 
     def generate_signature(self, seed: str) -> str:
         """Generate HMAC-SHA256 signature for the given string.
-        
+
         Args:
             seed (str): The string to sign
-            
+
         Returns:
             str: The hexadecimal HMAC-SHA256 signature
         """
@@ -137,7 +137,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
 
 class SignatureBridge(SignatureBridgeInterface):
     """High-level interface for generating request signatures.
-    
+
     This class provides a simplified interface for generating complete request
     signatures, including the API key, signature, and timestamp required for
     Tillo API authentication.
@@ -154,20 +154,20 @@ class SignatureBridge(SignatureBridgeInterface):
 
     def __init__(self, signature_generator: SignatureGenerator):
         """Initialize the signature bridge with a signature generator.
-        
+
         Args:
             signature_generator (SignatureGenerator): The signature generator instance
         """
         self.__signature_generator = signature_generator
 
     def sign(
-            self,
-            endpoint: str,
-            method: str,
-            sign_attrs: tuple,
+        self,
+        endpoint: str,
+        method: str,
+        sign_attrs: tuple,
     ):
         """Generate a complete signature for an API request.
-        
+
         This method generates all components needed for request authentication:
         - API key
         - Request signature
@@ -177,10 +177,10 @@ class SignatureBridge(SignatureBridgeInterface):
             endpoint (str): The API endpoint path
             method (str): HTTP method (GET, POST, etc.)
             sign_attrs (tuple): Parameters to include in the signature
-            
+
         Returns:
             tuple: A tuple containing (api_key, signature, timestamp)
-            
+
         Example:
             ```python
             api_key, signature, timestamp = bridge.sign(

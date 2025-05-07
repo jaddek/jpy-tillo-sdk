@@ -19,7 +19,7 @@ from enum import Enum
 
 class Domains(Enum):
     """API domain endpoints for different Tillo services.
-    
+
     These domains represent the different service areas of the Tillo API.
     Each domain corresponds to a specific set of endpoints and functionality.
 
@@ -32,17 +32,17 @@ class Domains(Enum):
         CHECK_FLOATS: Endpoints for float checking
     """
 
-    BRANDS = 'brands'
-    TEMPLATES = 'templates'
-    TEMPLATE = 'template'
-    DIGITAL_CARD = 'digital'
-    CHECK_STOCK = 'check-stock'
-    CHECK_FLOATS = 'check-floats'
+    BRANDS = "brands"
+    TEMPLATES = "templates"
+    TEMPLATE = "template"
+    DIGITAL_CARD = "digital"
+    CHECK_STOCK = "check-stock"
+    CHECK_FLOATS = "check-floats"
 
 
 class Status(Enum):
     """Status values for various Tillo resources.
-    
+
     Used to indicate whether a resource is enabled or disabled in the system.
 
     Attributes:
@@ -56,7 +56,7 @@ class Status(Enum):
 
 class Currency(Enum):
     """Supported currency codes for transactions.
-    
+
     These are the currencies supported by the Tillo platform for
     gift card transactions and other monetary operations.
 
@@ -71,7 +71,7 @@ class Currency(Enum):
 
 class DeliveryMethod(Enum):
     """Methods for delivering gift card codes to customers.
-    
+
     Defines how gift card codes are delivered to end users, either as
     plain codes or through hosted URLs.
 
@@ -92,7 +92,7 @@ class DeliveryMethod(Enum):
 
 class TransactionType(Enum):
     """Types of transactions supported by the Tillo platform.
-    
+
     Each transaction type corresponds to specific API endpoints and
     operations in the system.
 
@@ -124,7 +124,7 @@ class TransactionType(Enum):
 
 class FulfilmentType(Enum):
     """Types of fulfilment methods for gift cards.
-    
+
     Defines how gift cards are fulfilled in the system, either through
     the partner or through Reward Cloud.
 
@@ -139,7 +139,7 @@ class FulfilmentType(Enum):
 
 class OrderStatus(Enum):
     """Status values for gift card orders.
-    
+
     Represents the various states an order can be in during its lifecycle.
     Each status indicates the current state of the order and what actions
     can be taken next.
@@ -167,7 +167,7 @@ class OrderStatus(Enum):
 
 class Sector(Enum):
     """Business sectors supported by Tillo.
-    
+
     Defines the different types of businesses and use cases that
     Tillo supports for gift card operations.
 
@@ -200,7 +200,7 @@ class Sector(Enum):
 
 class Redemption(Enum):
     """Methods for redeeming gift cards.
-    
+
     Defines the different ways a gift card can be redeemed by the end user.
 
     Attributes:

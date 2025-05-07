@@ -15,13 +15,13 @@ from ...enums import Currency, Sector
 
 
 def create_activate_physical_card_request(
-        client_request_id: str,
-        brand: str,
-        amount: str,
-        code: str,
-        pin: str,
-        currency: Currency = Currency.EUR,
-        sector: Sector = Sector.GIFT_CARD_MALL,
+    client_request_id: str,
+    brand: str,
+    amount: str,
+    code: str,
+    pin: str,
+    currency: Currency = Currency.EUR,
+    sector: Sector = Sector.GIFT_CARD_MALL,
 ) -> ActivatePhysicalCardEndpoint.RequestBody:
     return ActivatePhysicalCardEndpoint.RequestBody(
         client_request_id=client_request_id,
@@ -37,12 +37,12 @@ def create_activate_physical_card_request(
 
 
 def create_cash_out_original_transaction_request(
-        client_request_id: str,
-        original_client_request_id: str,
-        brand: str,
-        code: str,
-        pin: str,
-        sector: Sector = Sector.GIFT_CARD_MALL,
+    client_request_id: str,
+    original_client_request_id: str,
+    brand: str,
+    code: str,
+    pin: str,
+    sector: Sector = Sector.GIFT_CARD_MALL,
 ) -> CashOutOriginalTransactionPhysicalCardEndpoint.RequestBody:
     return CashOutOriginalTransactionPhysicalCardEndpoint.RequestBody(
         client_request_id=client_request_id,
@@ -55,13 +55,13 @@ def create_cash_out_original_transaction_request(
 
 
 def create_top_up_physical_card_request(
-        client_request_id: str,
-        brand: str,
-        amount: str,
-        code: str,
-        pin: str,
-        currency: Currency = Currency.EUR,
-        sector: Sector = Sector.GIFT_CARD_MALL,
+    client_request_id: str,
+    brand: str,
+    amount: str,
+    code: str,
+    pin: str,
+    currency: Currency = Currency.EUR,
+    sector: Sector = Sector.GIFT_CARD_MALL,
 ) -> TopUpPhysicalCardEndpoint.RequestBody:
     return TopUpPhysicalCardEndpoint.RequestBody(
         client_request_id=client_request_id,
@@ -77,14 +77,14 @@ def create_top_up_physical_card_request(
 
 
 def create_cancel_top_up_physical_card_request(
-        client_request_id: str,
-        original_client_request_id: str,
-        brand: str,
-        amount: str,
-        code: str,
-        pin: str,
-        currency: Currency = Currency.EUR,
-        sector: Sector = Sector.GIFT_CARD_MALL,
+    client_request_id: str,
+    original_client_request_id: str,
+    brand: str,
+    amount: str,
+    code: str,
+    pin: str,
+    currency: Currency = Currency.EUR,
+    sector: Sector = Sector.GIFT_CARD_MALL,
 ) -> CancelTopUpOnPhysicalCardEndpoint.RequestBody:
     return CancelTopUpOnPhysicalCardEndpoint.RequestBody(
         client_request_id=client_request_id,
@@ -101,12 +101,12 @@ def create_cancel_top_up_physical_card_request(
 
 
 def create_balance_check_request(
-        client_request_id: str,
-        brand: str,
-        code: str,
-        pin: str,
-        currency: Currency = Currency.EUR,
-        sector: Sector = Sector.GIFT_CARD_MALL,
+    client_request_id: str,
+    brand: str,
+    code: str,
+    pin: str,
+    currency: Currency = Currency.EUR,
+    sector: Sector = Sector.GIFT_CARD_MALL,
 ) -> BalanceCheckPhysicalEndpoint.RequestBody:
     return BalanceCheckPhysicalEndpoint.RequestBody(
         client_request_id=client_request_id,
@@ -121,16 +121,16 @@ def create_balance_check_request(
 
 
 def create_order_new_card_request(
-        client_request_id: str,
-        brand: str,
-        amount: str,
-        currency: Currency = Currency.EUR,
-        fulfilment_parameters: OrderPhysicalCardEndpoint.RequestBody.FulfilmentParameters = None,
-        personalisation: OrderPhysicalCardEndpoint.RequestBody.Personalisation = None,
-        shipping_method: str = "standard",
-        fulfilment_by: str = "rewardcloud",
-        sector: Sector = Sector.GIFT_CARD_MALL,
-        tags: Optional[List[str]] = None,
+    client_request_id: str,
+    brand: str,
+    amount: str,
+    currency: Currency = Currency.EUR,
+    fulfilment_parameters: OrderPhysicalCardEndpoint.RequestBody.FulfilmentParameters = None,
+    personalisation: OrderPhysicalCardEndpoint.RequestBody.Personalisation = None,
+    shipping_method: str = "standard",
+    fulfilment_by: str = "rewardcloud",
+    sector: Sector = Sector.GIFT_CARD_MALL,
+    tags: Optional[List[str]] = None,
 ) -> OrderPhysicalCardEndpoint.RequestBody:
     return OrderPhysicalCardEndpoint.RequestBody(
         client_request_id=client_request_id,
@@ -149,18 +149,18 @@ def create_order_new_card_request(
 
 
 def create_order_status_request(
-        references: List[str],
+    references: List[str],
 ) -> PhysicalCardOrderStatusEndpoint.RequestBody:
     return PhysicalCardOrderStatusEndpoint.RequestBody(references=references)
 
 
 def create_fulfil_physical_card_order_request(
-        client_request_id: str,
-        brand: str,
-        code: str,
-        reference: str,
-        amount: str,
-        currency: Currency = Currency.EUR,
+    client_request_id: str,
+    brand: str,
+    code: str,
+    reference: str,
+    amount: str,
+    currency: Currency = Currency.EUR,
 ) -> FulfilPhysicalCardOrderEndpoint.RequestBody:
     return FulfilPhysicalCardOrderEndpoint.RequestBody(
         client_request_id=client_request_id,

@@ -6,7 +6,6 @@ from ...endpoint import Endpoint, AbstractBodyRequest
 from ...enums import Sector
 
 
-
 class ActivatePhysicalCardEndpoint(Endpoint):
     _method: str = "POST"
     _endpoint: str = "physical-activate"

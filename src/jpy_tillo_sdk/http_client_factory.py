@@ -15,9 +15,7 @@ def create_signer(api_key: str, secret_key: str) -> SignatureBridge:
 
 
 def create_client_async(
-        api_key: str,
-        secret_key: str,
-        tillo_client_params: dict[str, Any]
+    api_key: str, secret_key: str, tillo_client_params: dict[str, Any]
 ) -> AsyncHttpClient:
     if api_key is None or secret_key is None:
         raise AuthorizationErrorInvalidAPITokenOrSecret()
@@ -28,9 +26,9 @@ def create_client_async(
 
 
 def create_client(
-        api_key: str,
-        secret_key: str,
-        tillo_client_params: dict[str, Any],
+    api_key: str,
+    secret_key: str,
+    tillo_client_params: dict[str, Any],
 ) -> HttpClient:
     if api_key is None or secret_key is None:
         raise AuthorizationErrorInvalidAPITokenOrSecret()

@@ -25,20 +25,24 @@ def test_brand_endpoint():
 @pytest.mark.parametrize(
     "query",
     [
-        ({
-            "brand": "brand",
-            "category": "category",
-            "country": "country",
-            "currency": "currency",
-            "detail": True
-        }),
-        ({
-            "brand": "brand",
-            "category": "category",
-            "country": "country",
-            "currency": "currency",
-            "detail": False
-        }),
+        (
+            {
+                "brand": "brand",
+                "category": "category",
+                "country": "country",
+                "currency": "currency",
+                "detail": True,
+            }
+        ),
+        (
+            {
+                "brand": "brand",
+                "category": "category",
+                "country": "country",
+                "currency": "currency",
+                "detail": False,
+            }
+        ),
         ({}),
     ],
 )
@@ -59,56 +63,51 @@ def test_brand_endpoint_query(query):
     "query,not_empty_values,sign_attrs",
     [
         (
-                {
-                    "brand": "brand",
-                    "category": "category",
-                    "country": "country",
-                    "currency": "currency",
-                    "detail": True
-                }, {
-                    "brand": "brand",
-                    "category": "category",
-                    "country": "country",
-                    "currency": "currency",
-                    "detail": True
-                },
-                None
+            {
+                "brand": "brand",
+                "category": "category",
+                "country": "country",
+                "currency": "currency",
+                "detail": True,
+            },
+            {
+                "brand": "brand",
+                "category": "category",
+                "country": "country",
+                "currency": "currency",
+                "detail": True,
+            },
+            None,
         ),
         (
-                {
-                    "brand": "brand",
-                    "category": "category",
-                    "country": "country",
-                    "currency": "currency",
-                    "detail": False
-                }, {
-                    "brand": "brand",
-                    "category": "category",
-                    "country": "country",
-                    "currency": "currency",
-                    "detail": False
-                },
-                None
+            {
+                "brand": "brand",
+                "category": "category",
+                "country": "country",
+                "currency": "currency",
+                "detail": False,
+            },
+            {
+                "brand": "brand",
+                "category": "category",
+                "country": "country",
+                "currency": "currency",
+                "detail": False,
+            },
+            None,
         ),
         (
-                {
-                    "brand": "brand",
-                    "category": "category",
-                    "country": None,
-                    "currency": None,
-                    "detail": True
-                }, {
-                    "brand": "brand",
-                    "category": "category",
-                    "detail": True
-                },
-                None
+            {
+                "brand": "brand",
+                "category": "category",
+                "country": None,
+                "currency": None,
+                "detail": True,
+            },
+            {"brand": "brand", "category": "category", "detail": True},
+            None,
         ),
-        (
-                {},
-                {},
-                None
-        ),
+        ({}, {}, None),
         (None, {}, None),
     ],
 )
@@ -142,30 +141,23 @@ def test_template_list_endpoint():
     "query,not_empty_values,sign_attrs",
     [
         (
-                {
-                    "brand": "brand",
-                }, {
-                    "brand": "brand",
-                },
-                None
+            {
+                "brand": "brand",
+            },
+            {
+                "brand": "brand",
+            },
+            None,
         ),
         (
-                {
-                    "brand": None,
-                },
-                {},
-                None
+            {
+                "brand": None,
+            },
+            {},
+            None,
         ),
-        (
-                {},
-                {},
-                None
-        ),
-        (
-                None,
-                {},
-                None
-        ),
+        ({}, {}, None),
+        (None, {}, None),
     ],
 )
 def test_template_list_endpoint_query_params(query, not_empty_values, sign_attrs):
@@ -186,17 +178,23 @@ def test_template_list_endpoint_query_params(query, not_empty_values, sign_attrs
 @pytest.mark.parametrize(
     "query",
     [
-        ({
-            "brand": "brand",
-        }),
-        ({
-            "brand": "brand",
-        }),
+        (
+            {
+                "brand": "brand",
+            }
+        ),
+        (
+            {
+                "brand": "brand",
+            }
+        ),
         ({}),
     ],
 )
 def test_template_list_endpoint_query(query):
-    endpoint_class = TemplateListEndpoint(query=TemplateListEndpoint.QueryParams(**query))
+    endpoint_class = TemplateListEndpoint(
+        query=TemplateListEndpoint.QueryParams(**query)
+    )
 
     assert isinstance(endpoint_class.query, TemplateListEndpoint.QueryParams)
 
@@ -222,14 +220,18 @@ def test_endpoint():
 @pytest.mark.parametrize(
     "query",
     [
-        ({
-            "brand": "brand",
-            "template": "template",
-        }),
-        ({
-            "brand": "brand",
-            "template": "template",
-        }),
+        (
+            {
+                "brand": "brand",
+                "template": "template",
+            }
+        ),
+        (
+            {
+                "brand": "brand",
+                "template": "template",
+            }
+        ),
         ({}),
     ],
 )
@@ -242,7 +244,6 @@ def test_endpoint_query(query):
         assert endpoint_class.query.brand is None
         assert endpoint_class.query.template is None
     else:
-
         assert endpoint_class.query.brand == query.get("brand")
         assert endpoint_class.query.template == query.get("template")
 
@@ -251,51 +252,42 @@ def test_endpoint_query(query):
     "query,not_empty_values,sign_attrs",
     [
         (
-                {
-                    "brand": "brand",
-                    "template": "template",
-                }, {
-                    "brand": "brand",
-                    "template": "template",
-                },
-                None
+            {
+                "brand": "brand",
+                "template": "template",
+            },
+            {
+                "brand": "brand",
+                "template": "template",
+            },
+            None,
         ),
         (
-                {
-                    "brand": "brand",
-                    "template": None,
-                }, {
-                    "brand": "brand",
-                },
-                None
+            {
+                "brand": "brand",
+                "template": None,
+            },
+            {
+                "brand": "brand",
+            },
+            None,
         ),
         (
-                {
-                    "brand": None,
-                },
-                {},
-                None
+            {
+                "brand": None,
+            },
+            {},
+            None,
         ),
-        (
-                {},
-                {},
-                None
-        ),
-        (
-                None,
-                {},
-                None
-        ),
+        ({}, {}, None),
+        (None, {}, None),
     ],
 )
 def test_endpoint_query_params(query, not_empty_values, sign_attrs):
     brand_value = query.get("brand") if query is not None else None
     template_value = query.get("template") if query is not None else None
 
-    qp = TemplateEndpoint.QueryParams(
-        brand=brand_value,
-        template=template_value
-    )
+    qp = TemplateEndpoint.QueryParams(brand=brand_value, template=template_value)
 
     assert qp.get_not_empty_values() == not_empty_values
 

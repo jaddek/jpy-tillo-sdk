@@ -1,6 +1,12 @@
-from jpy_tillo_sdk.domain.float.endpoints import CheckFloatsEndpoint, RequestPaymentTransferEndpoint
+from jpy_tillo_sdk.domain.float.endpoints import (
+    CheckFloatsEndpoint,
+    RequestPaymentTransferEndpoint,
+)
 from jpy_tillo_sdk.enums import Currency
-from jpy_tillo_sdk.domain.float.factory import create_check_floats_query, create_payment_transfer_request
+from jpy_tillo_sdk.domain.float.factory import (
+    create_check_floats_query,
+    create_payment_transfer_request,
+)
 
 
 def test_create_check_floats_query():
@@ -17,7 +23,7 @@ def test_create_payment_transfer_request():
         currency=Currency.EUR,
         amount="100",
         payment_reference="ref",
-        finance_email='finance_email'
+        finance_email="finance_email",
     )
 
     assert isinstance(request, RequestPaymentTransferEndpoint.RequestBody)
@@ -26,4 +32,3 @@ def test_create_payment_transfer_request():
     assert request.payment_reference == "ref"
     assert request.finance_email == "finance_email"
     assert request.proforma_invoice is None
-

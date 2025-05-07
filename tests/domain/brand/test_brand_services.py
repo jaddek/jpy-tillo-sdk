@@ -18,9 +18,7 @@ class TestBrandAssetsService:
 
     @pytest.mark.asyncio
     async def test_get_available_brands_async(self, mock_async_http_client):
-        response = await BrandService.get_available_brands_async(
-            mock_async_http_client
-        )
+        response = await BrandService.get_available_brands_async(mock_async_http_client)
 
         mock_async_http_client.request.assert_called_once()
         assert isinstance(response, Response)
@@ -64,7 +62,9 @@ class TestBrandAssetsService:
         (TemplateService, "download_brand_template", TemplateEndpoint),
     ],
 )
-def test_service_methods_endpoint_types(service, method_name, endpoint_class, mock_http_client):
+def test_service_methods_endpoint_types(
+    service, method_name, endpoint_class, mock_http_client
+):
     method = getattr(service, method_name)
     method(mock_http_client)
 
@@ -80,8 +80,12 @@ def test_service_methods_endpoint_types(service, method_name, endpoint_class, mo
         (TemplateService, "download_brand_template_async", TemplateEndpoint),
     ],
 )
-async def test_service_methods_endpoint_types_async(service, method_name, endpoint_class, mock_async_http_client):
+async def test_service_methods_endpoint_types_async(
+    service, method_name, endpoint_class, mock_async_http_client
+):
     method = getattr(service, method_name)
     await method(mock_async_http_client)
 
-    assert isinstance(mock_async_http_client.request.call_args[1]["endpoint"], endpoint_class)
+    assert isinstance(
+        mock_async_http_client.request.call_args[1]["endpoint"], endpoint_class
+    )

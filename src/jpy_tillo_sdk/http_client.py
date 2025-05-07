@@ -318,14 +318,16 @@ class HttpClient(AbstractClient):
             },
         )
 
-        # Determine whether to use body or query parameters for signing
+        sign_attrs = None
+
         if endpoint.is_body_not_empty():
             logger.debug("Using request body for signing: %s", endpoint.body)
             sign_attrs = endpoint.body.get_sign_attrs()
             json = endpoint.body.get_as_dict()
         else:
             logger.debug("Using query parameters for signing: %s", endpoint.query)
-            sign_attrs = endpoint.query.get_sign_attrs()
+            if endpoint.query:
+                sign_attrs = endpoint.query.get_sign_attrs()
 
         headers = self._get_request_headers(
             endpoint.method,

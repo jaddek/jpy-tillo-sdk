@@ -1,7 +1,7 @@
 from typing import Optional
 
 from .contracts import TilloInterface
-from .domain.float.services import FloatServiceAsyncInstance
+from .domain.float.services import FloatServiceAsync, FloatService
 from .errors import AuthorizationErrorInvalidAPITokenOrSecret
 from .http_client import AsyncHttpClient, HttpClient
 from .http_client_factory import create_client_async, create_client
@@ -35,18 +35,32 @@ class Tillo(TilloInterface):
         self.__secret = secret
         self.__options = options
         self.__async_http_client = self.__get_async_client()
+        self.__http_client = self.__get_client()
 
-        self._floats: FloatServiceAsyncInstance | None = None
+        self._floats_async: FloatServiceAsync | None = None
+        self._floats: FloatService | None = None
 
     @property
-    def floats(self) -> FloatServiceAsyncInstance:
+    def floats_async(self) -> FloatServiceAsync:
         """Get the asynchronous floats service instance.
 
         Returns:
-            FloatServiceAsyncInstance: Service for managing float operations asynchronously.
+            FloatServiceAsync: Service for managing float operations asynchronously.
+        """
+        if self._floats_async is None:
+            self._floats_async = FloatServiceAsync(client=self.__async_http_client)
+
+        return self._floats_async
+
+    @property
+    def floats(self) -> FloatService | None:
+        """Get the synchronous floats service instance.
+
+        Returns:
+            FloatService: Service for managing float operations asynchronously.
         """
         if self._floats is None:
-            self._floats = FloatServiceAsyncInstance(client=self.__async_http_client)
+            self._floats = FloatService(client=self.__http_client)
 
         return self._floats
 

@@ -36,6 +36,7 @@ def test_get_request_headers(http_client):
 def test_http_client_request(http_client, monkeypatch):
     endpoint = MockEndpoint()
     mock_response = Mock(spec=Response)
+    mock_response.status_code = 200
     mock_client = Mock()
     mock_client.request.return_value = mock_response
 
@@ -66,6 +67,7 @@ def test_http_client_request(http_client, monkeypatch):
 async def test_async_http_client_request(async_http_client, monkeypatch):
     endpoint = MockEndpoint()
     mock_response = Mock(spec=Response)
+    mock_response.status_code = 200
     mock_client = AsyncMock()
     mock_client.request.return_value = mock_response
 
@@ -101,6 +103,7 @@ def test_request_with_body(http_client, monkeypatch):
     endpoint.body.get_as_dict.return_value = {"test": "data"}
 
     mock_response = Mock(spec=Response)
+    mock_response.status_code = 200
     mock_client = Mock()
     mock_client.request.return_value = mock_response
 

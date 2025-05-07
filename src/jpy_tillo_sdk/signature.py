@@ -27,10 +27,13 @@ Example:
 
 import hashlib
 import hmac
+import logging
 import time
 import uuid
 
 from .contracts import SignatureBridgeInterface, SignatureGeneratorInterface
+
+logger = logging.getLogger("tillo.signature")
 
 
 class SignatureGenerator(SignatureGeneratorInterface):
@@ -58,6 +61,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
         """
         self.__api_key = api_key
         self.__secret_key = secret_key
+        logger.debug("Initialized SignatureGenerator")
 
     def get_api_key(self) -> str:
         """Get the API key used for authentication.
@@ -65,6 +69,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
         Returns:
             str: The API key
         """
+        logger.debug("Retrieving API key")
         return self.__api_key
 
     def get_secret_key_as_bytes(self) -> bytearray:
@@ -73,6 +78,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
         Returns:
             bytes: The secret key encoded as UTF-8 bytes
         """
+        logger.debug("Converting secret key to bytes")
         return bytearray(self.__secret_key, "utf-8")
 
     @staticmethod
@@ -82,7 +88,9 @@ class SignatureGenerator(SignatureGeneratorInterface):
         Returns:
             str: Current timestamp in milliseconds as a string
         """
-        return str(int(round(time.time() * 1000)))
+        timestamp = str(int(round(time.time() * 1000)))
+        logger.debug("Generated timestamp: %s", timestamp)
+        return timestamp
 
     @staticmethod
     def generate_unique_client_request_id() -> uuid.UUID:
@@ -91,7 +99,9 @@ class SignatureGenerator(SignatureGeneratorInterface):
         Returns:
             uuid.UUID: A new UUID v4
         """
-        return uuid.uuid4()
+        request_id = uuid.uuid4()
+        logger.debug("Generated request ID: %s", request_id)
+        return request_id
 
     def generate_signature_string(
         self, endpoint: str, request_type: str, timestamp: str, params: tuple
@@ -110,6 +120,16 @@ class SignatureGenerator(SignatureGeneratorInterface):
         Returns:
             str: The string to be signed
         """
+        logger.debug(
+            "Generating signature string: %s",
+            {
+                "endpoint": endpoint,
+                "request_type": request_type,
+                "timestamp": timestamp,
+                "params": params,
+            },
+        )
+
         query: str = ""
 
         if params and len(params):
@@ -117,7 +137,11 @@ class SignatureGenerator(SignatureGeneratorInterface):
                 if v is not None:
                     query += f"-{v}"
 
-        return f"{self.__api_key}-{request_type}-{endpoint}{query}-{timestamp}"
+        signature_string = (
+            f"{self.__api_key}-{request_type}-{endpoint}{query}-{timestamp}"
+        )
+        logger.debug("Generated signature string: %s", signature_string)
+        return signature_string
 
     def generate_signature(self, seed: str) -> str:
         """Generate HMAC-SHA256 signature for the given string.
@@ -128,11 +152,13 @@ class SignatureGenerator(SignatureGeneratorInterface):
         Returns:
             str: The hexadecimal HMAC-SHA256 signature
         """
+        logger.debug("Generating HMAC-SHA256 signature for seed")
         signature_hmac = hmac.new(
             self.get_secret_key_as_bytes(), bytearray(seed, "utf-8"), hashlib.sha256
         )
-
-        return str(signature_hmac.hexdigest())
+        signature = str(signature_hmac.hexdigest())
+        logger.debug("Generated signature: %s", signature)
+        return signature
 
 
 class SignatureBridge(SignatureBridgeInterface):
@@ -159,6 +185,7 @@ class SignatureBridge(SignatureBridgeInterface):
             signature_generator (SignatureGenerator): The signature generator instance
         """
         self.__signature_generator = signature_generator
+        logger.debug("Initialized SignatureBridge")
 
     def sign(
         self,
@@ -190,6 +217,16 @@ class SignatureBridge(SignatureBridgeInterface):
             )
             ```
         """
+        logger.info("Generating signature for %s %s", method, endpoint)
+        logger.debug(
+            "Signature request details: %s",
+            {
+                "endpoint": endpoint,
+                "method": method,
+                "sign_attrs": sign_attrs,
+            },
+        )
+
         request_timestamp = self.__signature_generator.generate_timestamp()
 
         signature_string = self.__signature_generator.generate_signature_string(
@@ -204,5 +241,14 @@ class SignatureBridge(SignatureBridgeInterface):
         )
 
         request_api_key = self.__signature_generator.get_api_key()
+
+        logger.debug(
+            "Generated signature components: %s",
+            {
+                "api_key": request_api_key,
+                "timestamp": request_timestamp,
+                "signature_length": len(request_signature),
+            },
+        )
 
         return request_api_key, request_signature, request_timestamp

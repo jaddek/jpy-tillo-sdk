@@ -28,7 +28,7 @@ from httpx import Response
 from .endpoints import CheckFloatsEndpoint, RequestPaymentTransferEndpoint
 from ...http_client import HttpClient, AsyncHttpClient
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("tillo.float_services")
 
 
 class FloatService:
@@ -63,7 +63,7 @@ class FloatService:
             client (HttpClient): The HTTP client instance for making requests
         """
         self.client = client
-        logger.info("Initialized FloatService with HTTP client")
+        logger.debug("Initialized FloatService with HTTP client")
 
     def check_floats(
         self,
@@ -91,9 +91,12 @@ class FloatService:
             response = float_service.check_floats(query_params=params)
             ```
         """
-        logger.info(
-            "Checking float balances with query parameters: %s",
-            query_params.__dict__ if query_params else None,
+        logger.info("Checking float balances")
+        logger.debug(
+            "Request details: %s",
+            {
+                "query_params": query_params.__dict__ if query_params else None,
+            },
         )
 
         endpoint = CheckFloatsEndpoint(query=query_params)
@@ -103,9 +106,11 @@ class FloatService:
         )
 
         logger.debug(
-            "Float check response status: %d, content: %s",
-            response.status_code,
-            response.text,
+            "Float check response: %s",
+            {
+                "status_code": response.status_code,
+                "content": response.text,
+            },
         )
 
         return response
@@ -136,7 +141,13 @@ class FloatService:
             response = float_service.request_payment_transfer(transfer_body)
             ```
         """
-        logger.info("Requesting payment transfer with body: %s", body.__dict__)
+        logger.info("Requesting payment transfer")
+        logger.debug(
+            "Request details: %s",
+            {
+                "body": body.__dict__,
+            },
+        )
 
         endpoint = RequestPaymentTransferEndpoint(body=body)
 
@@ -145,9 +156,11 @@ class FloatService:
         )
 
         logger.debug(
-            "Payment transfer response status: %d, content: %s",
-            response.status_code,
-            response.text,
+            "Payment transfer response: %s",
+            {
+                "status_code": response.status_code,
+                "content": response.text,
+            },
         )
 
         return response
@@ -185,7 +198,7 @@ class FloatServiceAsync:
             client (AsyncHttpClient): The asynchronous HTTP client instance
         """
         self.client = client
-        logger.info("Initialized FloatServiceAsync with HTTP client")
+        logger.debug("Initialized FloatServiceAsync with HTTP client")
 
     async def check_floats_async(
         self,
@@ -213,9 +226,12 @@ class FloatServiceAsync:
             response = await float_service.check_floats_async(query_params=params)
             ```
         """
-        logger.info(
-            "Checking float balances asynchronously with query parameters: %s",
-            query_params.__dict__ if query_params else None,
+        logger.info("Checking float balances asynchronously")
+        logger.debug(
+            "Request details: %s",
+            {
+                "query_params": query_params.__dict__ if query_params else None,
+            },
         )
 
         endpoint = CheckFloatsEndpoint(query=query_params)
@@ -225,9 +241,11 @@ class FloatServiceAsync:
         )
 
         logger.debug(
-            "Async float check response status: %d, content: %s",
-            response.status_code,
-            response.text,
+            "Async float check response: %s",
+            {
+                "status_code": response.status_code,
+                "content": response.text,
+            },
         )
 
         return response
@@ -258,8 +276,12 @@ class FloatServiceAsync:
             response = await float_service.request_payment_transfer_async(transfer_body)
             ```
         """
-        logger.info(
-            "Requesting payment transfer asynchronously with body: %s", body.__dict__
+        logger.info("Requesting payment transfer asynchronously")
+        logger.debug(
+            "Request details: %s",
+            {
+                "body": body.__dict__,
+            },
         )
 
         endpoint = RequestPaymentTransferEndpoint(body=body)
@@ -269,9 +291,11 @@ class FloatServiceAsync:
         )
 
         logger.debug(
-            "Async payment transfer response status: %d, content: %s",
-            response.status_code,
-            response.text,
+            "Async payment transfer response: %s",
+            {
+                "status_code": response.status_code,
+                "content": response.text,
+            },
         )
 
         return response

@@ -28,7 +28,7 @@ import uuid
 import logging
 
 # Configure logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("tillo.contracts")
 
 
 class SignatureGeneratorInterface(ABC):
@@ -55,6 +55,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             str: The API key used for Tillo API authentication
         """
+        logger.debug("Getting API key for authentication")
         pass
 
     @abstractmethod
@@ -64,6 +65,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             bytearray: The secret key encoded as UTF-8 bytes
         """
+        logger.debug("Getting secret key as bytes for HMAC generation")
         pass
 
     @staticmethod
@@ -74,6 +76,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             str: Current timestamp in milliseconds as a string
         """
+        logger.debug("Generating Unix timestamp in milliseconds")
         pass
 
     @staticmethod
@@ -84,6 +87,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             uuid.UUID: A new UUID v4 for request identification
         """
+        logger.debug("Generating unique client request ID")
         pass
 
     @abstractmethod
@@ -101,6 +105,11 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             str: The string to be signed according to Tillo's specification
         """
+        logger.debug(
+            "Generating signature string for endpoint: %s, method: %s",
+            endpoint,
+            request_type,
+        )
         pass
 
     @abstractmethod
@@ -113,6 +122,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             str: The hexadecimal HMAC-SHA256 signature
         """
+        logger.debug("Generating HMAC-SHA256 signature")
         pass
 
 
@@ -149,6 +159,11 @@ class SignatureBridgeInterface(ABC):
         Returns:
             tuple: A tuple containing (api_key, signature, timestamp)
         """
+        logger.debug(
+            "Generating complete signature for endpoint: %s, method: %s",
+            endpoint,
+            method,
+        )
         pass
 
 
@@ -185,6 +200,7 @@ class TilloInterface(ABC):
             balance = await float_service.get_balance()
             ```
         """
+        logger.debug("Getting floats service instance")
         pass
 
     @abstractmethod
@@ -200,6 +216,7 @@ class TilloInterface(ABC):
             brand_info = brand_service.get_brand_details()
             ```
         """
+        logger.debug("Getting brand service instance")
         pass
 
     @abstractmethod
@@ -215,6 +232,7 @@ class TilloInterface(ABC):
             templates = template_service.list_templates()
             ```
         """
+        logger.debug("Getting template service instance")
         pass
 
     @abstractmethod
@@ -230,6 +248,7 @@ class TilloInterface(ABC):
             card = digital_card_service.issue_card(amount=50.00)
             ```
         """
+        logger.debug("Getting digital card service instance")
         pass
 
     @abstractmethod
@@ -245,6 +264,7 @@ class TilloInterface(ABC):
             card = physical_card_service.order_card(amount=100.00)
             ```
         """
+        logger.debug("Getting physical card service instance")
         pass
 
     @abstractmethod
@@ -252,7 +272,7 @@ class TilloInterface(ABC):
         """Get the webhook service instance.
 
         Returns:
-            WebhookService: Service for managing webhook operations.
+            WebhookService: Service for managing webhook-related operations.
 
         Example:
             ```python
@@ -260,4 +280,5 @@ class TilloInterface(ABC):
             webhooks = webhook_service.list_webhooks()
             ```
         """
+        logger.debug("Getting webhook service instance")
         pass

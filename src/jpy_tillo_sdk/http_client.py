@@ -145,7 +145,7 @@ class AbstractClient:
 
         logger.debug(
             "Generated headers: %s",
-            {k: v for k, v in headers.items() if k != "Signature"},
+            {k: v for k, v in headers.items() if k not in ["Signature", "API-Key"]},
         )
         return headers
 
@@ -220,10 +220,15 @@ class AsyncHttpClient(AbstractClient):
                 "endpoint": endpoint.endpoint,
                 "params": endpoint.params,
                 "route": endpoint.route,
+                "has_body": endpoint.is_body_not_empty(),
             },
         )
 
         sign_attrs = endpoint.get_sign_attrs()
+        logger.debug(
+            "Retrieved signature attributes: %s",
+            sign_attrs if sign_attrs is not None else "None",
+        )
 
         headers = self._get_request_headers(
             endpoint.method,
@@ -231,16 +236,13 @@ class AsyncHttpClient(AbstractClient):
             sign_attrs,
         )
 
-        logger.debug(
-            "Request headers prepared with method <%s>, endpoint <%s>, signing attributes <%s>",
-            endpoint.method,
-            endpoint.endpoint,
-            sign_attrs if sign_attrs is not None else "No arguments",
-        )
-
         try:
             async with AsyncClient(**self.tillo_client_options) as client:
-                logger.debug("Sending async request to %s", endpoint.route)
+                logger.debug(
+                    "Sending async request to %s with method %s",
+                    endpoint.route,
+                    endpoint.method,
+                )
                 response = await client.request(
                     url=endpoint.route,
                     method=endpoint.method,
@@ -251,16 +253,10 @@ class AsyncHttpClient(AbstractClient):
                 logger.debug(
                     "Received response with status code: %d", response.status_code
                 )
-
-            self._catch_non_200_response(response.status_code)
-
-            logger.info("Successfully completed async request to %s", endpoint.endpoint)
-            return response
-
+                self._catch_non_200_response(response.status_code)
+                return response
         except Exception as e:
-            logger.error(
-                "Error during async request to %s: %s", endpoint.endpoint, str(e)
-            )
+            logger.error("Error making async request to %s: %s", endpoint.route, str(e))
             raise
 
 
@@ -300,10 +296,8 @@ class HttpClient(AbstractClient):
             Response: The HTTP response from the Tillo API.
 
         Raises:
-            Exception: For HTTP or network errors
-
-        Note:
-            This method blocks until the request is complete.
+            InvalidIpAddress: If the response code is 201
+            Exception: For other HTTP or network errors
         """
         json: Optional[dict] = None
 
@@ -315,19 +309,15 @@ class HttpClient(AbstractClient):
                 "endpoint": endpoint.endpoint,
                 "params": endpoint.params,
                 "route": endpoint.route,
+                "has_body": endpoint.is_body_not_empty(),
             },
         )
 
-        sign_attrs = None
-
-        if endpoint.is_body_not_empty():
-            logger.debug("Using request body for signing: %s", endpoint.body)
-            sign_attrs = endpoint.body.get_sign_attrs()
-            json = endpoint.body.get_as_dict()
-        else:
-            logger.debug("Using query parameters for signing: %s", endpoint.query)
-            if endpoint.query:
-                sign_attrs = endpoint.query.get_sign_attrs()
+        sign_attrs = endpoint.get_sign_attrs()
+        logger.debug(
+            "Retrieved signature attributes: %s",
+            sign_attrs if sign_attrs is not None else "None",
+        )
 
         headers = self._get_request_headers(
             endpoint.method,
@@ -335,16 +325,13 @@ class HttpClient(AbstractClient):
             sign_attrs,
         )
 
-        logger.debug(
-            "Request headers prepared with method <%s>, endpoint <%s>, signing attributes <%s>",
-            endpoint.method,
-            endpoint.endpoint,
-            sign_attrs if sign_attrs is not None else "No arguments",
-        )
-
         try:
             with Client(**self.tillo_client_options) as client:
-                logger.debug("Sending sync request to %s", endpoint.route)
+                logger.debug(
+                    "Sending sync request to %s with method %s",
+                    endpoint.route,
+                    endpoint.method,
+                )
                 response = client.request(
                     url=endpoint.route,
                     method=endpoint.method,
@@ -355,12 +342,8 @@ class HttpClient(AbstractClient):
                 logger.debug(
                     "Received response with status code: %d", response.status_code
                 )
-
-            logger.info("Successfully completed sync request to %s", endpoint.endpoint)
-            return response
-
+                self._catch_non_200_response(response.status_code)
+                return response
         except Exception as e:
-            logger.error(
-                "Error during sync request to %s: %s", endpoint.endpoint, str(e)
-            )
+            logger.error("Error making sync request to %s: %s", endpoint.route, str(e))
             raise

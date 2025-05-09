@@ -46,7 +46,7 @@ class RequestPaymentTransferEndpoint(Endpoint):
         payment_reference: str
         finance_email: str
         proforma_invoice: Optional[ProformaInvoiceParams] = None
-        float: str = "universal-float"
+        float: str = Currency.UNIVERSAL_FLOAT.value
 
         def get_sign_attrs(self) -> tuple:
             return ()

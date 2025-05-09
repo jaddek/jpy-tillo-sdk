@@ -13,13 +13,14 @@ def create_check_floats_query(currency: Currency):
 
 
 def create_payment_transfer_request(
+    transfer_float: str,
     currency: Currency,
     amount: string,
-    payment_reference: string,
     finance_email: string,
     proforma_invoice: Optional[
         RequestPaymentTransferEndpoint.RequestBody.ProformaInvoiceParams
     ] = None,
+    payment_reference: string = "OUR_REF",
 ):
     return RequestPaymentTransferEndpoint.RequestBody(
         currency=currency,
@@ -27,4 +28,5 @@ def create_payment_transfer_request(
         payment_reference=payment_reference,
         finance_email=finance_email,
         proforma_invoice=proforma_invoice,
+        float=transfer_float,
     )

@@ -1,0 +1,18 @@
+{
+  "code": "100",
+  "status": "error",
+  "messages": {
+    "float": [
+      "The float field is required."
+    ],
+    "currency": [
+      "The currency field is required."
+    ],
+    "amount": [
+      "The amount field is required."
+    ],
+    "finance_email": [
+      "No email recipients have been configured for API payment requests."
+    ]
+  }
+}

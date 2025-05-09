@@ -33,7 +33,7 @@ from typing import Optional
 from httpx import Client, AsyncClient, Response
 
 from .endpoint import Endpoint
-from .errors import InvalidIpAddress
+from .errors import InvalidIpAddress, UnprocessableContent
 from .signature import SignatureBridge
 
 logger = logging.getLogger("tillo.http_client")
@@ -149,23 +149,38 @@ class AbstractClient:
         )
         return headers
 
-    def _catch_non_200_response(self, code: int) -> None:
+    def _catch_non_200_response(
+        self,
+        status_code: int,
+        content_code: str | None = None,
+        content_message: str | None = None,
+    ) -> None:
         """Handle non-200 HTTP response codes.
 
         This method checks the response code and raises appropriate exceptions
         for specific error conditions.
 
         Args:
-            code (int): HTTP status code from the response
+            status_code (int): HTTP status code from the response
 
         Raises:
             InvalidIpAddress: If the response code is 201, indicating an IP
                 address validation error
         """
-        logger.debug("Checking response code: %d", code)
-        if code == 201:
+        logger.debug(
+            "Checking response code and content code: %d - %s",
+            status_code,
+            content_code,
+        )
+        if status_code == 201:
             logger.error("Received 201 response code, raising InvalidIpAddress")
             raise InvalidIpAddress()
+        elif status_code == 422:
+            if content_code == UnprocessableContent.TILLO_ERROR_CODE:
+                logger.error("Received 422 response code, invalid data")
+                exception = UnprocessableContent()
+                exception.message = content_message
+                raise exception
 
 
 class AsyncHttpClient(AbstractClient):
@@ -212,6 +227,12 @@ class AsyncHttpClient(AbstractClient):
         """
         json: Optional[dict] = None
 
+        if endpoint.is_body_not_empty():
+            logger.debug(
+                "Requesting endpoint using body for signing: %s", endpoint.body
+            )
+            json = endpoint.body.get_as_dict()
+
         logger.info("Making async request to %s %s", endpoint.method, endpoint.endpoint)
         logger.debug(
             "Request details: %s",
@@ -220,6 +241,7 @@ class AsyncHttpClient(AbstractClient):
                 "endpoint": endpoint.endpoint,
                 "params": endpoint.params,
                 "route": endpoint.route,
+                "body": endpoint.body,
                 "has_body": endpoint.is_body_not_empty(),
             },
         )
@@ -253,7 +275,12 @@ class AsyncHttpClient(AbstractClient):
                 logger.debug(
                     "Received response with status code: %d", response.status_code
                 )
-                self._catch_non_200_response(response.status_code)
+
+                self._catch_non_200_response(
+                    response.status_code,
+                    response.json().get("code"),
+                    response.content.decode("utf-8"),
+                )
                 return response
         except Exception as e:
             logger.error("Error making async request to %s: %s", endpoint.route, str(e))
@@ -301,6 +328,12 @@ class HttpClient(AbstractClient):
         """
         json: Optional[dict] = None
 
+        if endpoint.is_body_not_empty():
+            logger.debug(
+                "Requesting endpoint using body for signing: %s", endpoint.body
+            )
+            json = endpoint.body.get_as_dict()
+
         logger.info("Making sync request to %s %s", endpoint.method, endpoint.endpoint)
         logger.debug(
             "Request details: %s",
@@ -342,7 +375,12 @@ class HttpClient(AbstractClient):
                 logger.debug(
                     "Received response with status code: %d", response.status_code
                 )
-                self._catch_non_200_response(response.status_code)
+
+                self._catch_non_200_response(
+                    response.status_code,
+                    response.json().get("code"),
+                    response.content.decode("utf-8"),
+                )
                 return response
         except Exception as e:
             logger.error("Error making sync request to %s: %s", endpoint.route, str(e))

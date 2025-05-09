@@ -154,6 +154,14 @@ class GiftCodeCancelled(TilloException):
     API_VERSION = 2
 
 
+class UnprocessableContent(TilloException):
+    TILLO_ERROR_CODE = "100"
+    HTTP_ERROR_CODE = 422
+    MESSAGE = "Unprocessable Content"
+    DESCRIPTION = "Unprocessable Content"
+    API_VERSION = 2
+
+
 class InvalidIpAddress(TilloException):
     """Raised when the request comes from an unauthorized IP address.
 

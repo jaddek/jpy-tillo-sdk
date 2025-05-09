@@ -63,10 +63,12 @@ class Currency(Enum):
     Attributes:
         EUR: Euro
         GBP: British Pound Sterling
+        UNIVERSAL_FLOAT = "some universal float"
     """
 
     EUR = "EUR"
     GBP = "GBP"
+    UNIVERSAL_FLOAT = "universal-float"
 
 
 class DeliveryMethod(Enum):

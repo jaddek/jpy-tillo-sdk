@@ -10,7 +10,7 @@ from .domain.brand.services import (
 from .domain.float.services import FloatServiceAsync, FloatService
 from .domain.digital_card.services import (
     IssueDigitalCodeService,
-    IssueDigitalCodeService,
+    IssueDigitalCodeServiceAsync,
 )
 from .errors import AuthorizationErrorInvalidAPITokenOrSecret
 from .http_client import AsyncHttpClient, HttpClient

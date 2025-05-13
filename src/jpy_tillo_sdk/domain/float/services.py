@@ -25,8 +25,8 @@ from typing import Optional
 
 from httpx import Response
 
+from ...http_client import AsyncHttpClient, HttpClient
 from .endpoints import CheckFloatsEndpoint, RequestPaymentTransferEndpoint
-from ...http_client import HttpClient, AsyncHttpClient
 
 logger = logging.getLogger("tillo.float_services")
 
@@ -115,9 +115,7 @@ class FloatService:
 
         return response
 
-    def request_payment_transfer(
-        self, body: RequestPaymentTransferEndpoint.RequestBody
-    ) -> Response:
+    def request_payment_transfer(self, body: RequestPaymentTransferEndpoint.RequestBody) -> Response:
         """Request a payment transfer between floats.
 
         This method initiates a payment transfer between different float accounts
@@ -250,9 +248,7 @@ class FloatServiceAsync:
 
         return response
 
-    async def request_payment_transfer(
-        self, body: RequestPaymentTransferEndpoint.RequestBody
-    ) -> Response:
+    async def request_payment_transfer(self, body: RequestPaymentTransferEndpoint.RequestBody) -> Response:
         """Request a payment transfer between floats asynchronously.
 
         This method initiates a payment transfer between different float accounts

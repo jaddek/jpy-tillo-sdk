@@ -103,9 +103,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
         logger.debug("Generated request ID: %s", request_id)
         return request_id
 
-    def generate_signature_string(
-        self, endpoint: str, request_type: str, timestamp: str, params: tuple
-    ) -> str:
+    def generate_signature_string(self, endpoint: str, request_type: str, timestamp: str, params: tuple) -> str:
         """Generate the string to be signed for the request.
 
         This method creates the signature string according to Tillo's specification:
@@ -137,9 +135,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
                 if v is not None:
                     query += f"-{v}"
 
-        signature_string = (
-            f"{self.__api_key}-{request_type}-{endpoint}{query}-{timestamp}"
-        )
+        signature_string = f"{self.__api_key}-{request_type}-{endpoint}{query}-{timestamp}"
         logger.debug("Generated signature string: %s", signature_string)
         return signature_string
 
@@ -153,9 +149,7 @@ class SignatureGenerator(SignatureGeneratorInterface):
             str: The hexadecimal HMAC-SHA256 signature
         """
         logger.debug("Generating HMAC-SHA256 signature for seed")
-        signature_hmac = hmac.new(
-            self.get_secret_key_as_bytes(), bytearray(seed, "utf-8"), hashlib.sha256
-        )
+        signature_hmac = hmac.new(self.get_secret_key_as_bytes(), bytearray(seed, "utf-8"), hashlib.sha256)
         signature = str(signature_hmac.hexdigest())
         logger.debug("Generated signature: %s", signature)
         return signature
@@ -236,9 +230,7 @@ class SignatureBridge(SignatureBridgeInterface):
             sign_attrs,
         )
 
-        request_signature = self.__signature_generator.generate_signature(
-            signature_string
-        )
+        request_signature = self.__signature_generator.generate_signature(signature_string)
 
         request_api_key = self.__signature_generator.get_api_key()
 

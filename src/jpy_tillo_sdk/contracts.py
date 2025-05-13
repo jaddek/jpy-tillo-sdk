@@ -91,9 +91,7 @@ class SignatureGeneratorInterface(ABC):
         pass
 
     @abstractmethod
-    def generate_signature_string(
-        self, endpoint: str, request_type: str, timestamp: str, params: tuple
-    ) -> str:
+    def generate_signature_string(self, endpoint: str, request_type: str, timestamp: str, params: tuple) -> str:
         """Generate the string to be signed for the request.
 
         Args:

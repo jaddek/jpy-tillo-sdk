@@ -41,7 +41,7 @@ async def issue_digital_code_async():
         amount="10",
     )
 
-    response = client.digital_card.issue_digital_code(body=body)
+    response = await client.digital_card_async.issue_digital_code(body=body)
 
     print(response.text)
 

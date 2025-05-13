@@ -1,14 +1,22 @@
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.4
+    rev: v0.11.9
     hooks:
       - id: ruff
         name: ruff
         language: python
         args: [ --fix ]
       - id: ruff-format
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+        name: black
+        args:
+          - .
+          - --check
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.5.29
+    rev: 0.7.3
     hooks:
       - id: uv-lock
       - id: uv-export

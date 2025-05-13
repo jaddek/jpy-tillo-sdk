@@ -30,7 +30,7 @@ import logging
 from abc import abstractmethod
 from typing import Optional
 
-from httpx import Client, AsyncClient, Response
+from httpx import AsyncClient, Client, Response
 
 from .endpoint import Endpoint
 from .errors import InvalidIpAddress, UnprocessableContent
@@ -228,9 +228,7 @@ class AsyncHttpClient(AbstractClient):
         json: Optional[dict] = None
 
         if endpoint.is_body_not_empty():
-            logger.debug(
-                "Requesting endpoint using body for signing: %s", endpoint.body
-            )
+            logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)
             json = endpoint.body.get_as_dict()
 
         logger.info("Making async request to %s %s", endpoint.method, endpoint.endpoint)
@@ -272,9 +270,7 @@ class AsyncHttpClient(AbstractClient):
                     json=json,
                     headers=headers,
                 )
-                logger.debug(
-                    "Received response with status code: %d", response.status_code
-                )
+                logger.debug("Received response with status code: %d", response.status_code)
 
                 self._catch_non_200_response(
                     response.status_code,
@@ -329,9 +325,7 @@ class HttpClient(AbstractClient):
         json: Optional[dict] = None
 
         if endpoint.is_body_not_empty():
-            logger.debug(
-                "Requesting endpoint using body for signing: %s", endpoint.body
-            )
+            logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)
             json = endpoint.body.get_as_dict()
 
         logger.info("Making sync request to %s %s", endpoint.method, endpoint.endpoint)
@@ -372,9 +366,7 @@ class HttpClient(AbstractClient):
                     json=json,
                     headers=headers,
                 )
-                logger.debug(
-                    "Received response with status code: %d", response.status_code
-                )
+                logger.debug("Received response with status code: %d", response.status_code)
 
                 self._catch_non_200_response(
                     response.status_code,

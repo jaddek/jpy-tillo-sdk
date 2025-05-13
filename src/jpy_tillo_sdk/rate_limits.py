@@ -63,9 +63,7 @@ class GC(RateLimit):
         Returns:
             RateLimit: Rate limit of 600 requests per period
         """
-        logger.debug(
-            "Getting gift card creation rate limit: %d", GC.__CREATE_RATE_LIMIT
-        )
+        logger.debug("Getting gift card creation rate limit: %d", GC.__CREATE_RATE_LIMIT)
         return RateLimit(GC.__CREATE_RATE_LIMIT)
 
     @staticmethod
@@ -88,9 +86,7 @@ class GC(RateLimit):
         Returns:
             RateLimit: Rate limit of 50 requests per period
         """
-        logger.debug(
-            "Getting gift card cancellation rate limit: %d", GC.__CREATE_CANCEL_GC_LIMIT
-        )
+        logger.debug("Getting gift card cancellation rate limit: %d", GC.__CREATE_CANCEL_GC_LIMIT)
         return RateLimit(GC.__CREATE_CANCEL_GC_LIMIT)
 
 

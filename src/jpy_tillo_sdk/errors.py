@@ -55,7 +55,7 @@ class AuthenticationError(TilloException):
     TILLO_ERROR_CODE = None
     HTTP_ERROR_CODE = 401
     MESSAGE = "Pair API-Token or Secret-key not provided."
-    DESCRIPTION = "No API key provided. (HINT: set your API key using 'client = jpy_tillo_sdk.TilloClient(<API-KEY>, <SECRET-KEY>)')"
+    DESCRIPTION = "No API key provided."
     API_VERSION = 1
 
 
@@ -354,9 +354,7 @@ class TemplateAccessDenied(TilloException):
     TILLO_ERROR_CODE = "717"
     HTTP_ERROR_CODE = 401
     MESSAGE = "Template access denied"
-    DESCRIPTION = (
-        "The partner does not have access to the template for the requested brand"
-    )
+    DESCRIPTION = "The partner does not have access to the template for the requested brand"
     API_VERSION = 2
 
 

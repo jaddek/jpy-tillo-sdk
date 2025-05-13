@@ -37,17 +37,13 @@ print(physical_card_order_status().json())
 
 
 async def physical_card_order_status_async() -> Response:
-    async_client = create_client_async(
-        TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS
-    )
+    async_client = create_client_async(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
     body = create_order_status_request(
         references=["some reference"],
     )
 
-    return await PhysicalGiftCardsService.physical_card_order_status_async(
-        client=async_client, body=body
-    )
+    return await PhysicalGiftCardsService.physical_card_order_status_async(client=async_client, body=body)
 
 
 asyncio.run(physical_card_order_status_async())

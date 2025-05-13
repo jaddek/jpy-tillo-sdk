@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import List, Optional
 
-from .models import FaceValue
-from ...endpoint import Endpoint, AbstractBodyRequest
+from ...endpoint import AbstractBodyRequest, Endpoint
 from ...enums import Sector
+from .models import FaceValue
 
 
 class ActivatePhysicalCardEndpoint(Endpoint):

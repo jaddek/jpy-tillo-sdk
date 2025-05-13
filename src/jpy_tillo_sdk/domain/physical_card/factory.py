@@ -1,17 +1,17 @@
-from typing import Optional, List
+from typing import List, Optional
 
-from .models import FaceValue
+from ...enums import Currency, Sector
 from .endpoints import (
     ActivatePhysicalCardEndpoint,
-    CashOutOriginalTransactionPhysicalCardEndpoint,
-    TopUpPhysicalCardEndpoint,
-    CancelTopUpOnPhysicalCardEndpoint,
     BalanceCheckPhysicalEndpoint,
+    CancelTopUpOnPhysicalCardEndpoint,
+    CashOutOriginalTransactionPhysicalCardEndpoint,
+    FulfilPhysicalCardOrderEndpoint,
     OrderPhysicalCardEndpoint,
     PhysicalCardOrderStatusEndpoint,
-    FulfilPhysicalCardOrderEndpoint,
+    TopUpPhysicalCardEndpoint,
 )
-from ...enums import Currency, Sector
+from .models import FaceValue
 
 
 def create_activate_physical_card_request(

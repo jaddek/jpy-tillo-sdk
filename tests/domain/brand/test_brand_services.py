@@ -3,13 +3,13 @@ from httpx import Response
 
 from jpy_tillo_sdk.domain.brand.endpoints import (
     BrandEndpoint,
-    TemplateListEndpoint,
     TemplateEndpoint,
+    TemplateListEndpoint,
 )
 from jpy_tillo_sdk.domain.brand.services import (
     BrandService,
-    TemplateService,
     BrandServiceAsync,
+    TemplateService,
     TemplateServiceAsync,
 )
 
@@ -75,9 +75,7 @@ class TestTemplateService:
         (TemplateService, "download_brand_template", TemplateEndpoint),
     ],
 )
-def test_service_methods_endpoint_types(
-    service, method_name, endpoint_class, mock_http_client
-):
+def test_service_methods_endpoint_types(service, method_name, endpoint_class, mock_http_client):
     instance = service(client=mock_http_client)
 
     method = getattr(instance, method_name)
@@ -95,14 +93,10 @@ def test_service_methods_endpoint_types(
         (TemplateServiceAsync, "download_brand_template", TemplateEndpoint),
     ],
 )
-async def test_service_methods_endpoint_types_async(
-    service, method_name, endpoint_class, mock_async_http_client
-):
+async def test_service_methods_endpoint_types_async(service, method_name, endpoint_class, mock_async_http_client):
     instance = service(client=mock_async_http_client)
 
     method = getattr(instance, method_name)
     await method()
 
-    assert isinstance(
-        mock_async_http_client.request.call_args[1]["endpoint"], endpoint_class
-    )
+    assert isinstance(mock_async_http_client.request.call_args[1]["endpoint"], endpoint_class)

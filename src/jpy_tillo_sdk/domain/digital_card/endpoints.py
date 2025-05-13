@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-
-from .models import FaceValue
-from ...endpoint import Endpoint, AbstractBodyRequest, QP
 from typing import Optional, Union
+
+from ...endpoint import QP, AbstractBodyRequest, Endpoint
+from .models import FaceValue
 
 
 class IssueDigitalCodeEndpoint(Endpoint):
@@ -71,9 +71,7 @@ class IssueDigitalCodeEndpoint(Endpoint):
             ]
         ] = None
         sector: Optional[str] = None
-        personalisation: Optional[Union[Personalisation, PersonalisationExtended]] = (
-            None
-        )
+        personalisation: Optional[Union[Personalisation, PersonalisationExtended]] = None
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:

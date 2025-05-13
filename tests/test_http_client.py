@@ -1,4 +1,4 @@
-from unittest.mock import Mock, AsyncMock
+from unittest.mock import AsyncMock, Mock
 
 import pytest
 from httpx import Response
@@ -7,9 +7,7 @@ from jpy_tillo_sdk.endpoint import Endpoint
 
 
 class MockEndpoint(Endpoint):
-    def __init__(
-        self, method="GET", endpoint="/test", route="https://api.test.com/test"
-    ):
+    def __init__(self, method="GET", endpoint="/test", route="https://api.test.com/test"):
         super().__init__()
         self._method = method
         self._endpoint = endpoint
@@ -47,9 +45,7 @@ def test_http_client_request(http_client, monkeypatch):
         def __exit__(self, *args):
             pass
 
-    monkeypatch.setattr(
-        "jpy_tillo_sdk.http_client.Client", lambda **kwargs: MockClientContext()
-    )
+    monkeypatch.setattr("jpy_tillo_sdk.http_client.Client", lambda **kwargs: MockClientContext())
 
     response = http_client.request(endpoint)
 
@@ -91,9 +87,7 @@ async def test_async_http_client_request(async_http_client, monkeypatch):
         method=endpoint.method,
         params=endpoint.params,
         json=None,
-        headers=async_http_client._get_request_headers(
-            endpoint.method, endpoint.endpoint
-        ),
+        headers=async_http_client._get_request_headers(endpoint.method, endpoint.endpoint),
     )
 
 
@@ -114,9 +108,7 @@ def test_request_with_body(http_client, monkeypatch):
         def __exit__(self, *args):
             pass
 
-    monkeypatch.setattr(
-        "jpy_tillo_sdk.http_client.Client", lambda **kwargs: MockClientContext()
-    )
+    monkeypatch.setattr("jpy_tillo_sdk.http_client.Client", lambda **kwargs: MockClientContext())
 
     response = http_client.request(endpoint)
 
@@ -126,7 +118,5 @@ def test_request_with_body(http_client, monkeypatch):
         method=endpoint.method,
         params=endpoint.params,
         json={"test": "data"},
-        headers=http_client._get_request_headers(
-            endpoint.method, endpoint.endpoint, endpoint.body.get_sign_attrs()
-        ),
+        headers=http_client._get_request_headers(endpoint.method, endpoint.endpoint, endpoint.body.get_sign_attrs()),
     )

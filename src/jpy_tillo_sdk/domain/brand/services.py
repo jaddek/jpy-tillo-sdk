@@ -1,8 +1,8 @@
 import logging
-from typing import Optional, Any
+from typing import Any, Optional
 
-from .endpoints import BrandEndpoint, TemplateListEndpoint, TemplateEndpoint
-from ...http_client import HttpClient, AsyncHttpClient
+from ...http_client import AsyncHttpClient, HttpClient
+from .endpoints import BrandEndpoint, TemplateEndpoint, TemplateListEndpoint
 
 logger = logging.getLogger("tillo.brand_services")
 

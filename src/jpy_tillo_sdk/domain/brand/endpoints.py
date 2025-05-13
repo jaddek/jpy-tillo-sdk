@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from ...endpoint import Endpoint, QP
+from ...endpoint import QP, Endpoint
 
 
 class BrandEndpoint(Endpoint):

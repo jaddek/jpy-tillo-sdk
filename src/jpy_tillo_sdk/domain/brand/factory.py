@@ -1,5 +1,6 @@
 from typing import Optional
-from .endpoints import BrandEndpoint, TemplateListEndpoint, TemplateEndpoint
+
+from .endpoints import BrandEndpoint, TemplateEndpoint, TemplateListEndpoint
 
 
 def create_brands_query_params(

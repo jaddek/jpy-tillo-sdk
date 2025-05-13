@@ -1,15 +1,15 @@
 import pytest
 
 from jpy_tillo_sdk.domain.digital_card.endpoints import (
-    IssueDigitalCodeEndpoint,
-    TopUpDigitalCodeEndpoint,
-    CheckStockEndpoint,
     CancelDigitalCodeEndpoint,
     CancelDigitalUrlEndpoint,
-    ReverseDigitalCodeEndpoint,
     CheckBalanceEndpoint,
-    OrderDigitalCodeAsyncEndpoint,
     CheckDigitalOrderStatusAsyncEndpoint,
+    CheckStockEndpoint,
+    IssueDigitalCodeEndpoint,
+    OrderDigitalCodeAsyncEndpoint,
+    ReverseDigitalCodeEndpoint,
+    TopUpDigitalCodeEndpoint,
 )
 from jpy_tillo_sdk.domain.digital_card.models import FaceValue
 from jpy_tillo_sdk.enums import Domains
@@ -32,9 +32,7 @@ def test_issue_digital_code_endpoint():
     "body,signed_attrs",
     [({}, ())],
 )
-def test_issue_digital_code_endpoint_request_sign_attrs_if_body_is_empty(
-    body, signed_attrs
-):
+def test_issue_digital_code_endpoint_request_sign_attrs_if_body_is_empty(body, signed_attrs):
     request_body = IssueDigitalCodeEndpoint.RequestBody(**body)
 
     assert request_body.client_request_id is None
@@ -204,9 +202,7 @@ def test_cancel_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
     request_body = CancelDigitalCodeEndpoint.RequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
-    assert request_body.original_client_request_id == body.get(
-        "original_client_request_id"
-    )
+    assert request_body.original_client_request_id == body.get("original_client_request_id")
     assert request_body.face_value == body.get("face_value")
     assert request_body.code == body.get("code")
     assert request_body.sector == body.get("sector")
@@ -254,9 +250,7 @@ def test_cancel_digital_url_endpoint_request_sign_attrs(body, signed_attrs):
     request_body = CancelDigitalUrlEndpoint.RequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
-    assert request_body.original_client_request_id == body.get(
-        "original_client_request_id"
-    )
+    assert request_body.original_client_request_id == body.get("original_client_request_id")
     assert request_body.face_value == body.get("face_value")
     assert request_body.url == body.get("url")
     assert request_body.sector == body.get("sector")
@@ -303,9 +297,7 @@ def test_reverse_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
     request_body = ReverseDigitalCodeEndpoint.RequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
-    assert request_body.original_client_request_id == body.get(
-        "original_client_request_id"
-    )
+    assert request_body.original_client_request_id == body.get("original_client_request_id")
     assert request_body.face_value == body.get("face_value")
     assert request_body.brand == body.get("brand")
     assert request_body.sector == body.get("sector")
@@ -436,9 +428,7 @@ def test_check_digital_order_status_async_endpoint():
         ),
     ],
 )
-def test_check_digital_order_status_async_endpoint_request_sign_attrs(
-    query, signed_attrs
-):
+def test_check_digital_order_status_async_endpoint_request_sign_attrs(query, signed_attrs):
     request_query = CheckDigitalOrderStatusAsyncEndpoint.QueryParams(**query)
 
     assert request_query.reference == query.get("reference")

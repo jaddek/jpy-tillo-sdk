@@ -2,8 +2,8 @@ import pytest
 
 from jpy_tillo_sdk.domain.brand.endpoints import (
     BrandEndpoint,
-    TemplateListEndpoint,
     TemplateEndpoint,
+    TemplateListEndpoint,
 )
 from jpy_tillo_sdk.enums import Domains
 from jpy_tillo_sdk.http_methods import HttpMethods
@@ -192,9 +192,7 @@ def test_template_list_endpoint_query_params(query, not_empty_values, sign_attrs
     ],
 )
 def test_template_list_endpoint_query(query):
-    endpoint_class = TemplateListEndpoint(
-        query=TemplateListEndpoint.QueryParams(**query)
-    )
+    endpoint_class = TemplateListEndpoint(query=TemplateListEndpoint.QueryParams(**query))
 
     assert isinstance(endpoint_class.query, TemplateListEndpoint.QueryParams)
 

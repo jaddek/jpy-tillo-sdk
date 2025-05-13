@@ -38,9 +38,7 @@ print(physical_card_fulfil_order().json())
 
 
 async def physical_card_fulfil_order_async() -> Response:
-    async_client = create_client_async(
-        TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS
-    )
+    async_client = create_client_async(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
     body = create_fulfil_physical_card_order_request(
         client_request_id=str(uuid.uuid4()),
@@ -50,9 +48,7 @@ async def physical_card_fulfil_order_async() -> Response:
         reference="some reference",
     )
 
-    return await PhysicalGiftCardsService.fulfil_physical_card_order_async(
-        client=async_client, body=body
-    )
+    return await PhysicalGiftCardsService.fulfil_physical_card_order_async(client=async_client, body=body)
 
 
 asyncio.run(physical_card_fulfil_order_async())

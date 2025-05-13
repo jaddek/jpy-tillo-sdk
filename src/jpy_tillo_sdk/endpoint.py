@@ -32,20 +32,24 @@ Example:
 
 import logging
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from typing import Optional
 
 logger = logging.getLogger("tillo.endpoint")
 
 
 @dataclass(frozen=True)
-class QP(ABC):
+class QP:
     """Base class for query parameters.
 
     This class provides common functionality for handling query parameters
     in API requests, including filtering empty values and generating
     signature attributes.
     """
+
+    def __init__(self):
+        if type(self) is QP:
+            raise TypeError("QP is an abstract class and cannot be instantiated directly.")
 
     def get_not_empty_values(self) -> dict:
         """Get dictionary of non-empty parameter values.
@@ -97,7 +101,7 @@ class AbstractBodyRequest(ABC):
         return body_dict
 
 
-class Endpoint(ABC):
+class Endpoint:
     """Base class for API endpoints.
 
     This class provides common functionality for handling API endpoints,
@@ -134,6 +138,9 @@ class Endpoint(ABC):
             body (Optional[AbstractBodyRequest]): Request body
             sign_attrs (Optional[tuple]): Attributes for signature generation
         """
+        if type(self) is Endpoint:
+            raise TypeError("Endpoint is an abstract class and cannot be instantiated directly.")
+
         self._query = query
         self._body = body
         self._sign_attrs = sign_attrs

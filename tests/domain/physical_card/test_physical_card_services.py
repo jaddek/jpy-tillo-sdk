@@ -1,8 +1,10 @@
+from unittest.mock import AsyncMock, Mock
+
 import pytest
 from httpx import Response
-from unittest.mock import Mock, AsyncMock
-from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+
 from jpy_tillo_sdk.domain.physical_card.services import PhysicalGiftCardsService
+from jpy_tillo_sdk.http_client import AsyncHttpClient, HttpClient
 
 
 @pytest.fixture
@@ -28,9 +30,7 @@ def test_activate_physical_card(mock_http_client):
 
 @pytest.mark.asyncio
 async def test_activate_physical_card_async(mock_async_http_client):
-    response = await PhysicalGiftCardsService.activate_physical_card_async(
-        mock_async_http_client
-    )
+    response = await PhysicalGiftCardsService.activate_physical_card_async(mock_async_http_client)
 
     mock_async_http_client.request.assert_called_once()
     assert isinstance(response, Response)
@@ -124,9 +124,7 @@ def test_balance_check_physical(mock_http_client):
 
 @pytest.mark.asyncio
 async def test_balance_check_physical_async(mock_async_http_client):
-    response = await PhysicalGiftCardsService.balance_check_physical_async(
-        mock_async_http_client
-    )
+    response = await PhysicalGiftCardsService.balance_check_physical_async(mock_async_http_client)
 
     mock_async_http_client.request.assert_called_once()
     assert isinstance(response, Response)

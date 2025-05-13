@@ -2,13 +2,13 @@ import pytest
 
 from jpy_tillo_sdk.domain.brand.endpoints import (
     BrandEndpoint,
-    TemplateListEndpoint,
     TemplateEndpoint,
+    TemplateListEndpoint,
 )
 from jpy_tillo_sdk.domain.brand.factory import (
-    create_brands_query_params,
     create_brand_template_list_query_params,
     create_brand_template_query_params,
+    create_brands_query_params,
 )
 
 
@@ -32,9 +32,7 @@ class TestBrandFactory:
             (True, "GBP", None, "brand_only", None),
         ],
     )
-    def test_create_brands_query_params_with_values(
-        self, detail, currency, country, brand, category
-    ):
+    def test_create_brands_query_params_with_values(self, detail, currency, country, brand, category):
         params = create_brands_query_params(
             detail=detail,
             currency=currency,
@@ -98,22 +96,16 @@ class TestBrandFactory:
             assert params.get_sign_attrs() == ()
 
     def test_get_not_empty_values(self):
-        brands_params = create_brands_query_params(
-            detail=True, currency="USD", country=None
-        )
+        brands_params = create_brands_query_params(detail=True, currency="USD", country=None)
         assert brands_params.get_not_empty_values() == {
             "detail": True,
             "currency": "USD",
         }
 
-        template_list_params = create_brand_template_list_query_params(
-            brand="test_brand"
-        )
+        template_list_params = create_brand_template_list_query_params(brand="test_brand")
         assert template_list_params.get_not_empty_values() == {"brand": "test_brand"}
 
-        template_params = create_brand_template_query_params(
-            brand="test_brand", template="test_template"
-        )
+        template_params = create_brand_template_query_params(brand="test_brand", template="test_template")
         assert template_params.get_not_empty_values() == {
             "brand": "test_brand",
             "template": "test_template",

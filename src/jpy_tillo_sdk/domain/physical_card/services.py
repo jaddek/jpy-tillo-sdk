@@ -2,17 +2,17 @@ from typing import Optional
 
 from httpx import Response
 
+from ...http_client import AsyncHttpClient, HttpClient
 from .endpoints import (
     ActivatePhysicalCardEndpoint,
+    BalanceCheckPhysicalEndpoint,
     CancelActivatePhysicalCardEndpoint,
     CashOutOriginalTransactionPhysicalCardEndpoint,
-    TopUpPhysicalCardEndpoint,
-    BalanceCheckPhysicalEndpoint,
+    FulfilPhysicalCardOrderEndpoint,
     OrderPhysicalCardEndpoint,
     PhysicalCardOrderStatusEndpoint,
-    FulfilPhysicalCardOrderEndpoint,
+    TopUpPhysicalCardEndpoint,
 )
-from ...http_client import HttpClient, AsyncHttpClient
 
 
 class PhysicalGiftCardsService:
@@ -78,9 +78,7 @@ class PhysicalGiftCardsService:
     def cash_out_original_transaction_physical_card(
         client: HttpClient,
         query_params: Optional[dict] = None,
-        body: Optional[
-            CashOutOriginalTransactionPhysicalCardEndpoint.RequestBody
-        ] = None,
+        body: Optional[CashOutOriginalTransactionPhysicalCardEndpoint.RequestBody] = None,
     ) -> Response:
         endpoint = ActivatePhysicalCardEndpoint(
             body=body,
@@ -95,13 +93,9 @@ class PhysicalGiftCardsService:
     async def cash_out_original_transaction_physical_card_async(
         client: AsyncHttpClient,
         query_params: Optional[dict] = None,
-        body: Optional[
-            CashOutOriginalTransactionPhysicalCardEndpoint.RequestBody
-        ] = None,
+        body: Optional[CashOutOriginalTransactionPhysicalCardEndpoint.RequestBody] = None,
     ) -> Response:
-        endpoint = CashOutOriginalTransactionPhysicalCardEndpoint(
-            body=body, query=query_params
-        )
+        endpoint = CashOutOriginalTransactionPhysicalCardEndpoint(body=body, query=query_params)
 
         response = await client.request(
             endpoint=endpoint,
@@ -200,9 +194,7 @@ class PhysicalGiftCardsService:
         return response
 
     @staticmethod
-    def physical_card_order_status(
-        client: HttpClient, body: PhysicalCardOrderStatusEndpoint.RequestBody
-    ):
+    def physical_card_order_status(client: HttpClient, body: PhysicalCardOrderStatusEndpoint.RequestBody):
         endpoint = PhysicalCardOrderStatusEndpoint(
             body=body,
         )
@@ -224,9 +216,7 @@ class PhysicalGiftCardsService:
         return response
 
     @staticmethod
-    def fulfil_physical_card_order(
-        client: HttpClient, body: FulfilPhysicalCardOrderEndpoint.RequestBody
-    ):
+    def fulfil_physical_card_order(client: HttpClient, body: FulfilPhysicalCardOrderEndpoint.RequestBody):
         endpoint = FulfilPhysicalCardOrderEndpoint(
             body=body,
         )

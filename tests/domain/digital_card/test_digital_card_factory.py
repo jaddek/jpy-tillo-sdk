@@ -8,15 +8,15 @@ from jpy_tillo_sdk.domain.digital_card.endpoints import (
     TopUpDigitalCodeEndpoint,
 )
 from jpy_tillo_sdk.domain.digital_card.factory import (
-    create_standard_issue_request,
-    create_personalised_issue_request,
+    create_card_top_up_request,
     create_issue_request_fulfilment_by_tillo,
     create_issue_reward_pass_by_email,
     create_issue_reward_pass_by_url,
-    create_card_top_up_request,
+    create_personalised_issue_request,
+    create_standard_issue_request,
 )
-from jpy_tillo_sdk.enums import Currency, Sector, DeliveryMethod, FulfilmentType
-from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.enums import Currency, DeliveryMethod, FulfilmentType, Sector
+from jpy_tillo_sdk.http_client import AsyncHttpClient, HttpClient
 
 
 @pytest.fixture
@@ -156,10 +156,8 @@ def test_create_issue_reward_pass_by_url():
         message="message",
     )
 
-    fulfilment = (
-        IssueDigitalCodeEndpoint.RequestBody.FulfilmentParametersForRewardPassUsingUrl(
-            to_name="to Name",
-        )
+    fulfilment = IssueDigitalCodeEndpoint.RequestBody.FulfilmentParametersForRewardPassUsingUrl(
+        to_name="to Name",
     )
 
     request = create_issue_reward_pass_by_url(

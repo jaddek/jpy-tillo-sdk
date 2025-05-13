@@ -46,12 +46,8 @@ class TestSignatureGenerator:
             ),
         ],
     )
-    def test_generate_signature_string(
-        self, signature_generator, endpoint, request_type, timestamp, params, expected
-    ):
-        result = signature_generator.generate_signature_string(
-            endpoint, request_type, timestamp, params
-        )
+    def test_generate_signature_string(self, signature_generator, endpoint, request_type, timestamp, params, expected):
+        result = signature_generator.generate_signature_string(endpoint, request_type, timestamp, params)
         assert result == expected
 
     def test_generate_signature(self, signature_generator):
@@ -67,9 +63,7 @@ class TestSignatureBridge:
         method = "GET"
         sign_attrs = ("param1", "param2")
 
-        api_key, signature, timestamp = signature_bridge.sign(
-            endpoint, method, sign_attrs
-        )
+        api_key, signature, timestamp = signature_bridge.sign(endpoint, method, sign_attrs)
 
         assert isinstance(api_key, str)
         assert isinstance(signature, str)

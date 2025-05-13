@@ -1,6 +1,6 @@
-from .models import FaceValue
+from ...enums import Currency, DeliveryMethod, FulfilmentType, Sector
 from .endpoints import IssueDigitalCodeEndpoint, TopUpDigitalCodeEndpoint
-from ...enums import Currency, Sector, DeliveryMethod, FulfilmentType
+from .models import FaceValue
 
 
 def create_standard_issue_request(

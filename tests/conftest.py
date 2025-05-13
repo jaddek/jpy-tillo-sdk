@@ -2,7 +2,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.http_client import AsyncHttpClient, HttpClient
 from jpy_tillo_sdk.signature import SignatureBridge, SignatureGenerator
 
 

@@ -2,11 +2,11 @@ from jpy_tillo_sdk.domain.float.endpoints import (
     CheckFloatsEndpoint,
     RequestPaymentTransferEndpoint,
 )
-from jpy_tillo_sdk.enums import Currency
 from jpy_tillo_sdk.domain.float.factory import (
     create_check_floats_query,
     create_payment_transfer_request,
 )
+from jpy_tillo_sdk.enums import Currency
 
 
 def test_create_check_floats_query():

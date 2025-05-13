@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from ...endpoint import Endpoint, QP, AbstractBodyRequest
+from ...endpoint import QP, AbstractBodyRequest, Endpoint
 from ...enums import Currency
 
 

@@ -1,9 +1,11 @@
-.PHONY: tests uvr-floats-check-floats, uvr-floats-transfer
+.PHONY: tests, uvrr, uvrr-check, uvrr-format, uvr-floats-check-floats, uvr-floats-transfer
 
 all: help
 
 tests:
-	uv run pytests
+	uv run pytests tests
+
+uvrr: uvrr-check uvrr-format
 
 uvrr-check:
 	uv run ruff check .

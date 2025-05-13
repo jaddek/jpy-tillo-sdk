@@ -23,9 +23,9 @@ Example:
     ```
 """
 
-from abc import ABC, abstractmethod
-import uuid
 import logging
+import uuid
+from abc import ABC, abstractmethod
 
 # Configure logging
 logger = logging.getLogger("tillo.contracts")
@@ -189,6 +189,21 @@ class TilloInterface(ABC):
 
     @abstractmethod
     def floats(self):
+        """Get the floats service instance.
+
+        Returns:
+            FloatService: Service for managing float operations.
+
+        Example:
+            ```python
+            float_service = tillo.floats()
+            balance =  float_service.get_balance()
+            ```
+        """
+        pass
+
+    @abstractmethod
+    def floats_async(self):
         """Get the asynchronous floats service instance.
 
         Returns:
@@ -197,14 +212,13 @@ class TilloInterface(ABC):
         Example:
             ```python
             float_service = tillo.floats()
-            balance = await float_service.get_balance()
+            balance = float_service.get_balance()
             ```
         """
-        logger.debug("Getting floats service instance")
         pass
 
     @abstractmethod
-    def brand(self):
+    def brands(self):
         """Get the brand service instance.
 
         Returns:
@@ -212,15 +226,29 @@ class TilloInterface(ABC):
 
         Example:
             ```python
-            brand_service = tillo.brand()
+            brand_service = tillo.brands()
             brand_info = brand_service.get_brand_details()
             ```
         """
-        logger.debug("Getting brand service instance")
         pass
 
     @abstractmethod
-    def template(self):
+    def brands_async(self):
+        """Get the brand service instance.
+
+        Returns:
+            BrandServiceAsync: Service for managing brand-related operations asynchronously.
+
+        Example:
+            ```python
+            brand_service = tillo.brands()
+            brand_info = brand_service.get_brand_details()
+            ```
+        """
+        pass
+
+    @abstractmethod
+    def templates(self):
         """Get the template service instance.
 
         Returns:
@@ -228,11 +256,25 @@ class TilloInterface(ABC):
 
         Example:
             ```python
-            template_service = tillo.template()
+            template_service = tillo.templates()
             templates = template_service.list_templates()
             ```
         """
-        logger.debug("Getting template service instance")
+        pass
+
+    @abstractmethod
+    async def templates_async(self):
+        """Get the template service instance.
+
+        Returns:
+            TemplateService: Service for managing template-related operations.
+
+        Example:
+            ```python
+            template_service = tillo.templates_async()
+            templates = template_service.list_templates()
+            ```
+        """
         pass
 
     @abstractmethod

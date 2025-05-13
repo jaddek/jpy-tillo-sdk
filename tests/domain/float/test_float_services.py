@@ -19,7 +19,7 @@ def test_check_floats(mock_http_client):
 async def test_check_floats_async(mock_async_http_client):
     float_service = FloatServiceAsync(client=mock_async_http_client)
 
-    response = await float_service.check_floats_async(mock_async_http_client)
+    response = await float_service.check_floats(mock_async_http_client)
 
     mock_async_http_client.request.assert_called_once()
     assert isinstance(response, Response)
@@ -44,7 +44,7 @@ def test_request_payment_transfer(mock_http_client):
 async def test_request_payment_transfer_async(mock_async_http_client):
     float_service = FloatServiceAsync(client=mock_async_http_client)
 
-    response = await float_service.request_payment_transfer_async(
+    response = await float_service.request_payment_transfer(
         RequestPaymentTransferEndpoint.RequestBody(
             currency=Currency.EUR,
             amount="100",

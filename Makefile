@@ -2,6 +2,9 @@
 
 all: help
 
+tests:
+    uv run pytests
+
 uvr-floats-check-floats:
 	 uv run examples/floats/check_floats.py
 

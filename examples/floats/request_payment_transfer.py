@@ -31,7 +31,7 @@ def request_payment_transfer():
 async def request_payment_transfer_async():
     client = tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-    response = await client.floats_async.request_payment_transfer_async(
+    response = await client.floats_async.request_payment_transfer(
         create_payment_transfer_request(
             transfer_float=Currency.UNIVERSAL_FLOAT.value,
             currency=Currency.GBP.value,

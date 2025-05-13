@@ -1,6 +1,7 @@
 from typing import Optional
 
 from .contracts import TilloInterface
+from .domain.brand.services import BrandService, BrandServiceAsync, TemplateService, TemplateServiceAsync
 from .domain.float.services import FloatServiceAsync, FloatService
 from .errors import AuthorizationErrorInvalidAPITokenOrSecret
 from .http_client import AsyncHttpClient, HttpClient
@@ -23,10 +24,10 @@ class Tillo(TilloInterface):
     """
 
     def __init__(
-        self,
-        api_key: str,
-        secret: str,
-        options: Optional[dict] = None,
+            self,
+            api_key: str,
+            secret: str,
+            options: Optional[dict] = None,
     ):
         if api_key is None or secret is None:
             raise AuthorizationErrorInvalidAPITokenOrSecret()
@@ -39,6 +40,10 @@ class Tillo(TilloInterface):
 
         self._floats_async: FloatServiceAsync | None = None
         self._floats: FloatService | None = None
+        self._brands: BrandService | None = None
+        self._brands_async: BrandServiceAsync | None = None
+        self._brand_templates: TemplateService | None = None
+        self._brand_templates_async: TemplateServiceAsync | None = None
 
     @property
     def floats_async(self) -> FloatServiceAsync:
@@ -64,45 +69,92 @@ class Tillo(TilloInterface):
 
         return self._floats
 
-    def brand(self):
+    @property
+    def brands(self) -> BrandService:
         """Get the brand service instance.
 
         Returns:
             BrandService: Service for managing brand-related operations.
         """
-        pass
+        if self._brands is None:
+            self._brands = BrandService(client=self.__http_client)
 
-    def template(self):
+        return self._brands
+
+    @property
+    def brands_async(self) -> BrandServiceAsync:
+        """Get the brand service instance.
+
+        Returns:
+            BrandService: Service for managing brand-related operations.
+        """
+        if self._brands_async is None:
+            self._brands_async = BrandServiceAsync(client=self.__async_http_client)
+
+        return self._brands_async
+
+    @property
+    def templates(self) -> TemplateService:
         """Get the template service instance.
 
         Returns:
             TemplateService: Service for managing brand template-related operations.
         """
-        pass
+        if self._brand_templates is None:
+            self._brand_templates = TemplateService(client=self.__http_client)
+
+        return self._brand_templates
+
+    @property
+    def templates_async(self) -> TemplateServiceAsync:
+        """Get the template service instance.
+
+        Returns:
+            TemplateServiceAsync: Service for managing brand template-related operations.
+        """
+        if self._brand_templates_async is None:
+            self._brand_templates_async = TemplateServiceAsync(client=self.__async_http_client)
+
+        return self._brand_templates_async
 
     def digital_card(self):
         """Get the digital card service instance.
+        
+        Note: This feature is not yet implemented.
 
         Returns:
             IssueDigitalCodeService: Service for managing digital card operations.
+            
+        Raises:
+            NotImplementedError: This feature is not yet implemented.
         """
-        pass
+        raise NotImplementedError("Digital card service is not yet implemented")
 
     def physical_card(self):
         """Get the physical card service instance.
+        
+        Note: This feature is not yet implemented.
 
         Returns:
             PhysicalGiftCardsService: Service for managing physical gift card operations.
+            
+        Raises:
+            NotImplementedError: This feature is not yet implemented.
         """
-        pass
+        raise NotImplementedError("Physical card service is not yet implemented")
 
     def webhook(self):
         """Get the webhook service instance.
+        
+        Note: This feature is not yet implemented.
 
         Returns:
             WebhookService: Service for managing webhook operations.
+            
+        Raises:
+            NotImplementedError: This feature is not yet implemented.
         """
-        pass
+        raise NotImplementedError("Webhook service is not yet implemented")
 
     def __get_async_client(self) -> AsyncHttpClient:
         """Create and return an asynchronous HTTP client.

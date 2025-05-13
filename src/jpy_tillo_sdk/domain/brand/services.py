@@ -1,56 +1,110 @@
+import logging
 from typing import Optional, Any
 
 from .endpoints import BrandEndpoint, TemplateListEndpoint, TemplateEndpoint
 from ...http_client import HttpClient, AsyncHttpClient
 
+logger = logging.getLogger("tillo.brand_services")
+
 
 class BrandService:
-    @staticmethod
-    def get_available_brands(
-        client: HttpClient,
-        query_params: Optional[BrandEndpoint.QueryParams] = None,
-    ) -> Any:
-        endpoint = BrandEndpoint(query=query_params or {})
-        return client.request(endpoint=endpoint)
+    def __init__(
+            self,
+            *,
+            client: HttpClient
+    ):
+        """Initialize the float service with an HTTP client.
 
-    @staticmethod
-    async def get_available_brands_async(
-        client: AsyncHttpClient,
-        query_params: Optional[BrandEndpoint.QueryParams] = None,
+        Args:
+            client (HttpClient): The HTTP client instance for making requests
+        """
+        self.client = client
+        logger.debug("Initialized BrandService with HTTP client")
+
+    def get_available_brands(
+            self,
+            query_params: Optional[BrandEndpoint.QueryParams] = None,
     ) -> Any:
         endpoint = BrandEndpoint(query=query_params or {})
-        return await client.request(endpoint=endpoint)
+
+        return self.client.request(endpoint=endpoint)
+
+
+class BrandServiceAsync():
+    def __init__(
+            self,
+            *,
+            client: AsyncHttpClient
+    ):
+        """Initialize the float service with an HTTP client.
+
+        Args:
+            client (AsyncHttpClient): The HTTP client instance for making requests
+        """
+        self.client = client
+        logger.debug("Initialized BrandServiceAsync with async HTTP client")
+
+    async def get_available_brands(
+            self,
+            query_params: Optional[BrandEndpoint.QueryParams] = None,
+    ) -> Any:
+        endpoint = BrandEndpoint(query=query_params or {})
+        return await self.client.request(endpoint=endpoint)
 
 
 class TemplateService:
-    @staticmethod
+    def __init__(
+            self,
+            *,
+            client: HttpClient
+    ):
+        """Initialize the float service with an HTTP client.
+
+        Args:
+            client (HttpClient): The HTTP client instance for making requests
+        """
+        self.client = client
+        logger.debug("Initialized TemplateService with HTTP client")
+
     def get_brand_templates(
-        client: HttpClient,
-        query_params: Optional[TemplateListEndpoint.QueryParams] = None,
+            self,
+            query_params: Optional[TemplateListEndpoint.QueryParams] = None,
     ) -> Any:
         endpoint = TemplateListEndpoint(query_params or {})
-        return client.request(endpoint=endpoint)
+        return self.client.request(endpoint=endpoint)
 
-    @staticmethod
-    async def get_brand_templates_async(
-        client: AsyncHttpClient,
-        query_params: Optional[TemplateListEndpoint.QueryParams] = None,
-    ) -> Any:
-        endpoint = TemplateListEndpoint(query_params or {})
-        return await client.request(endpoint=endpoint)
-
-    @staticmethod
     def download_brand_template(
-        client: HttpClient,
-        query_params: Optional[TemplateEndpoint.QueryParams] = None,
+            self,
+            query_params: Optional[TemplateEndpoint.QueryParams] = None,
     ) -> Any:
         endpoint = TemplateEndpoint(query_params or {})
-        return client.request(endpoint=endpoint)
+        return self.client.request(endpoint=endpoint)
 
-    @staticmethod
-    async def download_brand_template_async(
-        client: AsyncHttpClient,
-        query_params: Optional[TemplateEndpoint.QueryParams] = None,
+
+class TemplateServiceAsync:
+    def __init__(
+            self,
+            *,
+            client: AsyncHttpClient
+    ):
+        """Initialize the float service with an HTTP client.
+
+        Args:
+            client (AsyncHttpClient): The HTTP client instance for making requests
+        """
+        self.client = client
+        logger.debug("Initialized TemplateServiceAsync with HTTP client")
+
+    async def download_brand_template(
+            self,
+            query_params: Optional[TemplateEndpoint.QueryParams] = None,
     ) -> Any:
         endpoint = TemplateEndpoint(query_params or {})
-        return await client.request(endpoint=endpoint)
+        return await self.client.request(endpoint=endpoint)
+
+    async def get_brand_templates(
+            self,
+            query_params: Optional[TemplateListEndpoint.QueryParams] = None,
+    ) -> Any:
+        endpoint = TemplateListEndpoint(query_params or {})
+        return await self.client.request(endpoint=endpoint)

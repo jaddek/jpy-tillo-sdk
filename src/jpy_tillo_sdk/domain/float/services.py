@@ -200,7 +200,7 @@ class FloatServiceAsync:
         self.client = client
         logger.debug("Initialized FloatServiceAsync with HTTP client")
 
-    async def check_floats_async(
+    async def check_floats(
         self,
         query_params: Optional[CheckFloatsEndpoint.QueryParams] = None,
     ) -> Response:
@@ -219,11 +219,11 @@ class FloatServiceAsync:
         Example:
             ```python
             # Check all floats
-            response = await float_service.check_floats_async()
+            response = await float_service.check_floats()
 
             # Check floats with specific currency
             params = CheckFloatsEndpoint.QueryParams(currency="USD")
-            response = await float_service.check_floats_async(query_params=params)
+            response = await float_service.check_floats(query_params=params)
             ```
         """
         logger.info("Checking float balances asynchronously")
@@ -250,7 +250,7 @@ class FloatServiceAsync:
 
         return response
 
-    async def request_payment_transfer_async(
+    async def request_payment_transfer(
         self, body: RequestPaymentTransferEndpoint.RequestBody
     ) -> Response:
         """Request a payment transfer between floats asynchronously.

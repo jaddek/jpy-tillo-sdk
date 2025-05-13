@@ -1,10 +1,7 @@
 import asyncio
 
-from jpy_tillo_sdk.domain.brand.services import BrandService
-from jpy_tillo_sdk.http_client_factory import (
-    create_client_async,
-    create_client,
-)
+from jpy_tillo_sdk import tillo
+from jpy_tillo_sdk.domain.brand.factory import create_brand_template_list_query_params
 
 TILLO_HOST = ""
 TILLO_API_KEY = ""
@@ -13,9 +10,9 @@ TILLO_HTTP_CLIENT_OPTIONS = {}
 
 
 def get_brand_templates():
-    sync_client = create_client(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
-
-    response = BrandService.get_brand_templates(sync_client)
+    client = tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
+    params = create_brand_template_list_query_params()
+    response = client.templates.get_brand_templates(params)
 
     print(response.text)
 
@@ -24,11 +21,9 @@ get_brand_templates()
 
 
 async def get_brand_templates_async():
-    async_client = create_client_async(
-        TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS
-    )
-
-    response = await BrandService.get_brand_templates_async(async_client)
+    client = tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
+    params = create_brand_template_list_query_params()
+    response = await client.templates_async.get_brand_templates(params)
 
     print(response.text)
 

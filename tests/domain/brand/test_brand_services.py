@@ -6,7 +6,12 @@ from jpy_tillo_sdk.domain.brand.endpoints import (
     TemplateListEndpoint,
     TemplateEndpoint,
 )
-from jpy_tillo_sdk.domain.brand.services import BrandService, TemplateService, BrandServiceAsync, TemplateServiceAsync
+from jpy_tillo_sdk.domain.brand.services import (
+    BrandService,
+    TemplateService,
+    BrandServiceAsync,
+    TemplateServiceAsync,
+)
 
 
 class TestBrandAssetsService:
@@ -48,7 +53,7 @@ class TestBrandAssetsService:
         assert isinstance(response, Response)
 
     @pytest.mark.asyncio
-    async def test_download_brand_template(self, mock_async_http_client):
+    async def test_download_brand_template_async(self, mock_async_http_client):
         service = TemplateServiceAsync(client=mock_async_http_client)
         response = await service.download_brand_template()
 
@@ -65,10 +70,7 @@ class TestBrandAssetsService:
     ],
 )
 def test_service_methods_endpoint_types(
-        service,
-        method_name,
-        endpoint_class,
-        mock_http_client
+    service, method_name, endpoint_class, mock_http_client
 ):
     instance = service(client=mock_http_client)
 
@@ -88,10 +90,7 @@ def test_service_methods_endpoint_types(
     ],
 )
 async def test_service_methods_endpoint_types_async(
-        service,
-        method_name,
-        endpoint_class,
-        mock_async_http_client
+    service, method_name, endpoint_class, mock_async_http_client
 ):
     instance = service(client=mock_async_http_client)
 

@@ -1,7 +1,12 @@
 from typing import Optional
 
 from .contracts import TilloInterface
-from .domain.brand.services import BrandService, BrandServiceAsync, TemplateService, TemplateServiceAsync
+from .domain.brand.services import (
+    BrandService,
+    BrandServiceAsync,
+    TemplateService,
+    TemplateServiceAsync,
+)
 from .domain.float.services import FloatServiceAsync, FloatService
 from .errors import AuthorizationErrorInvalidAPITokenOrSecret
 from .http_client import AsyncHttpClient, HttpClient
@@ -24,10 +29,10 @@ class Tillo(TilloInterface):
     """
 
     def __init__(
-            self,
-            api_key: str,
-            secret: str,
-            options: Optional[dict] = None,
+        self,
+        api_key: str,
+        secret: str,
+        options: Optional[dict] = None,
     ):
         if api_key is None or secret is None:
             raise AuthorizationErrorInvalidAPITokenOrSecret()
@@ -113,18 +118,20 @@ class Tillo(TilloInterface):
             TemplateServiceAsync: Service for managing brand template-related operations.
         """
         if self._brand_templates_async is None:
-            self._brand_templates_async = TemplateServiceAsync(client=self.__async_http_client)
+            self._brand_templates_async = TemplateServiceAsync(
+                client=self.__async_http_client
+            )
 
         return self._brand_templates_async
 
     def digital_card(self):
         """Get the digital card service instance.
-        
+
         Note: This feature is not yet implemented.
 
         Returns:
             IssueDigitalCodeService: Service for managing digital card operations.
-            
+
         Raises:
             NotImplementedError: This feature is not yet implemented.
         """
@@ -132,12 +139,12 @@ class Tillo(TilloInterface):
 
     def physical_card(self):
         """Get the physical card service instance.
-        
+
         Note: This feature is not yet implemented.
 
         Returns:
             PhysicalGiftCardsService: Service for managing physical gift card operations.
-            
+
         Raises:
             NotImplementedError: This feature is not yet implemented.
         """
@@ -145,12 +152,12 @@ class Tillo(TilloInterface):
 
     def webhook(self):
         """Get the webhook service instance.
-        
+
         Note: This feature is not yet implemented.
 
         Returns:
             WebhookService: Service for managing webhook operations.
-            
+
         Raises:
             NotImplementedError: This feature is not yet implemented.
         """

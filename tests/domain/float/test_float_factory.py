@@ -24,7 +24,7 @@ def test_create_payment_transfer_request():
         amount="100",
         payment_reference="ref",
         finance_email="finance_email",
-        transfer_float=""
+        transfer_float="",
     )
 
     assert isinstance(request, RequestPaymentTransferEndpoint.RequestBody)

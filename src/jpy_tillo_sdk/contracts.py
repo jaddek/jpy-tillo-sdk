@@ -294,6 +294,22 @@ class TilloInterface(ABC):
         pass
 
     @abstractmethod
+    def digital_card_async(self):
+        """Get the digital card service instance.
+
+        Returns:
+            IssueDigitalCodeServiceAsync: Service for managing digital card operations.
+
+        Example:
+            ```python
+            digital_card_service = tillo.digital_card_async()
+            card = digital_card_service.issue_card(amount=50.00)
+            ```
+        """
+        logger.debug("Getting digital card service instance")
+        pass
+
+    @abstractmethod
     def physical_card(self):
         """Get the physical card service instance.
 

@@ -8,6 +8,10 @@ from .domain.brand.services import (
     TemplateServiceAsync,
 )
 from .domain.float.services import FloatServiceAsync, FloatService
+from .domain.digital_card.services import (
+    IssueDigitalCodeService,
+    IssueDigitalCodeService,
+)
 from .errors import AuthorizationErrorInvalidAPITokenOrSecret
 from .http_client import AsyncHttpClient, HttpClient
 from .http_client_factory import create_client_async, create_client
@@ -43,12 +47,14 @@ class Tillo(TilloInterface):
         self.__async_http_client = self.__get_async_client()
         self.__http_client = self.__get_client()
 
-        self._floats_async: FloatServiceAsync | None = None
-        self._floats: FloatService | None = None
-        self._brands: BrandService | None = None
-        self._brands_async: BrandServiceAsync | None = None
-        self._brand_templates: TemplateService | None = None
-        self._brand_templates_async: TemplateServiceAsync | None = None
+        self.__floats_async: FloatServiceAsync | None = None
+        self.__floats: FloatService | None = None
+        self.__brands: BrandService | None = None
+        self.__brands_async: BrandServiceAsync | None = None
+        self.__brand_templates: TemplateService | None = None
+        self.__brand_templates_async: TemplateServiceAsync | None = None
+        self.__digital_card: IssueDigitalCodeService | None = None
+        self.__digital_card_async: IssueDigitalCodeServiceAsync | None = None
 
     @property
     def floats_async(self) -> FloatServiceAsync:
@@ -57,10 +63,10 @@ class Tillo(TilloInterface):
         Returns:
             FloatServiceAsync: Service for managing float operations asynchronously.
         """
-        if self._floats_async is None:
-            self._floats_async = FloatServiceAsync(client=self.__async_http_client)
+        if self.__floats_async is None:
+            self.__floats_async = FloatServiceAsync(client=self.__async_http_client)
 
-        return self._floats_async
+        return self.__floats_async
 
     @property
     def floats(self) -> FloatService | None:
@@ -69,10 +75,10 @@ class Tillo(TilloInterface):
         Returns:
             FloatService: Service for managing float operations asynchronously.
         """
-        if self._floats is None:
-            self._floats = FloatService(client=self.__http_client)
+        if self.__floats is None:
+            self.__floats = FloatService(client=self.__http_client)
 
-        return self._floats
+        return self.__floats
 
     @property
     def brands(self) -> BrandService:
@@ -81,10 +87,10 @@ class Tillo(TilloInterface):
         Returns:
             BrandService: Service for managing brand-related operations.
         """
-        if self._brands is None:
-            self._brands = BrandService(client=self.__http_client)
+        if self.__brands is None:
+            self.__brands = BrandService(client=self.__http_client)
 
-        return self._brands
+        return self.__brands
 
     @property
     def brands_async(self) -> BrandServiceAsync:
@@ -93,10 +99,10 @@ class Tillo(TilloInterface):
         Returns:
             BrandService: Service for managing brand-related operations.
         """
-        if self._brands_async is None:
-            self._brands_async = BrandServiceAsync(client=self.__async_http_client)
+        if self.__brands_async is None:
+            self.__brands_async = BrandServiceAsync(client=self.__async_http_client)
 
-        return self._brands_async
+        return self.__brands_async
 
     @property
     def templates(self) -> TemplateService:
@@ -105,10 +111,12 @@ class Tillo(TilloInterface):
         Returns:
             TemplateService: Service for managing brand template-related operations.
         """
-        if self._brand_templates is None:
-            self._brand_templates = TemplateService(client=self.__http_client)
+        if self.__brand_templates is None:
+            self.__brand_templates = TemplateService(
+                client=self.__http_client
+            )
 
-        return self._brand_templates
+        return self.__brand_templates
 
     @property
     def templates_async(self) -> TemplateServiceAsync:
@@ -117,25 +125,46 @@ class Tillo(TilloInterface):
         Returns:
             TemplateServiceAsync: Service for managing brand template-related operations.
         """
-        if self._brand_templates_async is None:
-            self._brand_templates_async = TemplateServiceAsync(
+        if self.__brand_templates_async is None:
+            self.__brand_templates_async = TemplateServiceAsync(
                 client=self.__async_http_client
             )
 
-        return self._brand_templates_async
+        return self.__brand_templates_async
 
-    def digital_card(self):
+    @property
+    def digital_card(self) -> IssueDigitalCodeService:
         """Get the digital card service instance.
 
         Note: This feature is not yet implemented.
 
         Returns:
             IssueDigitalCodeService: Service for managing digital card operations.
-
-        Raises:
-            NotImplementedError: This feature is not yet implemented.
         """
-        raise NotImplementedError("Digital card service is not yet implemented")
+        if self.__digital_card is None:
+            self.__digital_card = IssueDigitalCodeService(
+                client=self.__http_client
+            )
+
+        return self.__digital_card
+
+    @property
+    def digital_card_async(self):
+        """Get the digital card service instance asynchronously.
+
+        Note: This feature is not yet implemented.
+
+        Returns:
+            IssueDigitalCodeServiceAsync: Service for managing digital card operations.
+
+        """
+        if self.__digital_card_async is None:
+            self.__digital_card_async = IssueDigitalCodeServiceAsync(
+                client=self.__async_http_client
+            )
+
+        return self.__digital_card_async
+
 
     def physical_card(self):
         """Get the physical card service instance.

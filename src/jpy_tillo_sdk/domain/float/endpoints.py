@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from ...endpoint import QP, AbstractBodyRequest, Endpoint
 from ...enums import Currency
@@ -12,7 +11,7 @@ class CheckFloatsEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class QueryParams(QP):
-        currency: Optional[Currency] = None
+        currency: Currency | None = None
 
         def get_sign_attrs(self) -> tuple:
             return ()
@@ -31,21 +30,21 @@ class RequestPaymentTransferEndpoint(Endpoint):
     class RequestBody(AbstractBodyRequest):
         @dataclass(frozen=True)
         class ProformaInvoiceParams:
-            company_name: Optional[str] = None
-            address_line_1: Optional[str] = None
-            address_line_2: Optional[str] = None
-            address_line_3: Optional[str] = None
-            address_line_4: Optional[str] = None
-            city: Optional[str] = None
-            post_code: Optional[str] = None
-            county: Optional[str] = None
-            country: Optional[str] = None
+            company_name: str | None = None
+            address_line_1: str | None = None
+            address_line_2: str | None = None
+            address_line_3: str | None = None
+            address_line_4: str | None = None
+            city: str | None = None
+            post_code: str | None = None
+            county: str | None = None
+            country: str | None = None
 
         currency: Currency
         amount: str
         payment_reference: str
         finance_email: str
-        proforma_invoice: Optional[ProformaInvoiceParams] = None
+        proforma_invoice: ProformaInvoiceParams | None = None
         float: str = Currency.UNIVERSAL_FLOAT.value
 
         def get_sign_attrs(self) -> tuple:

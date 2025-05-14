@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional, Union
 
 from ...endpoint import QP, AbstractBodyRequest, Endpoint
 from .models import FaceValue
@@ -14,64 +13,63 @@ class IssueDigitalCodeEndpoint(Endpoint):
     class RequestBody(AbstractBodyRequest):
         @dataclass(frozen=True)
         class Personalisation:
-            to_name: Optional[str] = None
-            from_name: Optional[str] = None
-            message: Optional[str] = None
+            to_name: str | None = None
+            from_name: str | None = None
+            message: str | None = None
             template: str = "standard"
 
         @dataclass(frozen=True)
         class PersonalisationExtended(Personalisation):
-            email_message: Optional[str] = None
-            redemption_message: Optional[str] = None
-            carrier_message: Optional[str] = None
+            email_message: str | None = None
+            redemption_message: str | None = None
+            carrier_message: str | None = None
 
         @dataclass(frozen=True)
         class FulfilmentParameters:
-            to_name: Optional[str] = None
-            to_email: Optional[str] = None
-            from_name: Optional[str] = None
-            from_email: Optional[str] = None
-            subject: Optional[str] = None
+            to_name: str | None = None
+            to_email: str | None = None
+            from_name: str | None = None
+            from_email: str | None = None
+            subject: str | None = None
 
         @dataclass(frozen=True)
         class FulfilmentParametersForRewardPassUsingEmail:
-            to_name: Optional[str] = None
-            to_email: Optional[str] = None
-            from_name: Optional[str] = None
-            from_email: Optional[str] = None
-            subject: Optional[str] = None
+            to_name: str | None = None
+            to_email: str | None = None
+            from_name: str | None = None
+            from_email: str | None = None
+            subject: str | None = None
             language: str = "en"
             customer_id: str = ""
-            to_first_name: Optional[str] = None
-            to_last_name: Optional[str] = None
+            to_first_name: str | None = None
+            to_last_name: str | None = None
 
         @dataclass(frozen=True)
         class FulfilmentParametersForRewardPassUsingUrl:
-            to_name: Optional[str] = None
-            to_first_name: Optional[str] = None
-            to_last_name: Optional[str] = None
-            address_1: Optional[str] = None
-            address_2: Optional[str] = None
-            city: Optional[str] = None
-            postal_code: Optional[str] = None
-            country: Optional[str] = None
-            language: Optional[str] = None
-            customer_id: Optional[str] = None
+            to_name: str | None = None
+            to_first_name: str | None = None
+            to_last_name: str | None = None
+            address_1: str | None = None
+            address_2: str | None = None
+            city: str | None = None
+            postal_code: str | None = None
+            country: str | None = None
+            language: str | None = None
+            customer_id: str | None = None
 
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        delivery_method: Optional[str] = None
-        fulfilment_by: Optional[str] = None
-        fulfilment_parameters: Optional[
-            Union[
-                FulfilmentParameters,
-                FulfilmentParametersForRewardPassUsingEmail,
-                FulfilmentParametersForRewardPassUsingUrl,
-            ]
-        ] = None
-        sector: Optional[str] = None
-        personalisation: Optional[Union[Personalisation, PersonalisationExtended]] = None
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        delivery_method: str | None = None
+        fulfilment_by: str | None = None
+        fulfilment_parameters: (
+            FulfilmentParameters
+            | FulfilmentParametersForRewardPassUsingEmail
+            | FulfilmentParametersForRewardPassUsingUrl
+            | None
+        ) = None
+        sector: str | None = None
+        personalisation: Personalisation | PersonalisationExtended | None = None
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
@@ -92,12 +90,12 @@ class TopUpDigitalCodeEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        code: Optional[str] = None
-        pin: Optional[str] = None
-        sector: Optional[str] = None
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        code: str | None = None
+        pin: str | None = None
+        sector: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
@@ -135,12 +133,12 @@ class CancelDigitalCodeEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        original_client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        code: Optional[str] = None
-        sector: Optional[str] = None
+        client_request_id: str | None = None
+        original_client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        code: str | None = None
+        sector: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
@@ -161,12 +159,12 @@ class CancelDigitalUrlEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        original_client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        url: Optional[str] = None
-        sector: Optional[str] = None
+        client_request_id: str | None = None
+        original_client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        url: str | None = None
+        sector: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
@@ -187,11 +185,11 @@ class ReverseDigitalCodeEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        original_client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        sector: Optional[str] = None
+        client_request_id: str | None = None
+        original_client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        sector: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
@@ -216,10 +214,10 @@ class CheckBalanceEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        reference: Optional[str] = None
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        reference: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
@@ -241,34 +239,34 @@ class OrderDigitalCodeAsyncEndpoint(Endpoint):
     class RequestBody(AbstractBodyRequest):
         @dataclass(frozen=True)
         class Personalisation:
-            to_name: Optional[str] = None
-            from_name: Optional[str] = None
-            message: Optional[str] = None
-            template: Optional[str] = "standard"
-            email_message: Optional[str] = None
-            redemption_message: Optional[str] = None
-            carrier_message: Optional[str] = None
+            to_name: str | None = None
+            from_name: str | None = None
+            message: str | None = None
+            template: str | None = "standard"
+            email_message: str | None = None
+            redemption_message: str | None = None
+            carrier_message: str | None = None
 
         @dataclass(frozen=True)
         class FulfilmentParameters:
-            to_name: Optional[str] = None
-            to_email: Optional[str] = None
-            from_name: Optional[str] = None
-            from_email: Optional[str] = None
-            subject: Optional[str] = None
+            to_name: str | None = None
+            to_email: str | None = None
+            from_name: str | None = None
+            from_email: str | None = None
+            subject: str | None = None
             language: str = "en"
-            customer_id: Optional[str] = ""
-            to_first_name: Optional[str] = None
-            to_last_name: Optional[str] = None
+            customer_id: str | None = ""
+            to_first_name: str | None = None
+            to_last_name: str | None = None
 
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        delivery_method: Optional[str] = None
-        fulfilment_by: Optional[str] = None
-        fulfilment_parameters: Optional[FulfilmentParameters] = field(default=None)
-        sector: Optional[str] = None
-        personalisation: Optional[Personalisation] = None
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        delivery_method: str | None = None
+        fulfilment_by: str | None = None
+        fulfilment_parameters: FulfilmentParameters | None = field(default=None)
+        sector: str | None = None
+        personalisation: Personalisation | None = None
 
         def get_sign_attrs(self) -> tuple:
             if self.client_request_id and self.brand and self.face_value:
@@ -289,7 +287,7 @@ class CheckDigitalOrderStatusAsyncEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class QueryParams(QP):
-        reference: Optional[str] = None
+        reference: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             return ()

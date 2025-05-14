@@ -1,5 +1,3 @@
-from typing import Optional
-
 from jpy_tillo_sdk.domain.float.endpoints import (
     CheckFloatsEndpoint,
     RequestPaymentTransferEndpoint,
@@ -16,7 +14,7 @@ def create_payment_transfer_request(
     currency: Currency,
     amount: str,
     finance_email: str,
-    proforma_invoice: Optional[RequestPaymentTransferEndpoint.RequestBody.ProformaInvoiceParams] = None,
+    proforma_invoice: RequestPaymentTransferEndpoint.RequestBody.ProformaInvoiceParams | None = None,
     payment_reference: str = "OUR_REF",
 ):
     return RequestPaymentTransferEndpoint.RequestBody(

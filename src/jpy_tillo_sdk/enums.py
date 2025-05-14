@@ -87,8 +87,8 @@ class DeliveryMethod(Enum):
         to the end user and may have different security implications.
     """
 
-    CODE = ("code",)
-    URL = ("url",)
+    CODE = "code"
+    URL = "url"
     EXPIRING_URL = "expiring-url"
 
 

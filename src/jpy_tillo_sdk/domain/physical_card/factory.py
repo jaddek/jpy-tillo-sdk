@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from ...enums import Currency, Sector
 from .endpoints import (
@@ -125,12 +125,12 @@ def create_order_new_card_request(
     brand: str,
     amount: str,
     currency: Currency = Currency.EUR,
-    fulfilment_parameters: Optional[OrderPhysicalCardEndpoint.RequestBody.FulfilmentParameters] = None,
-    personalisation: Optional[OrderPhysicalCardEndpoint.RequestBody.Personalisation] = None,
+    fulfilment_parameters: OrderPhysicalCardEndpoint.RequestBody.FulfilmentParameters | None = None,
+    personalisation: OrderPhysicalCardEndpoint.RequestBody.Personalisation | None = None,
     shipping_method: str = "standard",
     fulfilment_by: str = "rewardcloud",
     sector: Sector = Sector.GIFT_CARD_MALL,
-    tags: Optional[List[str]] = None,
+    tags: List[str] | None = None,
 ) -> OrderPhysicalCardEndpoint.RequestBody:
     return OrderPhysicalCardEndpoint.RequestBody(
         client_request_id=client_request_id,

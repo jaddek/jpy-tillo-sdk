@@ -21,7 +21,6 @@ Example:
 """
 
 import logging
-from typing import Optional
 
 from httpx import Response
 
@@ -68,7 +67,7 @@ class FloatService(FloatServiceInterface):
 
     def check_floats(
         self,
-        query_params: Optional[CheckFloatsEndpoint.QueryParams] = None,
+        query_params: CheckFloatsEndpoint.QueryParams | None = None,
     ) -> Response:
         """Check float balances for the account.
 
@@ -76,7 +75,7 @@ class FloatService(FloatServiceInterface):
         optionally filtered by the provided query parameters.
 
         Args:
-            query_params (Optional[CheckFloatsEndpoint.QueryParams]): Optional query
+            query_params (CheckFloatsEndpoint.QueryParams | None): Optional query
                 parameters to filter the float check results
 
         Returns:
@@ -201,7 +200,7 @@ class FloatServiceAsync(FloatServiceAsyncInterface):
 
     async def check_floats(
         self,
-        query_params: Optional[CheckFloatsEndpoint.QueryParams] = None,
+        query_params: CheckFloatsEndpoint.QueryParams | None = None,
     ) -> Response:
         """Check float balances for the account asynchronously.
 
@@ -209,7 +208,7 @@ class FloatServiceAsync(FloatServiceAsyncInterface):
         optionally filtered by the provided query parameters.
 
         Args:
-            query_params (Optional[CheckFloatsEndpoint.QueryParams]): Optional query
+            query_params (CheckFloatsEndpoint.QueryParams | None): Optional query
                 parameters to filter the float check results
 
         Returns:

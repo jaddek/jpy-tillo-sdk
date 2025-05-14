@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from ...endpoint import QP, Endpoint
 
@@ -11,11 +10,11 @@ class BrandEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class QueryParams(QP):
-        detail: Optional[bool] = None
-        currency: Optional[str] = None
-        country: Optional[str] = None
-        brand: Optional[str] = None
-        category: Optional[str] = None
+        detail: bool | None = None
+        currency: str | None = None
+        country: str | None = None
+        brand: str | None = None
+        category: str | None = None
 
     @property
     def query(self) -> QueryParams | None:
@@ -29,7 +28,7 @@ class TemplateListEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class QueryParams(QP):
-        brand: Optional[str] = None
+        brand: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             return (self.brand,) if self.brand is not None else ()
@@ -46,8 +45,8 @@ class TemplateEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class QueryParams(QP):
-        brand: Optional[str] = None
-        template: Optional[str] = None
+        brand: str | None = None
+        template: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             return (self.brand,) if self.brand else ()

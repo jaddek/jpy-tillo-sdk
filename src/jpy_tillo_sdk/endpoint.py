@@ -33,7 +33,7 @@ Example:
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
-from typing import Any, Optional
+from typing import Any
 
 logger = logging.getLogger("tillo.endpoint")
 
@@ -106,33 +106,33 @@ class Endpoint:
     for request authentication.
 
     Attributes:
-        _method (Optional[str]): HTTP method (GET, POST, etc.)
-        _endpoint (Optional[str]): API endpoint path
-        _route (Optional[str]): Full API route including base URL
-        _query (Optional[QP]): Query parameters
-        _body (Optional[AbstractBodyRequest]): Request body
-        _sign_attrs (Optional[tuple]): Attributes for signature generation
+        _method (str | None): HTTP method (GET, POST, etc.)
+        _endpoint (str | None): API endpoint path
+        _route (str | None): Full API route including base URL
+        _query (QP | None): Query parameters
+        _body (AbstractBodyRequest | None): Request body
+        _sign_attrs (tuple | None): Attributes for signature generation
     """
 
-    _method: Optional[str] = None
-    _endpoint: Optional[str] = None
-    _route: Optional[str] = None
-    _query: Optional[Any] = None
-    _body: Optional[AbstractBodyRequest] = None
+    _method: str | None = None
+    _endpoint: str | None = None
+    _route: str | None = None
+    _query: Any | None = None
+    _body: AbstractBodyRequest | None = None
     _sign_attrs = None
 
     def __init__(
         self,
-        query: Optional[Any] = None,
-        body: Optional[AbstractBodyRequest] = None,
-        sign_attrs: Optional[tuple] = None,
+        query: Any | None = None,
+        body: AbstractBodyRequest | None = None,
+        sign_attrs: tuple | None = None,
     ):
         """Initialize the endpoint with query parameters and request body.
 
         Args:
-            query (Optional[QP]): Query parameters for the request
-            body (Optional[AbstractBodyRequest]): Request body
-            sign_attrs (Optional[tuple]): Attributes for signature generation
+            query (QP | None): Query parameters for the request
+            body (AbstractBodyRequest | None): Request body
+            sign_attrs (tuple | None): Attributes for signature generation
         """
         if type(self) is Endpoint:
             raise TypeError("Endpoint is an abstract class and cannot be instantiated directly.")
@@ -156,7 +156,7 @@ class Endpoint:
         """Get the HTTP method for the endpoint.
 
         Returns:
-            Optional[str]: HTTP method (GET, POST, etc.)
+            str | None: HTTP method (GET, POST, etc.)
         """
         if self._method is None:
             raise RuntimeError("Endpoint _method has not been initialized.")
@@ -168,7 +168,7 @@ class Endpoint:
         """Get the API endpoint path.
 
         Returns:
-            Optional[str]: API endpoint path
+            str | None: API endpoint path
         """
         if self._endpoint is None:
             raise RuntimeError("Endpoint _endpoint has not been initialized.")
@@ -180,7 +180,7 @@ class Endpoint:
         """Get the full API route including base URL.
 
         Returns:
-            Optional[str]: Full API route
+            str | None: Full API route
         """
         if self._route is None:
             raise RuntimeError("Endpoint _route has not been initialized.")
@@ -192,7 +192,7 @@ class Endpoint:
         """Get the request body.
 
         Returns:
-            Optional[AbstractBodyRequest]: Request body or empty dict if None
+            AbstractBodyRequest | None: Request body or empty dict if None
         """
         return {} if self._body is None else self._body
 
@@ -207,11 +207,11 @@ class Endpoint:
         return has_body
 
     @property
-    def sign_attrs(self) -> Optional[tuple]:
+    def sign_attrs(self) -> tuple | None:
         """Get attributes for signature generation.
 
         Returns:
-            Optional[tuple]: Attributes for signature generation
+            tuple | None: Attributes for signature generation
         """
         return self._sign_attrs
 

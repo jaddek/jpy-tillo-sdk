@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from .contracts import (
     FloatServiceAsyncInterface,
@@ -33,7 +33,7 @@ class Tillo(TilloInterface):
     Args:
         api_key (str): The API key for authentication.
         secret (str): The secret key for authentication.
-        options (Optional[dict]): Additional configuration options for the client.
+        options (dict | None): Additional configuration options for the client.
 
     Raises:
         AuthorizationErrorInvalidAPITokenOrSecret: If either api_key or secret is None.
@@ -43,7 +43,7 @@ class Tillo(TilloInterface):
         self,
         api_key: str,
         secret: str,
-        options: Optional[dict[str, Any]] = None,
+        options: dict[str, Any] | None = None,
     ):
         if api_key is None or secret is None:
             raise AuthorizationErrorInvalidAPITokenOrSecret()

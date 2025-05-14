@@ -28,7 +28,7 @@ Note:
 
 import logging
 from abc import abstractmethod
-from typing import Any, Optional
+from typing import Any
 
 from httpx import AsyncClient, Client, Response
 
@@ -114,7 +114,7 @@ class AbstractClient:
         Args:
             method (str): HTTP method (GET, POST, etc.)
             endpoint (str): API endpoint path
-            sign_attrs (Optional[tuple]): Attributes to include in signature.
+            sign_attrs (tuple | None): Attributes to include in signature.
                 These are used to generate a unique signature for the request.
 
         Returns:
@@ -233,7 +233,7 @@ class AsyncHttpClient(AbstractClient):
         Note:
             This method should be called with await in an async context.
         """
-        json: Optional[dict] = None
+        json: dict | None = None
 
         if isinstance(endpoint.body, AbstractBodyRequest):
             logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)
@@ -327,7 +327,7 @@ class HttpClient(AbstractClient):
             InvalidIpAddress: If the response code is 201
             Exception: For other HTTP or network errors
         """
-        json: Optional[dict] = None
+        json: dict | None = None
 
         if isinstance(endpoint.body, AbstractBodyRequest):
             logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)

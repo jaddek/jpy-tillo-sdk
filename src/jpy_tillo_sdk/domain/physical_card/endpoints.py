@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 
 from ...endpoint import AbstractBodyRequest, Endpoint
 from ...enums import Sector
@@ -13,12 +13,12 @@ class ActivatePhysicalCardEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        code: Optional[str] = None
-        pin: Optional[str] = None
-        sector: Optional[Sector] = Sector.GIFT_CARD_MALL
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        code: str | None = None
+        pin: str | None = None
+        sector: Sector | None = Sector.GIFT_CARD_MALL
 
         def get_sign_attrs(self) -> tuple:
             return (
@@ -36,14 +36,14 @@ class CancelActivatePhysicalCardEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        original_client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        code: Optional[str] = None
-        pin: Optional[str] = None
-        sector: Optional[Sector] = Sector.GIFT_CARD_MALL
-        tags: Optional[List[str]] = None
+        client_request_id: str | None = None
+        original_client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        code: str | None = None
+        pin: str | None = None
+        sector: Sector | None = Sector.GIFT_CARD_MALL
+        tags: List[str] | None = None
 
         def get_sign_attrs(self) -> tuple:
             return (
@@ -61,12 +61,12 @@ class CashOutOriginalTransactionPhysicalCardEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        original_client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        code: Optional[str] = None
-        pin: Optional[str] = None
-        sector: Optional[Sector] = Sector.GIFT_CARD_MALL
+        client_request_id: str | None = None
+        original_client_request_id: str | None = None
+        brand: str | None = None
+        code: str | None = None
+        pin: str | None = None
+        sector: Sector | None = Sector.GIFT_CARD_MALL
 
         def get_sign_attrs(self) -> tuple:
             return (
@@ -84,12 +84,12 @@ class TopUpPhysicalCardEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        code: Optional[str] = None
-        pin: Optional[str] = None
-        sector: Optional[Sector] = Sector.GIFT_CARD_MALL
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        code: str | None = None
+        pin: str | None = None
+        sector: Sector | None = Sector.GIFT_CARD_MALL
 
         def get_sign_attrs(self) -> tuple:
             return (
@@ -107,13 +107,13 @@ class CancelTopUpOnPhysicalCardEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        original_client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        code: Optional[str] = None
-        pin: Optional[str] = None
-        sector: Optional[Sector] = Sector.GIFT_CARD_MALL
+        client_request_id: str | None = None
+        original_client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        code: str | None = None
+        pin: str | None = None
+        sector: Sector | None = Sector.GIFT_CARD_MALL
 
 
 class OrderPhysicalCardEndpoint(Endpoint):
@@ -125,29 +125,29 @@ class OrderPhysicalCardEndpoint(Endpoint):
     class RequestBody(AbstractBodyRequest):
         @dataclass(frozen=True)
         class FulfilmentParameters:
-            to_name: Optional[str] = None
-            company_name: Optional[str] = None
-            address_1: Optional[str] = None
+            to_name: str | None = None
+            company_name: str | None = None
+            address_1: str | None = None
             address_2: str = ""
             address_3: str = ""
             address_4: str = ""
-            city: Optional[str] = None
-            postal_code: Optional[str] = None
-            country: Optional[str] = None
+            city: str | None = None
+            postal_code: str | None = None
+            country: str | None = None
 
         @dataclass(frozen=True)
         class Personalisation:
-            message: Optional[str] = None
+            message: str | None = None
 
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        shipping_method: Optional[str] = None
-        fulfilment_by: Optional[str] = None
-        fulfilment_parameters: Optional[FulfilmentParameters] = None
-        personalisation: Optional[Personalisation] = None
-        sector: Optional[Sector] = Sector.GIFT_CARD_MALL
-        tags: Optional[List[str]] = None
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        shipping_method: str | None = None
+        fulfilment_by: str | None = None
+        fulfilment_parameters: FulfilmentParameters | None = None
+        personalisation: Personalisation | None = None
+        sector: Sector | None = Sector.GIFT_CARD_MALL
+        tags: List[str] | None = None
 
         def get_sign_attrs(self) -> tuple:
             return (
@@ -165,7 +165,7 @@ class PhysicalCardOrderStatusEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        references: Optional[List[str]] = None
+        references: List[str] | None = None
 
 
 class FulfilPhysicalCardOrderEndpoint(Endpoint):
@@ -175,11 +175,11 @@ class FulfilPhysicalCardOrderEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        code: Optional[str] = None
-        reference: Optional[str] = None
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        code: str | None = None
+        reference: str | None = None
 
 
 class BalanceCheckPhysicalEndpoint(Endpoint):
@@ -189,12 +189,12 @@ class BalanceCheckPhysicalEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        client_request_id: Optional[str] = None
-        brand: Optional[str] = None
-        face_value: Optional[FaceValue] = None
-        code: Optional[str] = None
-        pin: Optional[str] = None
-        sector: Optional[Sector] = Sector.GIFT_CARD_MALL
+        client_request_id: str | None = None
+        brand: str | None = None
+        face_value: FaceValue | None = None
+        code: str | None = None
+        pin: str | None = None
+        sector: Sector | None = Sector.GIFT_CARD_MALL
 
         def get_sign_attrs(self) -> tuple:
             return (

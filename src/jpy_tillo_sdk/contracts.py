@@ -26,7 +26,7 @@ Example:
 import logging
 import uuid
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
 from httpx import Response
 
@@ -37,62 +37,62 @@ class IssueDigitalCodeServiceInterface(ABC):
     @abstractmethod
     def issue_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def order_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_digital_order(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def top_up_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ): ...
 
     @abstractmethod
     def cancel_digital_url(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def cancel_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def reverse_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_stock(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_balance(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
 
@@ -100,62 +100,62 @@ class IssueDigitalCodeServiceAsyncInterface(ABC):
     @abstractmethod
     async def issue_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def order_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_digital_order(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def top_up_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def cancel_digital_url(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def cancel_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_balance(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_stock(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def reverse_digital_code(
         self,
-        query_params: Optional[Any] = None,
-        body: Optional[Any] = None,
+        query_params: Any = None,
+        body: Any = None,
     ) -> Response: ...
 
 
@@ -163,13 +163,13 @@ class TemplateServiceInterface(ABC):
     @abstractmethod
     def download_brand_template(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def get_brand_templates(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
 
@@ -177,13 +177,13 @@ class TemplateServiceAsyncInterface(ABC):
     @abstractmethod
     async def download_brand_template(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def get_brand_templates(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
 
@@ -191,7 +191,7 @@ class FloatServiceAsyncInterface(ABC):
     @abstractmethod
     async def check_floats(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
 
@@ -199,7 +199,7 @@ class FloatServiceInterface(ABC):
     @abstractmethod
     def check_floats(
         self,
-        query_params: Optional[Any] = None,
+        query_params: Any = None,
     ) -> Response: ...
 
 

@@ -1,12 +1,12 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Union
+from typing import List
 
 from .enums import Types
 
 
 @dataclass(frozen=True)
 class Webhook:
-    type: Union[str, Types]
+    type: str | Types
     timestamp: str
     certificate: str
     version: int
@@ -15,14 +15,14 @@ class Webhook:
 
 @dataclass(frozen=True)
 class Status:
-    code: Optional[str] = None
-    reason: Optional[str] = None
+    code: str | None = None
+    reason: str | None = None
 
 
 @dataclass(frozen=True)
 class Brand:
-    name: Optional[str] = None
-    slug: Optional[str] = None
+    name: str | None = None
+    slug: str | None = None
     status: Status = field(default_factory=Status)
 
 

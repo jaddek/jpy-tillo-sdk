@@ -80,7 +80,7 @@ jobs:
         run: uv run black . --check
 
       - name: Run MyPy
-        run: uv run mypy ./src
+        run: uv run mypy ./src --strict --ignore-missing-imports --check-untyped-defs
 
       - name: Run Pytests
         run: uv run pytest tests
@@ -126,8 +126,8 @@ jobs:
           UV_PUBLISH_TOKEN: ${{ secrets.PP_TK }}
         run: |
           uv build
-          uv publish 
+          uv publish
 
       - name: Clean up
         run: |
-          rm -rf dist  
+          rm -rf dist

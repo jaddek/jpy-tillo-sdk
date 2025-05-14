@@ -23,7 +23,7 @@ uvr-black-format:
 	uv run black . --diff
 
 uvr-mypy:
-	uv run mypy src/
+	uv run mypy src/ --strict --ignore-missing-imports --check-untyped-defs
 
 help:
 	@echo "Run UV:"

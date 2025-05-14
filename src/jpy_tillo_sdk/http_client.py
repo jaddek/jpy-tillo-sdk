@@ -206,10 +206,7 @@ class AsyncHttpClient(AbstractClient):
         ```
     """
 
-    async def request(
-        self,
-        endpoint: Endpoint,
-    ) -> Response:
+    async def request(self, endpoint: Endpoint) -> Response:
         """Make an asynchronous HTTP request to the specified endpoint.
 
         This method handles the complete request lifecycle for asynchronous

@@ -73,7 +73,7 @@ class AbstractClient:
             The tillo_client_options are passed directly to the underlying HTTP client
             (httpx.Client or httpx.AsyncClient).
         """
-        self.tillo_client_options = tillo_client_options
+        self.tillo_client_options = tillo_client_options or {}
         self._signer = signer
         logger.debug("Initialized HTTP client with options: %s", tillo_client_options)
 
@@ -353,7 +353,7 @@ class HttpClient(AbstractClient):
         )
 
         try:
-            with Client(**self.tillo_client_options) as client:
+            with Client(**(self.tillo_client_options or {})) as client:
                 logger.debug(
                     "Sending sync request to %s with method %s",
                     endpoint.route,

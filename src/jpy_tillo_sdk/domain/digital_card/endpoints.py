@@ -23,7 +23,7 @@ class IssueDigitalCodeEndpoint(Endpoint):
         class PersonalisationExtended(Personalisation):
             email_message: Optional[str] = None
             redemption_message: Optional[str] = None
-            carrier_message: Optional[str] = (None,)
+            carrier_message: Optional[str] = None
 
         @dataclass(frozen=True)
         class FulfilmentParameters:
@@ -95,8 +95,8 @@ class TopUpDigitalCodeEndpoint(Endpoint):
         client_request_id: Optional[str] = None
         brand: Optional[str] = None
         face_value: Optional[FaceValue] = None
-        code: Optional[str] = (None,)
-        pin: Optional[str] = (None,)
+        code: Optional[str] = None
+        pin: Optional[str] = None
         sector: Optional[str] = None
 
         def get_sign_attrs(self) -> tuple:
@@ -118,7 +118,7 @@ class CheckStockEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class QueryParams(QP):
-        brand: str = None
+        brand: str | None = None
 
         def get_sign_attrs(self) -> tuple:
             return (self.brand,) if self.brand is not None else ()
@@ -139,7 +139,7 @@ class CancelDigitalCodeEndpoint(Endpoint):
         original_client_request_id: Optional[str] = None
         brand: Optional[str] = None
         face_value: Optional[FaceValue] = None
-        code: Optional[str] = (None,)
+        code: Optional[str] = None
         sector: Optional[str] = None
 
         def get_sign_attrs(self) -> tuple:
@@ -165,7 +165,7 @@ class CancelDigitalUrlEndpoint(Endpoint):
         original_client_request_id: Optional[str] = None
         brand: Optional[str] = None
         face_value: Optional[FaceValue] = None
-        url: Optional[str] = (None,)
+        url: Optional[str] = None
         sector: Optional[str] = None
 
         def get_sign_attrs(self) -> tuple:
@@ -244,10 +244,10 @@ class OrderDigitalCodeAsyncEndpoint(Endpoint):
             to_name: Optional[str] = None
             from_name: Optional[str] = None
             message: Optional[str] = None
-            template: Optional[str] = field(default="standard")
-            email_message: Optional[str] = (None,)
-            redemption_message: Optional[str] = (None,)
-            carrier_message: Optional[str] = (None,)
+            template: Optional[str] = "standard"
+            email_message: Optional[str] = None
+            redemption_message: Optional[str] = None
+            carrier_message: Optional[str] = None
 
         @dataclass(frozen=True)
         class FulfilmentParameters:

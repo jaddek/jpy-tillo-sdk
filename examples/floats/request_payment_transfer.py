@@ -19,7 +19,7 @@ def request_payment_transfer():
         create_payment_transfer_request(
             transfer_float=Currency.UNIVERSAL_FLOAT.value,
             currency=Currency.GBP.value,
-            amount=100.00,
+            amount="100",
             payment_reference="OUR_REF",
             finance_email="test@payment.com",
         )
@@ -35,7 +35,7 @@ async def request_payment_transfer_async():
         create_payment_transfer_request(
             transfer_float=Currency.UNIVERSAL_FLOAT.value,
             currency=Currency.GBP.value,
-            amount=100.00,
+            amount="100",
             payment_reference="OUR_REF",
             finance_email="test@payment.com",
         )

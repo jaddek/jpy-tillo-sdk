@@ -7,13 +7,12 @@ from jpy_tillo_sdk.domain.digital_card.factory import (
 )
 from jpy_tillo_sdk.enums import Currency
 
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
-TILLO_HTTP_CLIENT_OPTIONS = {}
+TILLO_HTTP_CLIENT_OPTIONS = {"base_url": "https://sandbox.tillo.dev", "http2": True}
 
 
-def issue_digital_code():
+def order_digital_code():
     client = tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
     body = create_standard_issue_request(
@@ -23,15 +22,15 @@ def issue_digital_code():
         amount="10",
     )
 
-    response = client.digital_card.issue_digital_code(body=body)
+    response = client.digital_card.order_digital_code(body=body)
 
     print(response.text)
 
 
-issue_digital_code()
+order_digital_code()
 
 
-async def issue_digital_code_async():
+async def order_digital_code_async():
     client = tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
     body = create_standard_issue_request(
@@ -46,4 +45,4 @@ async def issue_digital_code_async():
     print(response.text)
 
 
-asyncio.run(issue_digital_code_async())
+asyncio.run(order_digital_code_async())

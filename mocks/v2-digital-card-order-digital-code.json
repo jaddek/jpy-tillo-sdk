@@ -1,0 +1,21 @@
+{
+  "code": "000",
+  "status": "success",
+  "message": "Card ordered successfully",
+  "data": {
+    "brand": "costa",
+    "face_value": {
+      "amount": 10,
+      "currency": "GBP"
+    },
+    "cost_value": {
+      "amount": 9,
+      "currency": "GBP"
+    },
+    "reference": "a5533800-1111-1111-1111-7bbd6d7cc64f",
+    "float_balance": {
+      "amount": 997929.68,
+      "currency": "GBP"
+    }
+  }
+}

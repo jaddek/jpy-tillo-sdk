@@ -44,54 +44,54 @@ class IssueDigitalCodeServiceInterface(ABC):
     @abstractmethod
     def order_digital_code(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_digital_order(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     def top_up_digital_code(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ): ...
 
     @abstractmethod
     def cancel_digital_url(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     def cancel_digital_code(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     def reverse_digital_code(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_stock(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_balance(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
@@ -107,54 +107,54 @@ class IssueDigitalCodeServiceAsyncInterface(ABC):
     @abstractmethod
     async def order_digital_code(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_digital_order(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     async def top_up_digital_code(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     async def cancel_digital_url(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     async def cancel_digital_code(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_balance(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_stock(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
     ) -> Response: ...
 
     @abstractmethod
     async def reverse_digital_code(
         self,
-        query_params: Optional[dict] = None,
+        query_params: Optional[Any] = None,
         body: Optional[Any] = None,
     ) -> Response: ...
 

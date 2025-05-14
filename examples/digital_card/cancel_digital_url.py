@@ -6,10 +6,9 @@ from jpy_tillo_sdk.domain.physical_card.factory import (
 )
 from jpy_tillo_sdk.enums import Currency, Sector
 
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
-TILLO_HTTP_CLIENT_OPTIONS = {}
+TILLO_HTTP_CLIENT_OPTIONS = {"base_url": "https://sandbox.tillo.dev", "http2": True}
 
 
 def cancel_digital_url():

@@ -1,0 +1,10 @@
+{
+  "code": "433",
+  "status": "error",
+  "message": "There were errors validating the request",
+  "data": {
+    "brand": [
+      "The requested brand is not available"
+    ]
+  }
+}

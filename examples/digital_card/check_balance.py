@@ -13,7 +13,7 @@ def check_balance():
     client = tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
     body = create_balance_check_request(
-        client_request_id="test",
+        client_request_id="5434",
         brand="amazon-de",
         code="test",
         pin="100",

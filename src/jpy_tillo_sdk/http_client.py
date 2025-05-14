@@ -33,7 +33,7 @@ from typing import Any, Optional
 from httpx import AsyncClient, Client, Response
 
 from .endpoint import AbstractBodyRequest, Endpoint
-from .errors import AuthenticationFailed, InvalidIpAddress, UnprocessableContent
+from .errors import AuthenticationFailed, InvalidIpAddress, UnprocessableContent, ValidationError
 from .signature import SignatureBridge
 
 logger = logging.getLogger("tillo.http_client")
@@ -180,6 +180,11 @@ class AbstractClient:
             if content_code == UnprocessableContent.TILLO_ERROR_CODE:
                 logger.error("Received 422 response code, invalid data")
                 exception = UnprocessableContent()
+                exception.MESSAGE = content_message
+                raise exception
+            elif content_code == UnprocessableContent.TILLO_ERROR_CODE:
+                logger.error("Received 401 response code, unauthorized")
+                exception = ValidationError()
                 exception.MESSAGE = content_message
                 raise exception
         elif status_code == 401:

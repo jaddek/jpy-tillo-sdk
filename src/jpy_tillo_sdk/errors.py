@@ -51,6 +51,16 @@ class AuthenticationError(TilloException):
     API_VERSION: int | None = 1
 
 
+class ValidationError(TilloException):
+    """Base class for validation-related errors."""
+
+    TILLO_ERROR_CODE: str | None = "433"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Validation Errors"
+    DESCRIPTION: str | None = "There were errors validating the request"
+    API_VERSION: int | None = 2
+
+
 class AuthenticationFailed(TilloException):
     TILLO_ERROR_CODE: str | None = "434"
     HTTP_ERROR_CODE: int | None = 404

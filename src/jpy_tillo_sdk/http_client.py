@@ -33,7 +33,7 @@ from typing import Any, Optional
 from httpx import AsyncClient, Client, Response
 
 from .endpoint import AbstractBodyRequest, Endpoint
-from .errors import InvalidIpAddress, UnprocessableContent
+from .errors import AuthenticationFailed, InvalidIpAddress, UnprocessableContent
 from .signature import SignatureBridge
 
 logger = logging.getLogger("tillo.http_client")
@@ -172,6 +172,7 @@ class AbstractClient:
             status_code,
             content_code,
         )
+
         if status_code == 201:
             logger.error("Received 201 response code, raising InvalidIpAddress")
             raise InvalidIpAddress()
@@ -179,6 +180,12 @@ class AbstractClient:
             if content_code == UnprocessableContent.TILLO_ERROR_CODE:
                 logger.error("Received 422 response code, invalid data")
                 exception = UnprocessableContent()
+                exception.MESSAGE = content_message
+                raise exception
+        elif status_code == 401:
+            if content_code == AuthenticationFailed.TILLO_ERROR_CODE:
+                logger.error("Received 401 response code, unauthorized")
+                exception = AuthenticationFailed()
                 exception.MESSAGE = content_message
                 raise exception
 
@@ -272,11 +279,12 @@ class AsyncHttpClient(AbstractClient):
                 )
                 logger.debug("Received response with status code: %d", response.status_code)
 
-                self._catch_non_200_response(
-                    response.status_code,
-                    response.json().get("code"),
-                    response.content.decode("utf-8"),
-                )
+                if response.status_code != 200:
+                    self._catch_non_200_response(
+                        response.status_code,
+                        response.json().get("code"),
+                        response.content.decode("utf-8"),
+                    )
                 return response
         except Exception as e:
             logger.error("Error making async request to %s: %s", endpoint.route, str(e))
@@ -368,11 +376,13 @@ class HttpClient(AbstractClient):
                 )
                 logger.debug("Received response with status code: %d", response.status_code)
 
-                self._catch_non_200_response(
-                    response.status_code,
-                    response.json().get("code"),
-                    response.content.decode("utf-8"),
-                )
+                if response.status_code != 200:
+                    self._catch_non_200_response(
+                        response.status_code,
+                        response.json().get("code"),
+                        response.content.decode("utf-8"),
+                    )
+
                 return response
         except Exception as e:
             logger.error("Error making sync request to %s: %s", endpoint.route, str(e))

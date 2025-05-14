@@ -19,6 +19,18 @@ uvr-floats-check-floats:
 uvr-floats-request-transfer:
 	uv run examples/floats/request_payment_transfer.py
 
+uvr-brands:
+	uv run examples/brand/get_brands.py
+
+uvr-template:
+	uv run examples/brand/get_template.py
+
+uvr-template-list:
+	uv run examples/brand/list_templates.py
+
+uvr-dc-check-stock:
+	uv run examples/digital_card/check_stock.py
+
 uvr-coverage:
 	uv run coverage run -m pytest & uv run coverage run report
 

@@ -4,10 +4,9 @@ from jpy_tillo_sdk import tillo
 from jpy_tillo_sdk.domain.physical_card.factory import create_balance_check_request
 from jpy_tillo_sdk.enums import Currency, Sector
 
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
-TILLO_HTTP_CLIENT_OPTIONS = {}
+TILLO_HTTP_CLIENT_OPTIONS = {"base_url": "https://sandbox.tillo.dev", "http2": True}
 
 
 def check_balance():
@@ -15,7 +14,7 @@ def check_balance():
 
     body = create_balance_check_request(
         client_request_id="test",
-        brand="test",
+        brand="amazon-de",
         code="test",
         pin="100",
         currency=Currency.EUR,

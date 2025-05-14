@@ -3,7 +3,6 @@ import asyncio
 from jpy_tillo_sdk import tillo
 from jpy_tillo_sdk.domain.brand.factory import create_brands_query_params
 
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
 TILLO_HTTP_CLIENT_OPTIONS = {}

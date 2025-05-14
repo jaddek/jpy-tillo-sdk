@@ -51,6 +51,14 @@ class AuthenticationError(TilloException):
     API_VERSION: int | None = 1
 
 
+class AuthenticationFailed(TilloException):
+    TILLO_ERROR_CODE: str | None = "434"
+    HTTP_ERROR_CODE: int | None = 404
+    MESSAGE: str | None = "Authentication failed"
+    DESCRIPTION: str | None = "Authentication failed"
+    API_VERSION: int | None = 2
+
+
 class AuthorizationErrorInvalidAPITokenOrSecret(AuthenticationError):
     """Raised when the provided API token or secret is invalid.
 

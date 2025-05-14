@@ -3,10 +3,9 @@ import asyncio
 from jpy_tillo_sdk import tillo
 from jpy_tillo_sdk.domain.brand.factory import create_brand_template_list_query_params
 
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
-TILLO_HTTP_CLIENT_OPTIONS = {}
+TILLO_HTTP_CLIENT_OPTIONS = {"base_url": "https://sandbox.tillo.dev", "http2": True}
 
 
 def get_brand_templates():

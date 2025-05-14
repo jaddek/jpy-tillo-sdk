@@ -183,7 +183,7 @@ class Endpoint:
         return self._route
 
     @property
-    def body(self) -> Optional[AbstractBodyRequest]:
+    def body(self) -> AbstractBodyRequest | dict:
         """Get the request body.
 
         Returns:

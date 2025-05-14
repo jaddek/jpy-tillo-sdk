@@ -1,6 +1,13 @@
-from typing import Optional
+from typing import Any, Optional
 
-from .contracts import TilloInterface
+from .contracts import (
+    FloatServiceAsyncInterface,
+    FloatServiceInterface,
+    IssueDigitalCodeServiceInterface,
+    TemplateServiceAsyncInterface,
+    TemplateServiceInterface,
+    TilloInterface,
+)
 from .domain.brand.services import (
     BrandService,
     BrandServiceAsync,
@@ -36,7 +43,7 @@ class Tillo(TilloInterface):
         self,
         api_key: str,
         secret: str,
-        options: Optional[dict] = None,
+        options: Optional[dict[str, Any]] = None,
     ):
         if api_key is None or secret is None:
             raise AuthorizationErrorInvalidAPITokenOrSecret()
@@ -57,7 +64,7 @@ class Tillo(TilloInterface):
         self.__digital_card_async: IssueDigitalCodeServiceAsync | None = None
 
     @property
-    def floats_async(self) -> FloatServiceAsync:
+    def floats_async(self) -> FloatServiceAsyncInterface:
         """Get the asynchronous floats service instance.
 
         Returns:
@@ -69,7 +76,7 @@ class Tillo(TilloInterface):
         return self.__floats_async
 
     @property
-    def floats(self) -> FloatService | None:
+    def floats(self) -> FloatServiceInterface:
         """Get the synchronous floats service instance.
 
         Returns:
@@ -105,7 +112,7 @@ class Tillo(TilloInterface):
         return self.__brands_async
 
     @property
-    def templates(self) -> TemplateService:
+    def templates(self) -> TemplateServiceInterface:
         """Get the template service instance.
 
         Returns:
@@ -117,7 +124,7 @@ class Tillo(TilloInterface):
         return self.__brand_templates
 
     @property
-    def templates_async(self) -> TemplateServiceAsync:
+    def templates_async(self) -> TemplateServiceAsyncInterface:
         """Get the template service instance.
 
         Returns:
@@ -129,7 +136,7 @@ class Tillo(TilloInterface):
         return self.__brand_templates_async
 
     @property
-    def digital_card(self) -> IssueDigitalCodeService:
+    def digital_card(self) -> IssueDigitalCodeServiceInterface:
         """Get the digital card service instance.
 
         Note: This feature is not yet implemented.
@@ -143,7 +150,7 @@ class Tillo(TilloInterface):
         return self.__digital_card
 
     @property
-    def digital_card_async(self):
+    def digital_card_async(self) -> IssueDigitalCodeServiceAsync:
         """Get the digital card service instance asynchronously.
 
         Note: This feature is not yet implemented.

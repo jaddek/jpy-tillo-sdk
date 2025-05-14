@@ -26,9 +26,73 @@ Example:
 import logging
 import uuid
 from abc import ABC, abstractmethod
+from typing import Any, Optional
 
-# Configure logging
+from httpx import Response
+
 logger = logging.getLogger("tillo.contracts")
+
+
+class IssueDigitalCodeServiceInterface(ABC):
+    @abstractmethod
+    async def issue_digital_code(
+        self,
+        query_params: Optional[Any] = None,
+        body: Optional[Any] = None,
+    ): ...
+
+
+class IssueDigitalCodeServiceAsyncInterface(ABC):
+    @abstractmethod
+    async def order_digital_code(
+        self,
+        query_params: Optional[Any] = None,
+        body: Optional[Any] = None,
+    ): ...
+
+
+class TemplateServiceInterface(ABC):
+    @abstractmethod
+    def download_brand_template(
+        self,
+        query_params: Optional[Any] = None,
+    ) -> Any: ...
+
+    @abstractmethod
+    def get_brand_templates(
+        self,
+        query_params: Optional[Any] = None,
+    ) -> Any: ...
+
+
+class TemplateServiceAsyncInterface(ABC):
+    @abstractmethod
+    async def download_brand_template(
+        self,
+        query_params: Optional[Any] = None,
+    ) -> Any: ...
+
+    @abstractmethod
+    async def get_brand_templates(
+        self,
+        query_params: Optional[Any] = None,
+    ) -> Any: ...
+
+
+class FloatServiceAsyncInterface(ABC):
+    @abstractmethod
+    async def check_floats(
+        self,
+        query_params: Optional[Any] = None,
+    ) -> Response: ...
+
+
+class FloatServiceInterface(ABC):
+    @abstractmethod
+    def check_floats(
+        self,
+        query_params: Optional[Any] = None,
+    ) -> Response: ...
 
 
 class SignatureGeneratorInterface(ABC):
@@ -55,8 +119,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             str: The API key used for Tillo API authentication
         """
-        logger.debug("Getting API key for authentication")
-        pass
+        ...
 
     @abstractmethod
     def get_secret_key_as_bytes(self) -> bytearray:
@@ -65,8 +128,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             bytearray: The secret key encoded as UTF-8 bytes
         """
-        logger.debug("Getting secret key as bytes for HMAC generation")
-        pass
+        ...
 
     @staticmethod
     @abstractmethod
@@ -76,8 +138,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             str: Current timestamp in milliseconds as a string
         """
-        logger.debug("Generating Unix timestamp in milliseconds")
-        pass
+        ...
 
     @staticmethod
     @abstractmethod
@@ -87,8 +148,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             uuid.UUID: A new UUID v4 for request identification
         """
-        logger.debug("Generating unique client request ID")
-        pass
+        ...
 
     @abstractmethod
     def generate_signature_string(self, endpoint: str, request_type: str, timestamp: str, params: tuple) -> str:
@@ -103,12 +163,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             str: The string to be signed according to Tillo's specification
         """
-        logger.debug(
-            "Generating signature string for endpoint: %s, method: %s",
-            endpoint,
-            request_type,
-        )
-        pass
+        ...
 
     @abstractmethod
     def generate_signature(self, seed: str) -> str:
@@ -120,8 +175,7 @@ class SignatureGeneratorInterface(ABC):
         Returns:
             str: The hexadecimal HMAC-SHA256 signature
         """
-        logger.debug("Generating HMAC-SHA256 signature")
-        pass
+        ...
 
 
 class SignatureBridgeInterface(ABC):
@@ -157,12 +211,7 @@ class SignatureBridgeInterface(ABC):
         Returns:
             tuple: A tuple containing (api_key, signature, timestamp)
         """
-        logger.debug(
-            "Generating complete signature for endpoint: %s, method: %s",
-            endpoint,
-            method,
-        )
-        pass
+        ...
 
 
 class TilloInterface(ABC):
@@ -185,8 +234,9 @@ class TilloInterface(ABC):
         ```
     """
 
+    @property
     @abstractmethod
-    def floats(self):
+    def floats(self) -> FloatServiceInterface:
         """Get the floats service instance.
 
         Returns:
@@ -198,10 +248,11 @@ class TilloInterface(ABC):
             balance =  float_service.get_balance()
             ```
         """
-        pass
+        ...
 
+    @property
     @abstractmethod
-    def floats_async(self):
+    def floats_async(self) -> FloatServiceAsyncInterface:
         """Get the asynchronous floats service instance.
 
         Returns:
@@ -213,8 +264,9 @@ class TilloInterface(ABC):
             balance = float_service.get_balance()
             ```
         """
-        pass
+        ...
 
+    @property
     @abstractmethod
     def brands(self):
         """Get the brand service instance.
@@ -228,8 +280,9 @@ class TilloInterface(ABC):
             brand_info = brand_service.get_brand_details()
             ```
         """
-        pass
+        ...
 
+    @property
     @abstractmethod
     def brands_async(self):
         """Get the brand service instance.
@@ -243,10 +296,11 @@ class TilloInterface(ABC):
             brand_info = brand_service.get_brand_details()
             ```
         """
-        pass
+        ...
 
+    @property
     @abstractmethod
-    def templates(self):
+    def templates(self) -> TemplateServiceInterface:
         """Get the template service instance.
 
         Returns:
@@ -258,10 +312,11 @@ class TilloInterface(ABC):
             templates = template_service.list_templates()
             ```
         """
-        pass
+        ...
 
+    @property
     @abstractmethod
-    async def templates_async(self):
+    def templates_async(self) -> TemplateServiceAsyncInterface:
         """Get the template service instance.
 
         Returns:
@@ -273,10 +328,11 @@ class TilloInterface(ABC):
             templates = template_service.list_templates()
             ```
         """
-        pass
+        ...
 
+    @property
     @abstractmethod
-    def digital_card(self):
+    def digital_card(self) -> IssueDigitalCodeServiceInterface:
         """Get the digital card service instance.
 
         Returns:
@@ -288,11 +344,11 @@ class TilloInterface(ABC):
             card = digital_card_service.issue_card(amount=50.00)
             ```
         """
-        logger.debug("Getting digital card service instance")
-        pass
+        ...
 
+    @property
     @abstractmethod
-    def digital_card_async(self):
+    def digital_card_async(self) -> IssueDigitalCodeServiceAsyncInterface:
         """Get the digital card service instance.
 
         Returns:
@@ -304,9 +360,9 @@ class TilloInterface(ABC):
             card = digital_card_service.issue_card(amount=50.00)
             ```
         """
-        logger.debug("Getting digital card service instance")
-        pass
+        ...
 
+    @property
     @abstractmethod
     def physical_card(self):
         """Get the physical card service instance.
@@ -320,9 +376,9 @@ class TilloInterface(ABC):
             card = physical_card_service.order_card(amount=100.00)
             ```
         """
-        logger.debug("Getting physical card service instance")
-        pass
+        ...
 
+    @property
     @abstractmethod
     def webhook(self):
         """Get the webhook service instance.
@@ -336,5 +392,4 @@ class TilloInterface(ABC):
             webhooks = webhook_service.list_webhooks()
             ```
         """
-        logger.debug("Getting webhook service instance")
-        pass
+        ...

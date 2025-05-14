@@ -54,7 +54,7 @@ def create_signer(api_key: str, secret_key: str) -> SignatureBridge:
     return SignatureBridge(generator)
 
 
-def create_client_async(api_key: str, secret_key: str, tillo_client_params: dict[str, Any]) -> AsyncHttpClient:
+def create_client_async(api_key: str, secret_key: str, tillo_client_params: dict[str, Any] | None) -> AsyncHttpClient:
     """Create an asynchronous HTTP client.
 
     Args:
@@ -90,7 +90,7 @@ def create_client_async(api_key: str, secret_key: str, tillo_client_params: dict
 def create_client(
     api_key: str,
     secret_key: str,
-    tillo_client_params: dict[str, Any],
+    tillo_client_params: dict[str, Any] | None,
 ) -> HttpClient:
     """Create a synchronous HTTP client.
 

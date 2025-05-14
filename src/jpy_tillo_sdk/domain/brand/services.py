@@ -1,6 +1,7 @@
 import logging
 from typing import Any, Optional
 
+from ...contracts import TemplateServiceAsyncInterface, TemplateServiceInterface
 from ...http_client import AsyncHttpClient, HttpClient
 from .endpoints import BrandEndpoint, TemplateEndpoint, TemplateListEndpoint
 
@@ -44,7 +45,7 @@ class BrandServiceAsync:
         return await self.client.request(endpoint=endpoint)
 
 
-class TemplateService:
+class TemplateService(TemplateServiceInterface):
     def __init__(self, *, client: HttpClient):
         """Initialize the float service with an HTTP client.
 
@@ -69,7 +70,7 @@ class TemplateService:
         return self.client.request(endpoint=endpoint)
 
 
-class TemplateServiceAsync:
+class TemplateServiceAsync(TemplateServiceAsyncInterface):
     def __init__(self, *, client: AsyncHttpClient):
         """Initialize the float service with an HTTP client.
 

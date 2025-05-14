@@ -26,22 +26,14 @@ class TilloException(Exception):
         API_VERSION (int): The API version where this error is applicable.
     """
 
-    TILLO_ERROR_CODE: str = None
-    HTTP_ERROR_CODE: int = None
-    MESSAGE: str = None
-    DESCRIPTION: str = None
-    API_VERSION: int = None
-
-    def __init__(self, *args):
-        super().__init__(*args)
-        self.message = self.MESSAGE
-        self.description = self.DESCRIPTION
-        self.tillo_error_code = self.TILLO_ERROR_CODE
-        self.http_error_code = self.HTTP_ERROR_CODE
-        self.api_version = self.API_VERSION
+    TILLO_ERROR_CODE: str | None = None
+    HTTP_ERROR_CODE: int | None = None
+    MESSAGE: str | None = None
+    DESCRIPTION: str | None = None
+    API_VERSION: int | None = None
 
     def __str__(self):
-        return f"{self.message} (Tillo Error {self.tillo_error_code}, HTTP {self.http_error_code})"
+        return f"{self.MESSAGE} (Tillo Error {self.TILLO_ERROR_CODE}, HTTP {self.HTTP_ERROR_CODE})"
 
 
 # Authentication Errors
@@ -52,11 +44,11 @@ class AuthenticationError(TilloException):
     such as missing or invalid credentials.
     """
 
-    TILLO_ERROR_CODE = None
-    HTTP_ERROR_CODE = 401
-    MESSAGE = "Pair API-Token or Secret-key not provided."
-    DESCRIPTION = "No API key provided."
-    API_VERSION = 1
+    TILLO_ERROR_CODE: str | None = None
+    HTTP_ERROR_CODE: int | None = 401
+    MESSAGE: str | None = "Pair API-Token or Secret-key not provided."
+    DESCRIPTION: str | None = "No API key provided."
+    API_VERSION: int | None = 1
 
 
 class AuthorizationErrorInvalidAPITokenOrSecret(AuthenticationError):
@@ -77,11 +69,11 @@ class InvalidApiToken(TilloException):
     A new valid API token should be obtained from the Tillo dashboard.
     """
 
-    TILLO_ERROR_CODE = "060"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Token mismatch error"
-    DESCRIPTION = "Invalid or expired API Token"
-    API_VERSION = 1
+    TILLO_ERROR_CODE: str | None = "060"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Token mismatch error"
+    DESCRIPTION: str | None = "Invalid or expired API Token"
+    API_VERSION: int | None = 1
 
 
 class MissingParameters(TilloException):
@@ -91,11 +83,11 @@ class MissingParameters(TilloException):
     are not provided in the API request.
     """
 
-    TILLO_ERROR_CODE = "070"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Missing parameter"
-    DESCRIPTION = "Missing parameter amount or personalisation"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "070"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Missing parameter"
+    DESCRIPTION: str | None = "Missing parameter amount or personalisation"
+    API_VERSION: int | None = 2
 
 
 class MissingParameterAmount(TilloException):
@@ -105,11 +97,11 @@ class MissingParameterAmount(TilloException):
     in the API request.
     """
 
-    TILLO_ERROR_CODE = "071"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Missing parameter"
-    DESCRIPTION = "Missing additionalParams"
-    API_VERSION = 1
+    TILLO_ERROR_CODE: str | None = "071"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Missing parameter"
+    DESCRIPTION: str | None = "Missing additionalParams"
+    API_VERSION: int | None = 1
 
 
 class BrandNotFound(TilloException):
@@ -119,11 +111,11 @@ class BrandNotFound(TilloException):
     in the Tillo system.
     """
 
-    TILLO_ERROR_CODE = "072"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Brand not found"
-    DESCRIPTION = "The requested brand does not exist"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "072"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Brand not found"
+    DESCRIPTION: str | None = "The requested brand does not exist"
+    API_VERSION: int | None = 2
 
 
 class InvalidBrandForPartner(TilloException):
@@ -133,11 +125,11 @@ class InvalidBrandForPartner(TilloException):
     don't have permission to use.
     """
 
-    TILLO_ERROR_CODE = "072"
-    HTTP_ERROR_CODE = 401
-    MESSAGE = "Invalid brand for partner"
-    DESCRIPTION = "Brand is not available for this partner"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "072"
+    HTTP_ERROR_CODE: int | None = 401
+    MESSAGE: str | None = "Invalid brand for partner"
+    DESCRIPTION: str | None = "Brand is not available for this partner"
+    API_VERSION: int | None = 2
 
 
 class GiftCodeCancelled(TilloException):
@@ -147,19 +139,19 @@ class GiftCodeCancelled(TilloException):
     that has already been cancelled.
     """
 
-    TILLO_ERROR_CODE = "100"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "The gift code has already been cancelled"
-    DESCRIPTION = "Attempted action on a cancelled gift code"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "100"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "The gift code has already been cancelled"
+    DESCRIPTION: str | None = "Attempted action on a cancelled gift code"
+    API_VERSION: int | None = 2
 
 
 class UnprocessableContent(TilloException):
-    TILLO_ERROR_CODE = "100"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Unprocessable Content"
-    DESCRIPTION = "Unprocessable Content"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "100"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Unprocessable Content"
+    DESCRIPTION: str | None = "Unprocessable Content"
+    API_VERSION: int | None = 2
 
 
 class InvalidIpAddress(TilloException):
@@ -169,11 +161,11 @@ class InvalidIpAddress(TilloException):
     that is not whitelisted in the Tillo system.
     """
 
-    TILLO_ERROR_CODE = "210"
-    HTTP_ERROR_CODE = 401
-    MESSAGE = "Invalid IP address"
-    DESCRIPTION = "IP address is not authorized"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "210"
+    HTTP_ERROR_CODE: int | None = 401
+    MESSAGE: str | None = "Invalid IP address"
+    DESCRIPTION: str | None = "IP address is not authorized"
+    API_VERSION: int | None = 2
 
 
 class InsufficientMonies(TilloException):
@@ -183,11 +175,11 @@ class InsufficientMonies(TilloException):
     requires more funds than are available in the account.
     """
 
-    TILLO_ERROR_CODE = "610"
-    HTTP_ERROR_CODE = 403
-    MESSAGE = "Insufficient Monies"
-    DESCRIPTION = "Insufficient balance on account"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "610"
+    HTTP_ERROR_CODE: int | None = 403
+    MESSAGE: str | None = "Insufficient Monies"
+    DESCRIPTION: str | None = "Insufficient balance on account"
+    API_VERSION: int | None = 2
 
 
 class InsufficientMoniesOnAccount(TilloException):
@@ -197,11 +189,11 @@ class InsufficientMoniesOnAccount(TilloException):
     the requested operation.
     """
 
-    TILLO_ERROR_CODE = "610"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Insufficient balance"
-    DESCRIPTION = "Insufficient balance on account"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "610"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Insufficient balance"
+    DESCRIPTION: str | None = "Insufficient balance on account"
+    API_VERSION: int | None = 2
 
 
 class InvalidValue(TilloException):
@@ -211,11 +203,11 @@ class InvalidValue(TilloException):
     range or format.
     """
 
-    TILLO_ERROR_CODE = "704"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Invalid value"
-    DESCRIPTION = "Invalid or unsupported value provided"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "704"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Invalid value"
+    DESCRIPTION: str | None = "Invalid or unsupported value provided"
+    API_VERSION: int | None = 2
 
 
 class SaleDisabled(TilloException):
@@ -225,11 +217,11 @@ class SaleDisabled(TilloException):
     is currently not available for sale.
     """
 
-    TILLO_ERROR_CODE = "706"
-    HTTP_ERROR_CODE = 401
-    MESSAGE = "Sale is disabled"
-    DESCRIPTION = "The brand is not available for sale"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "706"
+    HTTP_ERROR_CODE: int | None = 401
+    MESSAGE: str | None = "Sale is disabled"
+    DESCRIPTION: str | None = "The brand is not available for sale"
+    API_VERSION: int | None = 2
 
 
 class DuplicateClientRequest(TilloException):
@@ -239,11 +231,11 @@ class DuplicateClientRequest(TilloException):
     already exists with different brand or value parameters.
     """
 
-    TILLO_ERROR_CODE = "708"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Duplicate clientRequestID"
-    DESCRIPTION = "The clientRequestID already exists with mismatched brand or value"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "708"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Duplicate clientRequestID"
+    DESCRIPTION: str | None = "The clientRequestID already exists with mismatched brand or value"
+    API_VERSION: int | None = 2
 
 
 class RelationshipNotFound(TilloException):
@@ -253,11 +245,11 @@ class RelationshipNotFound(TilloException):
     an established relationship between the partner and brand.
     """
 
-    TILLO_ERROR_CODE = "709"
-    HTTP_ERROR_CODE = 404
-    MESSAGE = "No relationship found"
-    DESCRIPTION = "No relationship exists between partner and brand"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "709"
+    HTTP_ERROR_CODE: int | None = 404
+    MESSAGE: str | None = "No relationship found"
+    DESCRIPTION: str | None = "No relationship exists between partner and brand"
+    API_VERSION: int | None = 2
 
 
 class CancelNotActive(TilloException):
@@ -267,11 +259,11 @@ class CancelNotActive(TilloException):
     in an active state.
     """
 
-    TILLO_ERROR_CODE = "711"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Cancel not active"
-    DESCRIPTION = "Card no longer active"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "711"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Cancel not active"
+    DESCRIPTION: str | None = "Card no longer active"
+    API_VERSION: int | None = 2
 
 
 class DeliveryMethodNotFound(TilloException):
@@ -281,11 +273,11 @@ class DeliveryMethodNotFound(TilloException):
     is not available in the system.
     """
 
-    TILLO_ERROR_CODE = "712"
-    HTTP_ERROR_CODE = 404
-    MESSAGE = "Delivery method not found"
-    DESCRIPTION = "The requested delivery method was not found"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "712"
+    HTTP_ERROR_CODE: int | None = 404
+    MESSAGE: str | None = "Delivery method not found"
+    DESCRIPTION: str | None = "The requested delivery method was not found"
+    API_VERSION: int | None = 2
 
 
 class InvalidDeliveryMethod(TilloException):
@@ -295,11 +287,11 @@ class InvalidDeliveryMethod(TilloException):
     is not permitted for the current operation.
     """
 
-    TILLO_ERROR_CODE = "713"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Invalid delivery method"
-    DESCRIPTION = "The delivery method is not allowed"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "713"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Invalid delivery method"
+    DESCRIPTION: str | None = "The delivery method is not allowed"
+    API_VERSION: int | None = 2
 
 
 class MissingDeliveryMethod(TilloException):
@@ -309,11 +301,11 @@ class MissingDeliveryMethod(TilloException):
     provided in the request.
     """
 
-    TILLO_ERROR_CODE = "714"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Missing delivery method"
-    DESCRIPTION = "You did not supply a delivery method"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "714"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Missing delivery method"
+    DESCRIPTION: str | None = "You did not supply a delivery method"
+    API_VERSION: int | None = 2
 
 
 class UrlHostingServiceUnavailable(TilloException):
@@ -323,11 +315,11 @@ class UrlHostingServiceUnavailable(TilloException):
     is temporarily unavailable.
     """
 
-    TILLO_ERROR_CODE = "715"
-    HTTP_ERROR_CODE = 503
-    MESSAGE = "URL hosting service unavailable"
-    DESCRIPTION = "The URL hosting service is currently unavailable"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "715"
+    HTTP_ERROR_CODE: int | None = 503
+    MESSAGE: str | None = "URL hosting service unavailable"
+    DESCRIPTION: str | None = "The URL hosting service is currently unavailable"
+    API_VERSION: int | None = 2
 
 
 class TemplateNotFound(TilloException):
@@ -337,11 +329,11 @@ class TemplateNotFound(TilloException):
     is not found in the system.
     """
 
-    TILLO_ERROR_CODE = "716"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Template not found"
-    DESCRIPTION = "The requested template was not found"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "716"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Template not found"
+    DESCRIPTION: str | None = "The requested template was not found"
+    API_VERSION: int | None = 2
 
 
 class TemplateAccessDenied(TilloException):
@@ -351,11 +343,11 @@ class TemplateAccessDenied(TilloException):
     to access the requested template for the brand.
     """
 
-    TILLO_ERROR_CODE = "717"
-    HTTP_ERROR_CODE = 401
-    MESSAGE = "Template access denied"
-    DESCRIPTION = "The partner does not have access to the template for the requested brand"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "717"
+    HTTP_ERROR_CODE: int | None = 401
+    MESSAGE: str | None = "Template access denied"
+    DESCRIPTION: str | None = "The partner does not have access to the template for the requested brand"
+    API_VERSION: int | None = 2
 
 
 class UnsupportedTransactionType(TilloException):
@@ -365,11 +357,11 @@ class UnsupportedTransactionType(TilloException):
     that is not supported by the partner.
     """
 
-    TILLO_ERROR_CODE = "719"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Transaction type not supported"
-    DESCRIPTION = "The transaction type is not supported by the partner"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "719"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Transaction type not supported"
+    DESCRIPTION: str | None = "The transaction type is not supported by the partner"
+    API_VERSION: int | None = 2
 
 
 class UnsupportedBrandTransactionType(TilloException):
@@ -379,11 +371,11 @@ class UnsupportedBrandTransactionType(TilloException):
     that is not supported for the requested brand.
     """
 
-    TILLO_ERROR_CODE = "720"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Brand transaction type not supported"
-    DESCRIPTION = "The transaction type is not supported for the requested brand"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "720"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Brand transaction type not supported"
+    DESCRIPTION: str | None = "The transaction type is not supported for the requested brand"
+    API_VERSION: int | None = 2
 
 
 class CurrencyIsoCodeNotFound(TilloException):
@@ -393,11 +385,11 @@ class CurrencyIsoCodeNotFound(TilloException):
     is not available in the system.
     """
 
-    TILLO_ERROR_CODE = "721"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Currency ISO code not found"
-    DESCRIPTION = "The requested currency was not found"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "721"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Currency ISO code not found"
+    DESCRIPTION: str | None = "The requested currency was not found"
+    API_VERSION: int | None = 2
 
 
 class MissingCurrencyIsoCode(TilloException):
@@ -407,11 +399,11 @@ class MissingCurrencyIsoCode(TilloException):
     provided in the request.
     """
 
-    TILLO_ERROR_CODE = "722"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Missing currency iso code"
-    DESCRIPTION = "You did not supply a currency"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "722"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Missing currency iso code"
+    DESCRIPTION: str | None = "You did not supply a currency"
+    API_VERSION: int | None = 2
 
 
 class UnsupportedCurrencyIsoCode(TilloException):
@@ -421,11 +413,11 @@ class UnsupportedCurrencyIsoCode(TilloException):
     is not supported by the requested brand.
     """
 
-    TILLO_ERROR_CODE = "723"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Unsupported currency iso code"
-    DESCRIPTION = "The requested currency iso code is not supported by this brand"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "723"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Unsupported currency iso code"
+    DESCRIPTION: str | None = "The requested currency iso code is not supported by this brand"
+    API_VERSION: int | None = 2
 
 
 class SaleNotFound(TilloException):
@@ -435,11 +427,11 @@ class SaleNotFound(TilloException):
     doesn't exist in the system.
     """
 
-    TILLO_ERROR_CODE = "724"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Sale reference not found"
-    DESCRIPTION = "The sale reference could not be found"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "724"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Sale reference not found"
+    DESCRIPTION: str | None = "The sale reference could not be found"
+    API_VERSION: int | None = 2
 
 
 class DenominationNotInStock(TilloException):
@@ -449,11 +441,11 @@ class DenominationNotInStock(TilloException):
     is currently not available in stock.
     """
 
-    TILLO_ERROR_CODE = "725"
-    HTTP_ERROR_CODE = 500
-    MESSAGE = "Denomination not in stock"
-    DESCRIPTION = "The requested denomination is not in stock"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "725"
+    HTTP_ERROR_CODE: int | None = 500
+    MESSAGE: str | None = "Denomination not in stock"
+    DESCRIPTION: str | None = "The requested denomination is not in stock"
+    API_VERSION: int | None = 2
 
 
 class FeatureNotEnabled(TilloException):
@@ -463,11 +455,11 @@ class FeatureNotEnabled(TilloException):
     has not been enabled for the account.
     """
 
-    TILLO_ERROR_CODE = "726"
-    HTTP_ERROR_CODE = 503
-    MESSAGE = "Feature not enabled"
-    DESCRIPTION = "The requested feature has not been enabled"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "726"
+    HTTP_ERROR_CODE: int | None = 503
+    MESSAGE: str | None = "Feature not enabled"
+    DESCRIPTION: str | None = "The requested feature has not been enabled"
+    API_VERSION: int | None = 2
 
 
 class InsufficientBalanceOnCard(TilloException):
@@ -477,11 +469,11 @@ class InsufficientBalanceOnCard(TilloException):
     requires more funds than are available on the card.
     """
 
-    TILLO_ERROR_CODE = "728"
-    HTTP_ERROR_CODE = 403
-    MESSAGE = "Insufficient balance on card"
-    DESCRIPTION = "Insufficient balance on card"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "728"
+    HTTP_ERROR_CODE: int | None = 403
+    MESSAGE: str | None = "Insufficient balance on card"
+    DESCRIPTION: str | None = "Insufficient balance on card"
+    API_VERSION: int | None = 2
 
 
 class DuplicateRequestIncomplete(TilloException):
@@ -491,11 +483,11 @@ class DuplicateRequestIncomplete(TilloException):
     is identical to one that is still being processed.
     """
 
-    TILLO_ERROR_CODE = "729"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Duplicate request"
-    DESCRIPTION = "The original request is still being processed"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "729"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Duplicate request"
+    DESCRIPTION: str | None = "The original request is still being processed"
+    API_VERSION: int | None = 2
 
 
 class InvalidSaleReference(TilloException):
@@ -505,11 +497,11 @@ class InvalidSaleReference(TilloException):
     is not in the correct format or is invalid.
     """
 
-    TILLO_ERROR_CODE = "730"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Invalid sale reference"
-    DESCRIPTION = "The provided sale reference is invalid"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "730"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Invalid sale reference"
+    DESCRIPTION: str | None = "The provided sale reference is invalid"
+    API_VERSION: int | None = 2
 
 
 class SaleRedemptionInProgress(TilloException):
@@ -519,11 +511,11 @@ class SaleRedemptionInProgress(TilloException):
     for a sale that is already being redeemed.
     """
 
-    TILLO_ERROR_CODE = "732"
-    HTTP_ERROR_CODE = 425
-    MESSAGE = "Sale redemption in progress"
-    DESCRIPTION = "Redemption for this sale is already in progress"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "732"
+    HTTP_ERROR_CODE: int | None = 425
+    MESSAGE: str | None = "Sale redemption in progress"
+    DESCRIPTION: str | None = "Redemption for this sale is already in progress"
+    API_VERSION: int | None = 2
 
 
 class InvalidOrderStatus(TilloException):
@@ -533,11 +525,11 @@ class InvalidOrderStatus(TilloException):
     is not allowed in the current order status.
     """
 
-    TILLO_ERROR_CODE = "733"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Invalid order status"
-    DESCRIPTION = "Cannot fulfil order, invalid status"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "733"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Invalid order status"
+    DESCRIPTION: str | None = "Cannot fulfil order, invalid status"
+    API_VERSION: int | None = 2
 
 
 class InvalidRedemptionStatus(TilloException):
@@ -547,11 +539,11 @@ class InvalidRedemptionStatus(TilloException):
     is not allowed in the current redemption status.
     """
 
-    TILLO_ERROR_CODE = "734"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Invalid redemption status"
-    DESCRIPTION = "Cannot fulfil order, invalid redemption status"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "734"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Invalid redemption status"
+    DESCRIPTION: str | None = "Cannot fulfil order, invalid redemption status"
+    API_VERSION: int | None = 2
 
 
 class SaleExpired(TilloException):
@@ -561,11 +553,11 @@ class SaleExpired(TilloException):
     that has passed its expiration date.
     """
 
-    TILLO_ERROR_CODE = "735"
-    HTTP_ERROR_CODE = 410
-    MESSAGE = "Sale expired"
-    DESCRIPTION = "The sale has expired, preventing any further action"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "735"
+    HTTP_ERROR_CODE: int | None = 410
+    MESSAGE: str | None = "Sale expired"
+    DESCRIPTION: str | None = "The sale has expired, preventing any further action"
+    API_VERSION: int | None = 2
 
 
 class InvalidFinancialRelationship(TilloException):
@@ -575,11 +567,11 @@ class InvalidFinancialRelationship(TilloException):
     requires a valid financial relationship that doesn't exist.
     """
 
-    TILLO_ERROR_CODE = "736"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Invalid financial relationship"
-    DESCRIPTION = "Cannot fulfil order, invalid financial relationship"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "736"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Invalid financial relationship"
+    DESCRIPTION: str | None = "Cannot fulfil order, invalid financial relationship"
+    API_VERSION: int | None = 2
 
 
 class CurrencyForInternationalPaymentsOnly(TilloException):
@@ -589,11 +581,11 @@ class CurrencyForInternationalPaymentsOnly(TilloException):
     restricted to international payment operations only.
     """
 
-    TILLO_ERROR_CODE = "738"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Currency only for international payments"
-    DESCRIPTION = "The requested currency is only available with International Payments"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "738"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Currency only for international payments"
+    DESCRIPTION: str | None = "The requested currency is only available with International Payments"
+    API_VERSION: int | None = 2
 
 
 class UnsupportedBrandForInternationalPayments(TilloException):
@@ -603,11 +595,11 @@ class UnsupportedBrandForInternationalPayments(TilloException):
     supported for international payment operations.
     """
 
-    TILLO_ERROR_CODE = "739"
-    HTTP_ERROR_CODE = 422
-    MESSAGE = "Brand not supported for international payments"
-    DESCRIPTION = "The requested brand is not supported by International Payments"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "739"
+    HTTP_ERROR_CODE: int | None = 422
+    MESSAGE: str | None = "Brand not supported for international payments"
+    DESCRIPTION: str | None = "The requested brand is not supported by International Payments"
+    API_VERSION: int | None = 2
 
 
 class FeatureOnlyAvailableInApiV2(TilloException):
@@ -617,11 +609,11 @@ class FeatureOnlyAvailableInApiV2(TilloException):
     exclusively available in API version 2.
     """
 
-    TILLO_ERROR_CODE = "740"
-    HTTP_ERROR_CODE = 400
-    MESSAGE = "Feature only available in API v2"
-    DESCRIPTION = "The requested feature is only available through API v2"
-    API_VERSION = "2"
+    TILLO_ERROR_CODE: str | None = "740"
+    HTTP_ERROR_CODE: int | None = 400
+    MESSAGE: str | None = "Feature only available in API v2"
+    DESCRIPTION: str | None = "The requested feature is only available through API v2"
+    API_VERSION: int | None = 2
 
 
 class EndpointNotFound(TilloException):
@@ -631,11 +623,11 @@ class EndpointNotFound(TilloException):
     that is not available in the system.
     """
 
-    TILLO_ERROR_CODE = "999"
-    HTTP_ERROR_CODE = 404
-    MESSAGE = "Endpoint not found"
-    DESCRIPTION = "The requested endpoint was not found"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "999"
+    HTTP_ERROR_CODE: int | None = 404
+    MESSAGE: str | None = "Endpoint not found"
+    DESCRIPTION: str | None = "The requested endpoint was not found"
+    API_VERSION: int | None = 2
 
 
 class MethodNotAllowed(TilloException):
@@ -645,11 +637,11 @@ class MethodNotAllowed(TilloException):
     is not supported for the requested endpoint.
     """
 
-    TILLO_ERROR_CODE = "999"
-    HTTP_ERROR_CODE = 405
-    MESSAGE = "Method not allowed"
-    DESCRIPTION = "The requested method is not allowed"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "999"
+    HTTP_ERROR_CODE: int | None = 405
+    MESSAGE: str | None = "Method not allowed"
+    DESCRIPTION: str | None = "The requested method is not allowed"
+    API_VERSION: int | None = 2
 
 
 class InternalServerError(TilloException):
@@ -659,8 +651,8 @@ class InternalServerError(TilloException):
     Tillo server side.
     """
 
-    TILLO_ERROR_CODE = "999"
-    HTTP_ERROR_CODE = 500
-    MESSAGE = "Internal error"
-    DESCRIPTION = "An internal server error occurred"
-    API_VERSION = 2
+    TILLO_ERROR_CODE: str | None = "999"
+    HTTP_ERROR_CODE: int | None = 500
+    MESSAGE: str | None = "Internal error"
+    DESCRIPTION: str | None = "An internal server error occurred"
+    API_VERSION: int | None = 2

@@ -1,5 +1,6 @@
 from typing import Optional
 
+from ...contracts import IssueDigitalCodeServiceAsyncInterface, IssueDigitalCodeServiceInterface
 from ...http_client import AsyncHttpClient, HttpClient
 from .endpoints import (
     CancelDigitalCodeEndpoint,
@@ -14,7 +15,7 @@ from .endpoints import (
 )
 
 
-class IssueDigitalCodeServiceAsync:
+class IssueDigitalCodeServiceAsync(IssueDigitalCodeServiceAsyncInterface):
     def __init__(self, *, client: AsyncHttpClient):
         """Initialize the float service with an HTTP client.
 
@@ -94,7 +95,7 @@ class IssueDigitalCodeServiceAsync:
         return await self.client.request(endpoint=endpoint)
 
 
-class IssueDigitalCodeService:
+class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
     def __init__(self, *, client: HttpClient):
         """Initialize the float service with an HTTP client.
 

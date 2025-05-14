@@ -25,13 +25,14 @@ from typing import Optional
 
 from httpx import Response
 
+from ...contracts import FloatServiceAsyncInterface, FloatServiceInterface
 from ...http_client import AsyncHttpClient, HttpClient
 from .endpoints import CheckFloatsEndpoint, RequestPaymentTransferEndpoint
 
 logger = logging.getLogger("tillo.float_services")
 
 
-class FloatService:
+class FloatService(FloatServiceInterface):
     """Synchronous service for managing float operations.
 
     This class provides methods for checking float balances and requesting
@@ -164,7 +165,7 @@ class FloatService:
         return response
 
 
-class FloatServiceAsync:
+class FloatServiceAsync(FloatServiceAsyncInterface):
     """Asynchronous service for managing float operations.
 
     This class provides methods for checking float balances and requesting

@@ -13,7 +13,7 @@ class CheckFloatsEndpoint(Endpoint):
     class QueryParams(QP):
         currency: Currency | None = None
 
-        def get_sign_attrs(self) -> tuple:
+        def get_sign_attrs(self) -> tuple[str, ...]:
             return ()
 
     @property
@@ -47,5 +47,5 @@ class RequestPaymentTransferEndpoint(Endpoint):
         proforma_invoice: ProformaInvoiceParams | None = None
         float: str = Currency.UNIVERSAL_FLOAT.value
 
-        def get_sign_attrs(self) -> tuple:
+        def get_sign_attrs(self) -> tuple[str, ...]:
             return ()

@@ -33,6 +33,22 @@ from httpx import Response
 logger = logging.getLogger("tillo.contracts")
 
 
+class BrandServiceInterface(ABC):
+    @abstractmethod
+    def get_available_brands(
+        self,
+        query_params: Any = None,
+    ) -> Response: ...
+
+
+class BrandServiceAsyncInterface(ABC):
+    @abstractmethod
+    async def get_available_brands(
+        self,
+        query_params: Any = None,
+    ) -> Response: ...
+
+
 class IssueDigitalCodeServiceInterface(ABC):
     @abstractmethod
     def issue_digital_code(
@@ -59,7 +75,7 @@ class IssueDigitalCodeServiceInterface(ABC):
         self,
         query_params: Any = None,
         body: Any = None,
-    ): ...
+    ) -> Response: ...
 
     @abstractmethod
     def cancel_digital_url(
@@ -259,7 +275,9 @@ class SignatureGeneratorInterface(ABC):
         ...
 
     @abstractmethod
-    def generate_signature_string(self, endpoint: str, request_type: str, timestamp: str, params: tuple) -> str:
+    def generate_signature_string(
+        self, endpoint: str, request_type: str, timestamp: str, params: tuple[str, ...]
+    ) -> str:
         """Generate the string to be signed for the request.
 
         Args:
@@ -307,8 +325,8 @@ class SignatureBridgeInterface(ABC):
         self,
         endpoint: str,
         method: str,
-        sign_attrs: tuple,
-    ):
+        sign_attrs: tuple[str, ...],
+    ) -> tuple[str, ...]:
         """Generate a complete signature for an API request.
 
         Args:
@@ -376,7 +394,7 @@ class TilloInterface(ABC):
 
     @property
     @abstractmethod
-    def brands(self):
+    def brands(self) -> BrandServiceInterface:
         """Get the brand service instance.
 
         Returns:
@@ -392,7 +410,7 @@ class TilloInterface(ABC):
 
     @property
     @abstractmethod
-    def brands_async(self):
+    def brands_async(self) -> BrandServiceAsyncInterface:
         """Get the brand service instance.
 
         Returns:
@@ -472,7 +490,7 @@ class TilloInterface(ABC):
 
     @property
     @abstractmethod
-    def physical_card(self):
+    def physical_card(self) -> None:
         """Get the physical card service instance.
 
         Returns:
@@ -488,7 +506,7 @@ class TilloInterface(ABC):
 
     @property
     @abstractmethod
-    def webhook(self):
+    def webhook(self) -> None:
         """Get the webhook service instance.
 
         Returns:

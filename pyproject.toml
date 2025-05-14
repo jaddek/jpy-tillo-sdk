@@ -61,4 +61,5 @@ fix = true
 [tool.mypy]
 exclude = [
     "src/jpy_tillo_sdk/domain/physical_card/",
+    "examples"
 ]

@@ -1,6 +1,8 @@
 from typing import Any
 
 from .contracts import (
+    BrandServiceAsyncInterface,
+    BrandServiceInterface,
     FloatServiceAsyncInterface,
     FloatServiceInterface,
     IssueDigitalCodeServiceInterface,
@@ -88,7 +90,7 @@ class Tillo(TilloInterface):
         return self.__floats
 
     @property
-    def brands(self) -> BrandService:
+    def brands(self) -> BrandServiceInterface:
         """Get the brand service instance.
 
         Returns:
@@ -100,7 +102,7 @@ class Tillo(TilloInterface):
         return self.__brands
 
     @property
-    def brands_async(self) -> BrandServiceAsync:
+    def brands_async(self) -> BrandServiceAsyncInterface:
         """Get the brand service instance.
 
         Returns:
@@ -164,7 +166,8 @@ class Tillo(TilloInterface):
 
         return self.__digital_card_async
 
-    def physical_card(self):
+    @property
+    def physical_card(self) -> None:
         """Get the physical card service instance.
 
         Note: This feature is not yet implemented.
@@ -177,7 +180,8 @@ class Tillo(TilloInterface):
         """
         raise NotImplementedError("Physical card service is not yet implemented")
 
-    def webhook(self):
+    @property
+    def webhook(self) -> None:
         """Get the webhook service instance.
 
         Note: This feature is not yet implemented.
@@ -188,7 +192,7 @@ class Tillo(TilloInterface):
         Raises:
             NotImplementedError: This feature is not yet implemented.
         """
-        raise NotImplementedError("Webhook service is not yet implemented")
+        ...
 
     def __get_async_client(self) -> AsyncHttpClient:
         """Create and return an asynchronous HTTP client.

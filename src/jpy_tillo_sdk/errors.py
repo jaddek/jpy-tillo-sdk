@@ -28,9 +28,9 @@ class TilloException(Exception):
         API_VERSION (int): The API version where this error is applicable.
     """
 
-    response: None | Response = None
+    response: Response | None = None
 
-    def __init__(self, response):
+    def __init__(self, response: Response | None) -> None:
         self.response = response
 
     TILLO_ERROR_CODE: str | None = None
@@ -39,7 +39,7 @@ class TilloException(Exception):
     DESCRIPTION: str | None = None
     API_VERSION: int | None = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.MESSAGE} (Tillo Error {self.TILLO_ERROR_CODE}, HTTP {self.HTTP_ERROR_CODE})"
 
 

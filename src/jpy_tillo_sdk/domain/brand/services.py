@@ -2,14 +2,19 @@ import logging
 
 from httpx import Response
 
-from ...contracts import TemplateServiceAsyncInterface, TemplateServiceInterface
+from ...contracts import (
+    BrandServiceAsyncInterface,
+    BrandServiceInterface,
+    TemplateServiceAsyncInterface,
+    TemplateServiceInterface,
+)
 from ...http_client import AsyncHttpClient, HttpClient
 from .endpoints import BrandEndpoint, TemplateEndpoint, TemplateListEndpoint
 
 logger = logging.getLogger("tillo.brand_services")
 
 
-class BrandService:
+class BrandService(BrandServiceInterface):
     def __init__(self, *, client: HttpClient):
         """Initialize the float service with an HTTP client.
 
@@ -28,7 +33,7 @@ class BrandService:
         return self.client.request(endpoint=endpoint)
 
 
-class BrandServiceAsync:
+class BrandServiceAsync(BrandServiceAsyncInterface):
     def __init__(self, *, client: AsyncHttpClient):
         """Initialize the float service with an HTTP client.
 

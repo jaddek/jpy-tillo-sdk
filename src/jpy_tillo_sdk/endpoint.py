@@ -47,7 +47,7 @@ class QP:
     signature attributes.
     """
 
-    def get_not_empty_values(self) -> dict:
+    def get_not_empty_values(self) -> dict[str, Any]:
         """Get dictionary of non-empty parameter values.
 
         Returns:
@@ -57,7 +57,7 @@ class QP:
         logger.debug("Filtered query parameters: %s", values)
         return values
 
-    def get_sign_attrs(self) -> tuple:
+    def get_sign_attrs(self) -> tuple[str, ...]:
         """Get parameters to include in request signature.
 
         Returns:
@@ -77,7 +77,7 @@ class AbstractBodyRequest(ABC):
     """
 
     @abstractmethod
-    def get_sign_attrs(self) -> tuple:
+    def get_sign_attrs(self) -> tuple[str, ...]:
         """Get attributes to include in request signature.
 
         Returns:
@@ -86,7 +86,7 @@ class AbstractBodyRequest(ABC):
         logger.debug("Getting signature attributes from request body")
         return ()
 
-    def get_as_dict(self) -> dict:
+    def get_as_dict(self) -> dict[str, Any]:
         """Convert request body to dictionary format.
 
         Returns:
@@ -125,7 +125,7 @@ class Endpoint:
         self,
         query: Any | None = None,
         body: AbstractBodyRequest | None = None,
-        sign_attrs: tuple | None = None,
+        sign_attrs: tuple[str, ...] | None = None,
     ):
         """Initialize the endpoint with query parameters and request body.
 
@@ -188,7 +188,7 @@ class Endpoint:
         return self._route
 
     @property
-    def body(self) -> AbstractBodyRequest | dict:
+    def body(self) -> AbstractBodyRequest | dict[str, Any] | None:
         """Get the request body.
 
         Returns:
@@ -207,7 +207,7 @@ class Endpoint:
         return has_body
 
     @property
-    def sign_attrs(self) -> tuple | None:
+    def sign_attrs(self) -> tuple[str, ...] | None:
         """Get attributes for signature generation.
 
         Returns:
@@ -225,7 +225,7 @@ class Endpoint:
         return self._query
 
     @property
-    def params(self) -> dict:
+    def params(self) -> dict[str, Any] | None:
         """Get non-empty query parameters as a dictionary.
 
         Returns:
@@ -235,7 +235,7 @@ class Endpoint:
         logger.debug("Getting request parameters: %s", params)
         return params
 
-    def get_sign_attrs(self) -> tuple:
+    def get_sign_attrs(self) -> tuple[str, ...]:
         """Get attributes to include in request signature.
 
         This method determines which attributes to include in the signature
@@ -245,7 +245,7 @@ class Endpoint:
             tuple: Attributes to include in request signature
         """
         logger.debug("Getting signature attributes for request")
-        sign_attrs: tuple = ()
+        sign_attrs: tuple[str, ...] = ()
 
         if isinstance(self.body, AbstractBodyRequest):
             logger.debug("Using body attributes for signature")

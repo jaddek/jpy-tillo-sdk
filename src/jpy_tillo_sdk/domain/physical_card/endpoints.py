@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 from ...endpoint import AbstractBodyRequest, Endpoint
 from ...enums import Sector
@@ -20,12 +19,12 @@ class ActivatePhysicalCardEndpoint(Endpoint):
         pin: str | None = None
         sector: Sector | None = Sector.GIFT_CARD_MALL
 
-        def get_sign_attrs(self) -> tuple:
+        def get_sign_attrs(self) -> tuple[str, ...]:
             return (
                 self.client_request_id,
                 self.brand,
-                self.face_value.currency,
-                self.face_value.amount,
+                self.face_value.currency.__str__(),
+                self.face_value.amount.__str__(),
             )
 
 
@@ -43,7 +42,7 @@ class CancelActivatePhysicalCardEndpoint(Endpoint):
         code: str | None = None
         pin: str | None = None
         sector: Sector | None = Sector.GIFT_CARD_MALL
-        tags: List[str] | None = None
+        tags: list[str] | None = None
 
         def get_sign_attrs(self) -> tuple:
             return (
@@ -147,7 +146,7 @@ class OrderPhysicalCardEndpoint(Endpoint):
         fulfilment_parameters: FulfilmentParameters | None = None
         personalisation: Personalisation | None = None
         sector: Sector | None = Sector.GIFT_CARD_MALL
-        tags: List[str] | None = None
+        tags: list[str] | None = None
 
         def get_sign_attrs(self) -> tuple:
             return (
@@ -165,7 +164,7 @@ class PhysicalCardOrderStatusEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
-        references: List[str] | None = None
+        references: list[str] | None = None
 
 
 class FulfilPhysicalCardOrderEndpoint(Endpoint):

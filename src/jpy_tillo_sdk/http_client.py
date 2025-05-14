@@ -81,7 +81,7 @@ class AbstractClient:
     def request(
         self,
         endpoint: Endpoint,
-    ):
+    ) -> Response:
         """Make an HTTP request to the specified endpoint.
 
         Args:
@@ -104,8 +104,8 @@ class AbstractClient:
         self,
         method: str,
         endpoint: str,
-        sign_attrs: tuple = (),
-    ) -> dict:
+        sign_attrs: tuple[str, ...] = (),
+    ) -> dict[str, Any]:
         """Generate headers for the HTTP request including authentication.
 
         This method creates the necessary headers for authenticating requests
@@ -233,7 +233,7 @@ class AsyncHttpClient(AbstractClient):
         Note:
             This method should be called with await in an async context.
         """
-        json: dict | None = None
+        json: dict[str, Any] | None = None
 
         if isinstance(endpoint.body, AbstractBodyRequest):
             logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)
@@ -327,7 +327,7 @@ class HttpClient(AbstractClient):
             InvalidIpAddress: If the response code is 201
             Exception: For other HTTP or network errors
         """
-        json: dict | None = None
+        json: dict[str, Any] | None = None
 
         if isinstance(endpoint.body, AbstractBodyRequest):
             logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)

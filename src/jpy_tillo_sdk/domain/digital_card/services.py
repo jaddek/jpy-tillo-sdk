@@ -108,7 +108,7 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def issue_digital_code(
         self,
-        query_params: dict | None = None,
+        query_params: dict[str, Any] | None = None,
         body: IssueDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = IssueDigitalCodeEndpoint(body=body, query=query_params)
@@ -116,7 +116,7 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def order_digital_code(
         self,
-        query_params: dict | None = None,
+        query_params: dict[str, Any] | None = None,
         body: OrderDigitalCodeAsyncEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = OrderDigitalCodeAsyncEndpoint(body=body, query=query_params)
@@ -124,14 +124,14 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def check_digital_order(
         self,
-        query_params: dict | None = None,
+        query_params: dict[str, Any] | None = None,
     ) -> Response:
         endpoint = CheckDigitalOrderStatusAsyncEndpoint(query=query_params)
         return self.client.request(endpoint=endpoint)
 
     def top_up_digital_code(
         self,
-        query_params: dict | None = None,
+        query_params: dict[str, Any] | None = None,
         body: TopUpDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = TopUpDigitalCodeEndpoint(body=body)
@@ -139,7 +139,7 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def cancel_digital_url(
         self,
-        query_params: dict | None = None,
+        query_params: dict[str, Any] | None = None,
         body: CancelDigitalUrlEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = CancelDigitalUrlEndpoint(body=body)
@@ -147,7 +147,7 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def cancel_digital_code(
         self,
-        query_params: dict | None = None,
+        query_params: dict[str, Any] | None = None,
         body: CancelDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = CancelDigitalCodeEndpoint(body=body)
@@ -155,7 +155,7 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def reverse_digital_code(
         self,
-        query_params: dict | None = None,
+        query_params: dict[str, Any] | None = None,
         body: ReverseDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = ReverseDigitalCodeEndpoint(body=body)

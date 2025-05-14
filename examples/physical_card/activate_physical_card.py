@@ -1,22 +1,21 @@
 import asyncio
 import uuid
 
-from jpy_tillo_sdk import Currency
 from jpy_tillo_sdk.domain.physical_card.factory import (
     create_activate_physical_card_request,
 )
 from jpy_tillo_sdk.domain.physical_card.services import (
     PhysicalGiftCardsService,
 )
+from jpy_tillo_sdk.enums import Currency
 from jpy_tillo_sdk.http_client_factory import (
     create_client,
     create_client_async,
 )
 
-TILLO_HOST = ""
-TILLO_API_KEY = ""
-TILLO_SECRET = ""
-TILLO_HTTP_CLIENT_OPTIONS = {}
+TILLO_API_KEY = "531f9263eede2f86a944aea966b71624c6abaa5f8b6d292f082146eb2e1e48bd"
+TILLO_SECRET = "18420be9a3eeca4012229277cb60b3c9afbaa0190e0d72ee1c9046fa88086d0e"
+TILLO_HTTP_CLIENT_OPTIONS = {"base_url": "https://sandbox.tillo.dev", "http2": True}
 
 
 def activate_physical_card():

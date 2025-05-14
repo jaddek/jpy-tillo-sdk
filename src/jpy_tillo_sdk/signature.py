@@ -103,7 +103,9 @@ class SignatureGenerator(SignatureGeneratorInterface):
         logger.debug("Generated request ID: %s", request_id)
         return request_id
 
-    def generate_signature_string(self, endpoint: str, request_type: str, timestamp: str, params: tuple) -> str:
+    def generate_signature_string(
+        self, endpoint: str, request_type: str, timestamp: str, params: tuple[str, ...]
+    ) -> str:
         """Generate the string to be signed for the request.
 
         This method creates the signature string according to Tillo's specification:
@@ -185,8 +187,8 @@ class SignatureBridge(SignatureBridgeInterface):
         self,
         endpoint: str,
         method: str,
-        sign_attrs: tuple,
-    ):
+        sign_attrs: tuple[str, ...],
+    ) -> tuple[str, ...]:
         """Generate a complete signature for an API request.
 
         This method generates all components needed for request authentication:

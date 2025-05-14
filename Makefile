@@ -1,4 +1,4 @@
-.PHONY: uvr-mype, uvr-black-check, uvr-black-format, uvr-coverage, uvr-tests, uvrr, uvrr-check, uvrr-format, uvr-floats-check-floats, uvr-floats-transfer
+.PHONY: uvr-mype, uvr-black-check, uvr-black-format, uvr-coverage, uvr-tests, uvrr, uvrr-check, uvrr-format
 
 all: help
 
@@ -12,24 +12,6 @@ uvrr-check:
 
 uvrr-format:
 	uv run ruff format
-
-uvr-floats-check-floats:
-	 uv run examples/floats/check_floats.py
-
-uvr-floats-request-transfer:
-	uv run examples/floats/request_payment_transfer.py
-
-uvr-brands:
-	uv run examples/brand/get_brands.py
-
-uvr-template:
-	uv run examples/brand/get_template.py
-
-uvr-template-list:
-	uv run examples/brand/list_templates.py
-
-uvr-dc-check-stock:
-	uv run examples/digital_card/check_stock.py
 
 uvr-coverage:
 	uv run coverage run -m pytest & uv run coverage run report
@@ -53,7 +35,4 @@ help:
 	@echo "Run Black:"
 	@echo "  uvrb-check                - uv run black . --diff"
 	@echo "  uvrb-format               - uv run black . --check --diff"
-	@echo "Available requests:"
-	@echo "  uvr-floats-check-floats   - Run examples/floats/check_floats.py (Tillo V2 GET - api/v2/float/check-floats)"
-	@echo "  uvr-floats-transfer       - Run examples/floats/request_payment_transfer.py (Tillo V2 POST - api/v2/float/request-payment-transfer)"
 	@echo "  help                      - Show this message"

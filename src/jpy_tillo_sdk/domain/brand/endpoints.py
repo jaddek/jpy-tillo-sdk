@@ -30,7 +30,7 @@ class TemplateListEndpoint(Endpoint):
     class QueryParams(QP):
         brand: str | None = None
 
-        def get_sign_attrs(self) -> tuple:
+        def get_sign_attrs(self) -> tuple[str, ...]:
             return (self.brand,) if self.brand is not None else ()
 
     @property
@@ -48,7 +48,7 @@ class TemplateEndpoint(Endpoint):
         brand: str | None = None
         template: str | None = None
 
-        def get_sign_attrs(self) -> tuple:
+        def get_sign_attrs(self) -> tuple[str, ...]:
             return (self.brand,) if self.brand else ()
 
     @property

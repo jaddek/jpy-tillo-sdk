@@ -28,7 +28,7 @@ Note:
 
 import logging
 from abc import abstractmethod
-from typing import Optional
+from typing import Any, Optional
 
 from httpx import AsyncClient, Client, Response
 
@@ -57,7 +57,7 @@ class AbstractClient:
 
     _signer: SignatureBridge
 
-    def __init__(self, tillo_client_options: dict, signer: SignatureBridge):
+    def __init__(self, tillo_client_options: dict[str, Any] | None, signer: SignatureBridge):
         """Initialize the HTTP client.
 
         Args:
@@ -179,7 +179,7 @@ class AbstractClient:
             if content_code == UnprocessableContent.TILLO_ERROR_CODE:
                 logger.error("Received 422 response code, invalid data")
                 exception = UnprocessableContent()
-                exception.message = content_message
+                exception.MESSAGE = content_message
                 raise exception
 
 

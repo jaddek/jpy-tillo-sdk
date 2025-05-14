@@ -35,7 +35,7 @@ logger = logging.getLogger("tillo.contracts")
 
 class IssueDigitalCodeServiceInterface(ABC):
     @abstractmethod
-    async def issue_digital_code(
+    def issue_digital_code(
         self,
         query_params: Optional[Any] = None,
         body: Optional[Any] = None,

@@ -1,4 +1,3 @@
-import string
 from typing import Optional
 
 from jpy_tillo_sdk.domain.float.endpoints import (
@@ -9,16 +8,16 @@ from jpy_tillo_sdk.enums import Currency
 
 
 def create_check_floats_query(currency: Currency):
-    return CheckFloatsEndpoint.QueryParams(currency=currency.value)
+    return CheckFloatsEndpoint.QueryParams(currency=currency)
 
 
 def create_payment_transfer_request(
     transfer_float: str,
     currency: Currency,
-    amount: string,
-    finance_email: string,
+    amount: str,
+    finance_email: str,
     proforma_invoice: Optional[RequestPaymentTransferEndpoint.RequestBody.ProformaInvoiceParams] = None,
-    payment_reference: string = "OUR_REF",
+    payment_reference: str = "OUR_REF",
 ):
     return RequestPaymentTransferEndpoint.RequestBody(
         currency=currency,

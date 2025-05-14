@@ -33,7 +33,7 @@ Example:
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
-from typing import Optional
+from typing import Any, Optional
 
 logger = logging.getLogger("tillo.endpoint")
 
@@ -46,10 +46,6 @@ class QP:
     in API requests, including filtering empty values and generating
     signature attributes.
     """
-
-    def __init__(self):
-        if type(self) is QP:
-            raise TypeError("QP is an abstract class and cannot be instantiated directly.")
 
     def get_not_empty_values(self) -> dict:
         """Get dictionary of non-empty parameter values.
@@ -121,13 +117,13 @@ class Endpoint:
     _method: Optional[str] = None
     _endpoint: Optional[str] = None
     _route: Optional[str] = None
-    _query: Optional[QP] = None
+    _query: Optional[Any] = None
     _body: Optional[AbstractBodyRequest] = None
     _sign_attrs = None
 
     def __init__(
         self,
-        query: Optional[QP] = None,
+        query: Optional[Any] = None,
         body: Optional[AbstractBodyRequest] = None,
         sign_attrs: Optional[tuple] = None,
     ):
@@ -156,30 +152,39 @@ class Endpoint:
         )
 
     @property
-    def method(self) -> Optional[str]:
+    def method(self) -> str:
         """Get the HTTP method for the endpoint.
 
         Returns:
             Optional[str]: HTTP method (GET, POST, etc.)
         """
+        if self._method is None:
+            raise RuntimeError("Endpoint _method has not been initialized.")
+
         return self._method
 
     @property
-    def endpoint(self) -> Optional[str]:
+    def endpoint(self) -> str:
         """Get the API endpoint path.
 
         Returns:
             Optional[str]: API endpoint path
         """
+        if self._endpoint is None:
+            raise RuntimeError("Endpoint _endpoint has not been initialized.")
+
         return self._endpoint
 
     @property
-    def route(self) -> Optional[str]:
+    def route(self) -> str:
         """Get the full API route including base URL.
 
         Returns:
             Optional[str]: Full API route
         """
+        if self._route is None:
+            raise RuntimeError("Endpoint _route has not been initialized.")
+
         return self._route
 
     @property

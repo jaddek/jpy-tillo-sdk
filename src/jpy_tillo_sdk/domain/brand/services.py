@@ -24,7 +24,7 @@ class BrandService:
         self,
         query_params: Optional[BrandEndpoint.QueryParams] = None,
     ) -> Response:
-        endpoint = BrandEndpoint(query=query_params or {})
+        endpoint = BrandEndpoint(query=query_params)
 
         return self.client.request(endpoint=endpoint)
 
@@ -43,7 +43,7 @@ class BrandServiceAsync:
         self,
         query_params: Optional[BrandEndpoint.QueryParams] = None,
     ) -> Response:
-        endpoint = BrandEndpoint(query=query_params or {})
+        endpoint = BrandEndpoint(query=query_params)
         return await self.client.request(endpoint=endpoint)
 
 
@@ -61,14 +61,14 @@ class TemplateService(TemplateServiceInterface):
         self,
         query_params: Optional[TemplateListEndpoint.QueryParams] = None,
     ) -> Response:
-        endpoint = TemplateListEndpoint(query_params or {})
+        endpoint = TemplateListEndpoint(query_params)
         return self.client.request(endpoint=endpoint)
 
     def download_brand_template(
         self,
         query_params: Optional[TemplateEndpoint.QueryParams] = None,
     ) -> Response:
-        endpoint = TemplateEndpoint(query_params or {})
+        endpoint = TemplateEndpoint(query_params)
         return self.client.request(endpoint=endpoint)
 
 
@@ -86,12 +86,12 @@ class TemplateServiceAsync(TemplateServiceAsyncInterface):
         self,
         query_params: Optional[TemplateEndpoint.QueryParams] = None,
     ) -> Response:
-        endpoint = TemplateEndpoint(query_params or {})
+        endpoint = TemplateEndpoint(query_params)
         return await self.client.request(endpoint=endpoint)
 
     async def get_brand_templates(
         self,
         query_params: Optional[TemplateListEndpoint.QueryParams] = None,
     ) -> Response:
-        endpoint = TemplateListEndpoint(query_params or {})
+        endpoint = TemplateListEndpoint(query_params)
         return await self.client.request(endpoint=endpoint)

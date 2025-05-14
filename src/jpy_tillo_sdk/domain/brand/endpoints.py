@@ -11,7 +11,7 @@ class BrandEndpoint(Endpoint):
 
     @dataclass(frozen=True)
     class QueryParams(QP):
-        detail: bool = None
+        detail: Optional[bool] = None
         currency: Optional[str] = None
         country: Optional[str] = None
         brand: Optional[str] = None

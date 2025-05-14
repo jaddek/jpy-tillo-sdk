@@ -211,6 +211,10 @@ class CheckBalanceEndpoint(Endpoint):
     _route: str = "/api/v2/digital/check-balance"
 
     @dataclass(frozen=True)
+    class QueryParams(QP):
+        pass
+
+    @dataclass(frozen=True)
     class RequestBody(AbstractBodyRequest):
         client_request_id: Optional[str] = None
         brand: Optional[str] = None

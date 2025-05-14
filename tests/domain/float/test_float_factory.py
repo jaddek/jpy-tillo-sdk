@@ -10,12 +10,10 @@ from jpy_tillo_sdk.enums import Currency
 
 
 def test_create_check_floats_query():
-    request = create_check_floats_query(
-        currency=Currency.EUR,
-    )
+    request = create_check_floats_query(Currency.EUR)
 
     assert isinstance(request, CheckFloatsEndpoint.QueryParams)
-    assert request.currency == Currency.EUR.value
+    assert request.currency == Currency.EUR
 
 
 def test_create_payment_transfer_request():

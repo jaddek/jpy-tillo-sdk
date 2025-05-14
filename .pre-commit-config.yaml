@@ -3,15 +3,29 @@ repos:
     rev: 25.1.0
     hooks:
       - id: black
-        name: black
-        args:
-          - .
-          - --check
+        language_version: python3
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.9
     hooks:
       - id: ruff
-        name: ruff
-        language: python
-        args: [ --fix ]
       - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        args: ["--ignore-missing-imports", "--check-untyped-defs"]
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.2
+    hooks:
+      - id: pyupgrade
+        args: ["--py311-plus"]  # or adjust for your Python version
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict

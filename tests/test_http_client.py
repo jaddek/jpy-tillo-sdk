@@ -1,19 +1,20 @@
+import dataclasses
 from unittest.mock import AsyncMock, Mock
 
 import pytest
 from httpx import Response
 
-from jpy_tillo_sdk.endpoint import Endpoint
+from jpy_tillo_sdk.endpoint import AbstractBodyRequest, Endpoint
 
 
 class MockEndpoint(Endpoint):
-    def __init__(self, method="GET", endpoint="/test", route="https://api.test.com/test"):
+    def __init__(self, method="GET", endpoint="/test", route="https://api.test.com/test", body=None):
         super().__init__()
         self._method = method
         self._endpoint = endpoint
         self._route = route
         self._params = {}
-        self._body = Mock(get_sign_attrs=Mock(return_value=()))
+        self._body = body or Mock(get_sign_attrs=Mock(return_value=()))
         self._query = Mock(get_sign_attrs=Mock(return_value=()))
 
     def is_body_not_empty(self):
@@ -21,7 +22,7 @@ class MockEndpoint(Endpoint):
 
 
 def test_get_request_headers(http_client):
-    headers = http_client._get_request_headers("GET", "/test")
+    headers = http_client._get_request_headers("GET", "/test", ())
 
     assert headers["Accept"] == "application/json"
     assert headers["Content-Type"] == "application/json"
@@ -92,9 +93,14 @@ async def test_async_http_client_request(async_http_client, monkeypatch):
 
 
 def test_request_with_body(http_client, monkeypatch):
-    endpoint = MockEndpoint()
-    endpoint.is_body_not_empty = lambda: True
-    endpoint.body.get_as_dict.return_value = {"test": "data"}
+    @dataclasses.dataclass(frozen=True)
+    class RequestBody(AbstractBodyRequest):
+        test: str = "data"
+
+        def get_sign_attrs(self):
+            return ()
+
+    endpoint = MockEndpoint(body=RequestBody())
 
     mock_response = Mock(spec=Response)
     mock_response.status_code = 200

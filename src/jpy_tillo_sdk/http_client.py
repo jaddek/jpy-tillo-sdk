@@ -104,7 +104,7 @@ class AbstractClient:
         self,
         method: str,
         endpoint: str,
-        sign_attrs: tuple,
+        sign_attrs: tuple = (),
     ) -> dict:
         """Generate headers for the HTTP request including authentication.
 
@@ -353,7 +353,7 @@ class HttpClient(AbstractClient):
         )
 
         try:
-            with Client(**(self.tillo_client_options or {})) as client:
+            with Client(**self.tillo_client_options) as client:
                 logger.debug(
                     "Sending sync request to %s with method %s",
                     endpoint.route,

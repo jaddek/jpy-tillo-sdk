@@ -32,7 +32,7 @@ from typing import Any, Optional
 
 from httpx import AsyncClient, Client, Response
 
-from .endpoint import Endpoint
+from .endpoint import AbstractBodyRequest, Endpoint
 from .errors import InvalidIpAddress, UnprocessableContent
 from .signature import SignatureBridge
 
@@ -104,7 +104,7 @@ class AbstractClient:
         self,
         method: str,
         endpoint: str,
-        sign_attrs: Optional[tuple] = None,
+        sign_attrs: tuple,
     ) -> dict:
         """Generate headers for the HTTP request including authentication.
 
@@ -227,7 +227,7 @@ class AsyncHttpClient(AbstractClient):
         """
         json: Optional[dict] = None
 
-        if endpoint.is_body_not_empty():
+        if isinstance(endpoint.body, AbstractBodyRequest):
             logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)
             json = endpoint.body.get_as_dict()
 
@@ -324,7 +324,7 @@ class HttpClient(AbstractClient):
         """
         json: Optional[dict] = None
 
-        if endpoint.is_body_not_empty():
+        if isinstance(endpoint.body, AbstractBodyRequest):
             logger.debug("Requesting endpoint using body for signing: %s", endpoint.body)
             json = endpoint.body.get_as_dict()
 

@@ -247,7 +247,7 @@ class Endpoint:
         logger.debug("Getting signature attributes for request")
         sign_attrs: tuple = ()
 
-        if self.is_body_not_empty():
+        if isinstance(self.body, AbstractBodyRequest):
             logger.debug("Using body attributes for signature")
             sign_attrs += self.body.get_sign_attrs() if self.is_body_not_empty() else ()
         else:

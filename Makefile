@@ -1,4 +1,4 @@
-.PHONY: uvr-black-check, uvr-black-format, uvr-coverage, uvr-tests, uvrr, uvrr-check, uvrr-format, uvr-floats-check-floats, uvr-floats-transfer
+.PHONY: uvr-mype, uvr-black-check, uvr-black-format, uvr-coverage, uvr-tests, uvrr, uvrr-check, uvrr-format, uvr-floats-check-floats, uvr-floats-transfer
 
 all: help
 
@@ -28,11 +28,16 @@ uvr-black-check:
 uvr-black-format:
 	uv run black . --diff
 
+uvr-mypy:
+	uv run mypy src/
+
 help:
 	@echo "Run UV:"
 	@echo "  uvrr-check                - uv run ruff check - Ruff Check"
 	@echo "  uvrr-format               - uv run ruff format - Ruff Format"
 	@echo "  uvrp-tests                - uv run pytest - Tests"
+	@echo "Run MyPy:"
+	@echo "  uvrb-mypy                - uv run mype src/"
 	@echo "Run Black:"
 	@echo "  uvrb-check                - uv run black . --diff"
 	@echo "  uvrb-format               - uv run black . --check --diff"

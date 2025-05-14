@@ -57,3 +57,8 @@ line-length = 120
 line-length = 120
 lint.select = ["E", "F", "B", "I"]  # Errors, Pyflakes, Bugbear, isort
 fix = true
+
+[tool.mypy]
+exclude = [
+    "src/jpy_tillo_sdk/domain/physical_card/",
+]

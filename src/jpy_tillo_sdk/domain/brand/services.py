@@ -1,5 +1,7 @@
 import logging
-from typing import Any, Optional
+from typing import Optional
+
+from httpx import Response
 
 from ...contracts import TemplateServiceAsyncInterface, TemplateServiceInterface
 from ...http_client import AsyncHttpClient, HttpClient
@@ -21,7 +23,7 @@ class BrandService:
     def get_available_brands(
         self,
         query_params: Optional[BrandEndpoint.QueryParams] = None,
-    ) -> Any:
+    ) -> Response:
         endpoint = BrandEndpoint(query=query_params or {})
 
         return self.client.request(endpoint=endpoint)
@@ -40,7 +42,7 @@ class BrandServiceAsync:
     async def get_available_brands(
         self,
         query_params: Optional[BrandEndpoint.QueryParams] = None,
-    ) -> Any:
+    ) -> Response:
         endpoint = BrandEndpoint(query=query_params or {})
         return await self.client.request(endpoint=endpoint)
 
@@ -58,14 +60,14 @@ class TemplateService(TemplateServiceInterface):
     def get_brand_templates(
         self,
         query_params: Optional[TemplateListEndpoint.QueryParams] = None,
-    ) -> Any:
+    ) -> Response:
         endpoint = TemplateListEndpoint(query_params or {})
         return self.client.request(endpoint=endpoint)
 
     def download_brand_template(
         self,
         query_params: Optional[TemplateEndpoint.QueryParams] = None,
-    ) -> Any:
+    ) -> Response:
         endpoint = TemplateEndpoint(query_params or {})
         return self.client.request(endpoint=endpoint)
 
@@ -83,13 +85,13 @@ class TemplateServiceAsync(TemplateServiceAsyncInterface):
     async def download_brand_template(
         self,
         query_params: Optional[TemplateEndpoint.QueryParams] = None,
-    ) -> Any:
+    ) -> Response:
         endpoint = TemplateEndpoint(query_params or {})
         return await self.client.request(endpoint=endpoint)
 
     async def get_brand_templates(
         self,
         query_params: Optional[TemplateListEndpoint.QueryParams] = None,
-    ) -> Any:
+    ) -> Response:
         endpoint = TemplateListEndpoint(query_params or {})
         return await self.client.request(endpoint=endpoint)

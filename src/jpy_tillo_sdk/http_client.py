@@ -151,9 +151,7 @@ class AbstractClient:
 
     def _catch_non_200_response(
         self,
-        status_code: int,
-        content_code: str | None = None,
-        content_message: str | None = None,
+        response: Response,
     ) -> None:
         """Handle non-200 HTTP response codes.
 
@@ -167,6 +165,10 @@ class AbstractClient:
             InvalidIpAddress: If the response code is 201, indicating an IP
                 address validation error
         """
+
+        status_code = response.status_code
+        content_code = response.json().get("code")
+
         logger.debug(
             "Checking response code and content code: %d - %s",
             status_code,
@@ -175,24 +177,18 @@ class AbstractClient:
 
         if status_code == 201:
             logger.error("Received 201 response code, raising InvalidIpAddress")
-            raise InvalidIpAddress()
+            raise InvalidIpAddress(response)
         elif status_code == 422:
             if content_code == UnprocessableContent.TILLO_ERROR_CODE:
                 logger.error("Received 422 response code, invalid data")
-                exception = UnprocessableContent()
-                exception.MESSAGE = content_message
-                raise exception
+                raise UnprocessableContent(response)
             elif content_code == UnprocessableContent.TILLO_ERROR_CODE:
                 logger.error("Received 401 response code, unauthorized")
-                exception = ValidationError()
-                exception.MESSAGE = content_message
-                raise exception
+                raise ValidationError(response)
         elif status_code == 401:
             if content_code == AuthenticationFailed.TILLO_ERROR_CODE:
                 logger.error("Received 401 response code, unauthorized")
-                exception = AuthenticationFailed()
-                exception.MESSAGE = content_message
-                raise exception
+                raise AuthenticationFailed(response)
 
 
 class AsyncHttpClient(AbstractClient):
@@ -285,11 +281,7 @@ class AsyncHttpClient(AbstractClient):
                 logger.debug("Received response with status code: %d", response.status_code)
 
                 if response.status_code != 200:
-                    self._catch_non_200_response(
-                        response.status_code,
-                        response.json().get("code"),
-                        response.content.decode("utf-8"),
-                    )
+                    self._catch_non_200_response(response)
                 return response
         except Exception as e:
             logger.error("Error making async request to %s: %s", endpoint.route, str(e))
@@ -382,11 +374,7 @@ class HttpClient(AbstractClient):
                 logger.debug("Received response with status code: %d", response.status_code)
 
                 if response.status_code != 200:
-                    self._catch_non_200_response(
-                        response.status_code,
-                        response.json().get("code"),
-                        response.content.decode("utf-8"),
-                    )
+                    self._catch_non_200_response(response)
 
                 return response
         except Exception as e:

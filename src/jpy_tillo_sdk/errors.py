@@ -11,6 +11,8 @@ The error hierarchy is organized as follows:
   - Various API-specific exceptions
 """
 
+from httpx import Response
+
 
 class TilloException(Exception):
     """Base exception class for all Tillo SDK errors.
@@ -25,6 +27,11 @@ class TilloException(Exception):
         DESCRIPTION (str): A detailed description of the error and how to resolve it.
         API_VERSION (int): The API version where this error is applicable.
     """
+
+    response: None | Response = None
+
+    def __init__(self, response):
+        self.response = response
 
     TILLO_ERROR_CODE: str | None = None
     HTTP_ERROR_CODE: int | None = None
@@ -52,8 +59,6 @@ class AuthenticationError(TilloException):
 
 
 class ValidationError(TilloException):
-    """Base class for validation-related errors."""
-
     TILLO_ERROR_CODE: str | None = "433"
     HTTP_ERROR_CODE: int | None = 422
     MESSAGE: str | None = "Validation Errors"

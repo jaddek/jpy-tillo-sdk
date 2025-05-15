@@ -24,7 +24,7 @@ import logging
 
 from httpx import Response
 
-from ...contracts import FloatServiceAsyncInterface, FloatServiceInterface
+from ...contracts import FloatServiceAsyncInterface, FloatServiceInterface, QueryParamsInterface
 from ...http_client import AsyncHttpClient, HttpClient
 from .endpoints import CheckFloatsEndpoint, RequestPaymentTransferEndpoint
 
@@ -67,7 +67,7 @@ class FloatService(FloatServiceInterface):
 
     def check_floats(
         self,
-        query_params: CheckFloatsEndpoint.QueryParams | None = None,
+        query_params: QueryParamsInterface | None = None,
     ) -> Response:
         """Check float balances for the account.
 
@@ -200,7 +200,7 @@ class FloatServiceAsync(FloatServiceAsyncInterface):
 
     async def check_floats(
         self,
-        query_params: CheckFloatsEndpoint.QueryParams | None = None,
+        query_params: QueryParamsInterface | None = None,
     ) -> Response:
         """Check float balances for the account asynchronously.
 

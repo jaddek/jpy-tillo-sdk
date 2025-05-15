@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from ...contracts import QueryParamsInterface
 from ...endpoint import QP, Endpoint
 
 
@@ -9,7 +10,7 @@ class BrandEndpoint(Endpoint):
     _route = "/api/v2/brands"
 
     @dataclass(frozen=True)
-    class QueryParams(QP):
+    class QueryParams(QP, QueryParamsInterface):
         detail: bool | None = None
         currency: str | None = None
         country: str | None = None

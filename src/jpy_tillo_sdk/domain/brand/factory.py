@@ -1,14 +1,4 @@
-from .endpoints import BrandEndpoint, TemplateEndpoint, TemplateListEndpoint
-
-
-def create_brands_query_params(
-    detail: bool = True,
-    currency: str | None = None,
-    country: str | None = None,
-    brand: str | None = None,
-    category: str | None = None,
-) -> BrandEndpoint.QueryParams:
-    return BrandEndpoint.QueryParams(detail, currency, country, brand, category)
+from .endpoints import TemplateEndpoint, TemplateListEndpoint
 
 
 def create_brand_template_list_query_params(

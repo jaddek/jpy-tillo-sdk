@@ -35,11 +35,13 @@ from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
 from typing import Any
 
+from jpy_tillo_sdk.contracts import QueryParamsInterface
+
 logger = logging.getLogger("tillo.endpoint")
 
 
 @dataclass(frozen=True)
-class QP:
+class QP(QueryParamsInterface):
     """Base class for query parameters.
 
     This class provides common functionality for handling query parameters

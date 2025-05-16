@@ -12,10 +12,9 @@ def test_check_floats_endpoint():
     assert endpoint.method == HttpMethods.GET.value
     assert endpoint.endpoint == Domains.CHECK_FLOATS.value
     assert endpoint.route == "/api/v2/" + Domains.CHECK_FLOATS.value
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 def test_request_payment_transfer_endpoint():
@@ -24,7 +23,6 @@ def test_request_payment_transfer_endpoint():
     assert endpoint.method == HttpMethods.POST.value
     assert endpoint.endpoint == "float-request-payment-transfer"
     assert endpoint.route == "/api/v2/float/request-payment-transfer"
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None

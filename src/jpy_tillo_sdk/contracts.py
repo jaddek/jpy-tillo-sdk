@@ -1,245 +1,278 @@
-"""Tillo SDK Interface Contracts Module.
-
-This module defines the core interfaces and contracts used throughout the Tillo SDK.
-It provides abstract base classes that define the structure and behavior of key
-components including signature generation, request signing, and service access.
-
-The module consists of three main interfaces:
-- SignatureGeneratorInterface: Defines the contract for signature generation
-- SignatureBridgeInterface: Defines the contract for request signing
-- TilloInterface: Defines the contract for accessing Tillo services
-
-Example:
-    ```python
-    # Implementing the TilloInterface
-    class TilloSDK(TilloInterface):
-        def floats(self):
-            return FloatServiceAsync()
-
-        def brand(self):
-            return BrandService()
-
-        # ... implement other required methods
-    ```
-"""
-
 import logging
 import uuid
 from abc import ABC, abstractmethod
-from typing import Any, final
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 from httpx import Response
+
+if TYPE_CHECKING:
+    from jpy_tillo_sdk.http_client import AsyncHttpClient, HttpClient
 
 logger = logging.getLogger("tillo.contracts")
 
 
-class QueryParamsInterface(ABC):
-    @abstractmethod
-    def get_sign_attrs(self) -> tuple[str, ...]: ...
-
-    @abstractmethod
-    def get_not_empty_values(self) -> dict[str, Any]: ...
-
-
-class BrandsRequestInterface(ABC):
+class EndpointInterface(ABC):
     @property
     @abstractmethod
-    def get_available_brands_query(self) -> type[QueryParamsInterface]: ...
+    def method(self) -> str: ...
 
-
-class BrandsInterface(ABC):
+    @property
     @abstractmethod
-    def get_available_brands(
+    def endpoint(self) -> str: ...
+
+    @property
+    @abstractmethod
+    def route(self) -> str: ...
+
+    @property
+    @abstractmethod
+    def body(self) -> Any: ...
+
+    @property
+    @abstractmethod
+    def query(self) -> Any: ...
+
+    @property
+    @abstractmethod
+    def sign_attrs(self) -> tuple[str, ...]: ...
+
+
+class SignatureAttributesInterface(ABC):
+    @property
+    @abstractmethod
+    def sign_attrs(self) -> tuple[str, ...]: ...
+
+
+@dataclass(frozen=True)
+class RequestBodyAbstract(SignatureAttributesInterface):
+    @property
+    def sign_attrs(self) -> tuple[str, ...]:
+        return ()
+
+
+@dataclass(frozen=True)
+class RequestQueryAbstract(SignatureAttributesInterface):
+    @property
+    @abstractmethod
+    def sign_attrs(self) -> tuple[str, ...]: ...
+
+
+class ClientInterface(ABC):
+    @abstractmethod
+    def request(
         self,
-        query: QueryParamsInterface,
+        endpoint: EndpointInterface,
+    ) -> Response: ...
+
+
+TClient = TypeVar("TClient", bound=ClientInterface)
+
+
+class ServiceInterface(ABC, Generic[TClient]):
+    def __init__(self, *, client: TClient):
+        self._client: TClient = client
+
+    @property
+    @abstractmethod
+    def client(self) -> TClient: ...
+
+
+class SyncServiceInterface(ServiceInterface["HttpClient"], ABC):
+    @property
+    def client(self) -> "HttpClient":
+        return self._client
+
+
+class AsyncServiceInterface(ServiceInterface["AsyncHttpClient"], ABC):
+    @property
+    def client(self) -> "AsyncHttpClient":
+        return self._client
+
+
+class TemplateServiceInterface(SyncServiceInterface, ABC):
+    @abstractmethod
+    def download_brand_template(
+        self,
+        query: Any = None,
     ) -> Response: ...
 
     @abstractmethod
-    async def get_available_brands_async(self, query: QueryParamsInterface) -> Response: ...
+    def get_templates_list(
+        self,
+        query: Any = None,
+    ) -> Response: ...
 
 
-class BrandServiceInterface(BrandsInterface, BrandsRequestInterface, ABC):
-    @final
-    async def get_available_brands_async(self, query: QueryParamsInterface) -> Response:
-        raise NotImplementedError("Async method not allowed for sync service")
+class TemplateServiceAsyncInterface(AsyncServiceInterface, ABC):
+    @abstractmethod
+    async def download_brand_template(
+        self,
+        query: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def get_brand_templates(
+        self,
+        query: Any = None,
+    ) -> Response: ...
 
 
-class BrandServiceAsyncInterface(BrandsInterface, BrandsRequestInterface, ABC):
-    @final
+class FloatServiceAsyncInterface(AsyncServiceInterface, ABC):
+    @abstractmethod
+    async def check_floats(
+        self,
+        query: Any = None,
+    ) -> Response: ...
+
+
+class FloatServiceInterface(SyncServiceInterface, ABC):
+    @abstractmethod
+    def check_floats(
+        self,
+        query: Any = None,
+    ) -> Response: ...
+
+
+class BrandServiceInterface(SyncServiceInterface, ABC):
+    @abstractmethod
     def get_available_brands(
         self,
-        query: QueryParamsInterface,
-    ) -> Response:
-        raise NotImplementedError("Sync method not allowed for async service")
+        query: Any = None,
+    ) -> Response: ...
 
 
-class IssueDigitalCodeServiceInterface(ABC):
+class BrandServiceAsyncInterface(AsyncServiceInterface, ABC):
+    @abstractmethod
+    async def get_available_brands(
+        self,
+        query: Any = None,
+    ) -> Response: ...
+
+
+class DigitalCardServiceInterface(SyncServiceInterface, ABC):
     @abstractmethod
     def issue_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def order_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_digital_order(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def top_up_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def cancel_digital_url(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def cancel_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def reverse_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_stock(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     def check_balance(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
 
-class IssueDigitalCodeServiceAsyncInterface(ABC):
+class DigitalCardServiceAsyncInterface(AsyncServiceInterface, ABC):
     @abstractmethod
     async def issue_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def order_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_digital_order(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def top_up_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def cancel_digital_url(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def cancel_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_balance(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def check_stock(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
     ) -> Response: ...
 
     @abstractmethod
     async def reverse_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: Any = None,
         body: Any = None,
-    ) -> Response: ...
-
-
-class TemplateServiceInterface(ABC):
-    @abstractmethod
-    def download_brand_template(
-        self,
-        query_params: QueryParamsInterface | None = None,
-    ) -> Response: ...
-
-    @abstractmethod
-    def get_brand_templates(
-        self,
-        query_params: QueryParamsInterface | None = None,
-    ) -> Response: ...
-
-
-class TemplateServiceAsyncInterface(ABC):
-    @abstractmethod
-    async def download_brand_template(
-        self,
-        query_params: QueryParamsInterface | None = None,
-    ) -> Response: ...
-
-    @abstractmethod
-    async def get_brand_templates(
-        self,
-        query_params: QueryParamsInterface | None = None,
-    ) -> Response: ...
-
-
-class FloatServiceAsyncInterface(ABC):
-    @abstractmethod
-    async def check_floats(
-        self,
-        query_params: QueryParamsInterface | None = None,
-    ) -> Response: ...
-
-
-class FloatServiceInterface(ABC):
-    @abstractmethod
-    def check_floats(
-        self,
-        query_params: QueryParamsInterface | None = None,
     ) -> Response: ...
 
 
@@ -482,7 +515,7 @@ class TilloInterface(ABC):
 
     @property
     @abstractmethod
-    def digital_card(self) -> IssueDigitalCodeServiceInterface:
+    def digital_card(self) -> DigitalCardServiceInterface:
         """Get the digital card service instance.
 
         Returns:
@@ -498,7 +531,7 @@ class TilloInterface(ABC):
 
     @property
     @abstractmethod
-    def digital_card_async(self) -> IssueDigitalCodeServiceAsyncInterface:
+    def digital_card_async(self) -> DigitalCardServiceAsyncInterface:
         """Get the digital card service instance.
 
         Returns:

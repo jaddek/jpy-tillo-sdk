@@ -2,8 +2,11 @@ import pytest
 
 from jpy_tillo_sdk.domain.brand.endpoints import (
     BrandEndpoint,
-    TemplateEndpoint,
-    TemplateListEndpoint,
+    BrandEndpointRequestQuery,
+    DownloadBrandTemplateEndpoint,
+    DownloadBrandTemplateEndpointRequestQuery,
+    TemplatesListEndpoint,
+    TemplatesListEndpointRequestQuery,
 )
 from jpy_tillo_sdk.enums import Domains
 from jpy_tillo_sdk.http_methods import HttpMethods
@@ -16,10 +19,9 @@ def test_brand_endpoint():
     assert endpoint.endpoint == Domains.BRANDS.value
     assert endpoint.route == "/api/v2/" + Domains.BRANDS.value
     assert endpoint.query is None
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -47,7 +49,7 @@ def test_brand_endpoint():
     ],
 )
 def test_brand_endpoint_query(query):
-    endpoint_class = BrandEndpoint(query=BrandEndpoint.QueryParams(**query))
+    endpoint_class = BrandEndpoint(query=BrandEndpointRequestQuery(**query))
 
     if query is None:
         assert endpoint_class.query is None
@@ -59,120 +61,16 @@ def test_brand_endpoint_query(query):
         assert endpoint_class.query.detail == query.get("detail")
 
 
-@pytest.mark.parametrize(
-    "query,not_empty_values,sign_attrs",
-    [
-        (
-            {
-                "brand": "brand",
-                "category": "category",
-                "country": "country",
-                "currency": "currency",
-                "detail": True,
-            },
-            {
-                "brand": "brand",
-                "category": "category",
-                "country": "country",
-                "currency": "currency",
-                "detail": True,
-            },
-            None,
-        ),
-        (
-            {
-                "brand": "brand",
-                "category": "category",
-                "country": "country",
-                "currency": "currency",
-                "detail": False,
-            },
-            {
-                "brand": "brand",
-                "category": "category",
-                "country": "country",
-                "currency": "currency",
-                "detail": False,
-            },
-            None,
-        ),
-        (
-            {
-                "brand": "brand",
-                "category": "category",
-                "country": None,
-                "currency": None,
-                "detail": True,
-            },
-            {"brand": "brand", "category": "category", "detail": True},
-            None,
-        ),
-        ({}, {}, None),
-        (None, {}, None),
-    ],
-)
-def test_brand_endpoint_query_params(query, not_empty_values, sign_attrs):
-    qp = BrandEndpoint.QueryParams(
-        detail=query.get("detail") if query is not None else None,
-        currency=query.get("currency") if query is not None else None,
-        country=query.get("country") if query is not None else None,
-        brand=query.get("brand") if query is not None else None,
-        category=query.get("category") if query is not None else None,
-    )
-
-    assert qp.get_not_empty_values() == not_empty_values
-    assert qp.get_sign_attrs() == ()
-
-
 def test_template_list_endpoint():
-    endpoint = TemplateListEndpoint()
+    endpoint = TemplatesListEndpoint()
 
     assert endpoint.method == HttpMethods.GET.value
     assert endpoint.endpoint == Domains.TEMPLATES.value
     assert endpoint.route == "/api/v2/" + Domains.TEMPLATES.value
     assert endpoint.query is None
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
-
-
-@pytest.mark.parametrize(
-    "query,not_empty_values,sign_attrs",
-    [
-        (
-            {
-                "brand": "brand",
-            },
-            {
-                "brand": "brand",
-            },
-            None,
-        ),
-        (
-            {
-                "brand": None,
-            },
-            {},
-            None,
-        ),
-        ({}, {}, None),
-        (None, {}, None),
-    ],
-)
-def test_template_list_endpoint_query_params(query, not_empty_values, sign_attrs):
-    brand_value = query.get("brand") if query is not None else None
-
-    qp = TemplateListEndpoint.QueryParams(
-        brand=brand_value,
-    )
-
-    assert qp.get_not_empty_values() == not_empty_values
-
-    if brand_value is None:
-        assert qp.get_sign_attrs() == ()
-    else:
-        assert qp.get_sign_attrs() == (brand_value,)
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -192,9 +90,9 @@ def test_template_list_endpoint_query_params(query, not_empty_values, sign_attrs
     ],
 )
 def test_template_list_endpoint_query(query):
-    endpoint_class = TemplateListEndpoint(query=TemplateListEndpoint.QueryParams(**query))
+    endpoint_class = TemplatesListEndpoint(query=TemplatesListEndpointRequestQuery(**query))
 
-    assert isinstance(endpoint_class.query, TemplateListEndpoint.QueryParams)
+    assert isinstance(endpoint_class.query, TemplatesListEndpointRequestQuery)
 
     if query is None:
         assert endpoint_class.query.brand is None
@@ -203,16 +101,15 @@ def test_template_list_endpoint_query(query):
 
 
 def test_endpoint():
-    endpoint = TemplateEndpoint()
+    endpoint = DownloadBrandTemplateEndpoint()
 
     assert endpoint.method == HttpMethods.GET.value
     assert endpoint.endpoint == Domains.TEMPLATE.value
     assert endpoint.route == "/api/v2/" + Domains.TEMPLATE.value
     assert endpoint.query is None
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -234,9 +131,9 @@ def test_endpoint():
     ],
 )
 def test_endpoint_query(query):
-    endpoint_class = TemplateEndpoint(query=TemplateEndpoint.QueryParams(**query))
+    endpoint_class = DownloadBrandTemplateEndpoint(query=DownloadBrandTemplateEndpointRequestQuery(**query))
 
-    assert isinstance(endpoint_class.query, TemplateEndpoint.QueryParams)
+    assert isinstance(endpoint_class.query, DownloadBrandTemplateEndpointRequestQuery)
 
     if query is None:
         assert endpoint_class.query.brand is None
@@ -244,52 +141,3 @@ def test_endpoint_query(query):
     else:
         assert endpoint_class.query.brand == query.get("brand")
         assert endpoint_class.query.template == query.get("template")
-
-
-@pytest.mark.parametrize(
-    "query,not_empty_values,sign_attrs",
-    [
-        (
-            {
-                "brand": "brand",
-                "template": "template",
-            },
-            {
-                "brand": "brand",
-                "template": "template",
-            },
-            None,
-        ),
-        (
-            {
-                "brand": "brand",
-                "template": None,
-            },
-            {
-                "brand": "brand",
-            },
-            None,
-        ),
-        (
-            {
-                "brand": None,
-            },
-            {},
-            None,
-        ),
-        ({}, {}, None),
-        (None, {}, None),
-    ],
-)
-def test_endpoint_query_params(query, not_empty_values, sign_attrs):
-    brand_value = query.get("brand") if query is not None else None
-    template_value = query.get("template") if query is not None else None
-
-    qp = TemplateEndpoint.QueryParams(brand=brand_value, template=template_value)
-
-    assert qp.get_not_empty_values() == not_empty_values
-
-    if brand_value is None:
-        assert qp.get_sign_attrs() == ()
-    else:
-        assert qp.get_sign_attrs() == (brand_value,)

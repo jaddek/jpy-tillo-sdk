@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 
-from ...endpoint import QP, AbstractBodyRequest, Endpoint
+from ...contracts import RequestBodyAbstract, RequestQueryAbstract
+from ...endpoint import Endpoint
 from .models import FaceValue
 
 
@@ -10,7 +11,7 @@ class IssueDigitalCodeEndpoint(Endpoint):
     _route: str = "/api/v2/digital/issue"
 
     @dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
+    class RequestBody:
         @dataclass(frozen=True)
         class Personalisation:
             to_name: str | None = None
@@ -89,7 +90,7 @@ class TopUpDigitalCodeEndpoint(Endpoint):
     _route: str = "/api/v2/digital/top-up"
 
     @dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
+    class RequestBody:
         client_request_id: str | None = None
         brand: str | None = None
         face_value: FaceValue | None = None
@@ -115,15 +116,12 @@ class CheckStockEndpoint(Endpoint):
     _route: str = "/api/v2/check-stock"
 
     @dataclass(frozen=True)
-    class QueryParams(QP):
+    class RequestQuery(RequestQueryAbstract):
+        @property
+        def sign_attrs(self) -> tuple[str, ...]:
+            return (self.brand,) if self.brand else ()
+
         brand: str | None = None
-
-        def get_sign_attrs(self) -> tuple[str, ...]:
-            return (self.brand,) if self.brand is not None else ()
-
-    @property
-    def query(self) -> QueryParams | None:
-        return self._query
 
 
 class CancelDigitalCodeEndpoint(Endpoint):
@@ -132,7 +130,7 @@ class CancelDigitalCodeEndpoint(Endpoint):
     _route: str = "/api/v2/digital/issue"
 
     @dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
+    class RequestBody:
         client_request_id: str | None = None
         original_client_request_id: str | None = None
         brand: str | None = None
@@ -158,7 +156,7 @@ class CancelDigitalUrlEndpoint(Endpoint):
     _route: str = "/api/v2/digital/issue"
 
     @dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
+    class RequestBody:
         client_request_id: str | None = None
         original_client_request_id: str | None = None
         brand: str | None = None
@@ -184,7 +182,7 @@ class ReverseDigitalCodeEndpoint(Endpoint):
     _route: str = "/api/v2/digital/reverse"
 
     @dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
+    class RequestBody:
         client_request_id: str | None = None
         original_client_request_id: str | None = None
         brand: str | None = None
@@ -209,11 +207,11 @@ class CheckBalanceEndpoint(Endpoint):
     _route: str = "/api/v2/digital/check-balance"
 
     @dataclass(frozen=True)
-    class QueryParams(QP):
+    class RequestQuery(RequestQueryAbstract):
         pass
 
     @dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
+    class RequestBody:
         client_request_id: str | None = None
         brand: str | None = None
         face_value: FaceValue | None = None
@@ -236,7 +234,7 @@ class OrderDigitalCodeAsyncEndpoint(Endpoint):
     _route: str = "/api/v2/digital/order-card"
 
     @dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
+    class RequestBody(RequestBodyAbstract):
         @dataclass(frozen=True)
         class Personalisation:
             to_name: str | None = None
@@ -286,12 +284,9 @@ class CheckDigitalOrderStatusAsyncEndpoint(Endpoint):
     _route: str = "/api/v2/digital/order-status"
 
     @dataclass(frozen=True)
-    class QueryParams(QP):
+    class RequestQuery(RequestQueryAbstract):
         reference: str | None = None
 
-        def get_sign_attrs(self) -> tuple[str, ...]:
+        @property
+        def sign_attrs(self) -> tuple[str, ...]:
             return ()
-
-    @property
-    def query(self) -> QueryParams | None:
-        return self._query

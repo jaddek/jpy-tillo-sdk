@@ -1,7 +1,22 @@
 from dataclasses import dataclass
+from typing import final
 
-from ...contracts import QueryParamsInterface
-from ...endpoint import QP, Endpoint
+from ...contracts import RequestQueryAbstract
+from ...endpoint import Endpoint
+
+
+@final
+@dataclass(frozen=True)
+class BrandEndpointRequestQuery(RequestQueryAbstract):
+    detail: bool | None = None
+    currency: str | None = None
+    country: str | None = None
+    brand: str | None = None
+    category: str | None = None
+
+    @property
+    def sign_attrs(self) -> tuple[str, ...]:
+        return (self.brand,) if self.brand else ()
 
 
 class BrandEndpoint(Endpoint):
@@ -9,49 +24,42 @@ class BrandEndpoint(Endpoint):
     _endpoint = "brands"
     _route = "/api/v2/brands"
 
-    @dataclass(frozen=True)
-    class QueryParams(QP, QueryParamsInterface):
-        detail: bool | None = None
-        currency: str | None = None
-        country: str | None = None
-        brand: str | None = None
-        category: str | None = None
+
+@final
+@dataclass(frozen=True)
+class TemplatesListEndpointRequestQuery(RequestQueryAbstract):
+    brand: str | None = None
 
     @property
-    def query(self) -> QueryParams | None:
-        return self._query
+    def sign_attrs(self) -> tuple[str, ...]:
+        return (self.brand,) if self.brand else ()
 
 
-class TemplateListEndpoint(Endpoint):
+@final
+class TemplatesListEndpoint(Endpoint):
     _method = "GET"
     _endpoint = "templates"
     _route = "/api/v2/templates"
 
-    @dataclass(frozen=True)
-    class QueryParams(QP):
-        brand: str | None = None
 
-        def get_sign_attrs(self) -> tuple[str, ...]:
-            return (self.brand,) if self.brand is not None else ()
+@final
+@dataclass(frozen=True)
+class DownloadBrandTemplateEndpointRequestQuery(RequestQueryAbstract):
+    brand: str | None = None
+    template: str | None = None
 
     @property
-    def query(self) -> QueryParams | None:
-        return self._query
+    def sign_attrs(self) -> tuple[str, ...]:
+        sign_attrs = []
+
+        if self.brand:
+            sign_attrs.append(self.brand)
+
+        return tuple(sign_attrs)
 
 
-class TemplateEndpoint(Endpoint):
+@final
+class DownloadBrandTemplateEndpoint(Endpoint):
     _method = "GET"
     _endpoint = "template"
     _route = "/api/v2/template"
-
-    @dataclass(frozen=True)
-    class QueryParams(QP):
-        brand: str | None = None
-        template: str | None = None
-
-        def get_sign_attrs(self) -> tuple[str, ...]:
-            return (self.brand,) if self.brand else ()
-
-    @property
-    def query(self) -> QueryParams | None:
-        return self._query

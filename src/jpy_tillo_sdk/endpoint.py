@@ -1,260 +1,72 @@
-"""Tillo SDK Endpoint Module.
-
-This module provides classes for handling API endpoints and request parameters.
-It includes base classes for query parameters, request bodies, and endpoint
-definitions used throughout the SDK.
-
-The module consists of three main classes:
-- QP: Base class for query parameters
-- AbstractBodyRequest: Base class for request bodies
-- Endpoint: Base class for API endpoints
-
-Example:
-    ```python
-    @dataclass(frozen=True)
-    class MyQueryParams(QP):
-        param1: str
-        param2: int
-
-    @dataclass(frozen=True)
-    class MyRequestBody(AbstractBodyRequest):
-        data: str
-
-        def get_sign_attrs(self) -> tuple:
-            return (self.data,)
-
-    class MyEndpoint(Endpoint):
-        _method = "POST"
-        _endpoint = "/api/v1/endpoint"
-        _route = "https://api.tillo.io/api/v1/endpoint"
-    ```
-"""
-
 import logging
-from abc import ABC, abstractmethod
-from dataclasses import asdict, dataclass
+from abc import ABC
 from typing import Any
 
-from jpy_tillo_sdk.contracts import QueryParamsInterface
+from jpy_tillo_sdk.contracts import EndpointInterface, RequestBodyAbstract, RequestQueryAbstract
 
 logger = logging.getLogger("tillo.endpoint")
 
 
-@dataclass(frozen=True)
-class QP(QueryParamsInterface):
-    """Base class for query parameters.
+class SignedEndpointInterface(EndpointInterface, ABC):
+    _sign_attrs: list[str] = []
 
-    This class provides common functionality for handling query parameters
-    in API requests, including filtering empty values and generating
-    signature attributes.
-    """
+    @property
+    def sign_attrs(self) -> tuple[str, ...]:
+        logger.debug("Getting signature attributes for request")
+        _sign_attrs: list[str] = []
 
-    def get_not_empty_values(self) -> dict[str, Any]:
-        """Get dictionary of non-empty parameter values.
+        if isinstance(self.body, RequestBodyAbstract):
+            _sign_attrs += self.body.sign_attrs
 
-        Returns:
-            dict: Dictionary containing only non-None parameter values
-        """
-        values = {k: v for k, v in self.__dict__.items() if v is not None}
-        logger.debug("Filtered query parameters: %s", values)
-        return values
+        if isinstance(self.query, RequestQueryAbstract):
+            _sign_attrs += self.query.sign_attrs
 
-    def get_sign_attrs(self) -> tuple[str, ...]:
-        """Get parameters to include in request signature.
+        _sign_attrs = [attr for attr in _sign_attrs if attr is not None]
 
-        Returns:
-            tuple: Empty tuple by default, should be overridden by subclasses
-        """
-        logger.debug("Getting signature attributes from query parameters")
-        return ()
+        logger.debug("Generated signature attributes: %s", _sign_attrs)
+        return tuple(_sign_attrs)
 
 
-@dataclass(frozen=True)
-class AbstractBodyRequest(ABC):
-    """Base class for request bodies.
-
-    This class provides common functionality for handling request bodies
-    in API requests, including converting to dictionary format and generating
-    signature attributes.
-    """
-
-    @abstractmethod
-    def get_sign_attrs(self) -> tuple[str, ...]:
-        """Get attributes to include in request signature.
-
-        Returns:
-            tuple: Empty tuple by default, should be overridden by subclasses
-        """
-        logger.debug("Getting signature attributes from request body")
-        return ()
-
-    def get_as_dict(self) -> dict[str, Any]:
-        """Convert request body to dictionary format.
-
-        Returns:
-            dict: Dictionary representation of the request body
-        """
-        body_dict = asdict(self)
-        logger.debug("Converted request body to dictionary: %s", body_dict)
-        return body_dict
-
-
-class Endpoint:
-    """Base class for API endpoints.
-
-    This class provides common functionality for handling API endpoints,
-    including method, path, and parameter management. It handles both
-    query parameters and request bodies, and manages signature generation
-    for request authentication.
-
-    Attributes:
-        _method (str | None): HTTP method (GET, POST, etc.)
-        _endpoint (str | None): API endpoint path
-        _route (str | None): Full API route including base URL
-        _query (QP | None): Query parameters
-        _body (AbstractBodyRequest | None): Request body
-        _sign_attrs (tuple | None): Attributes for signature generation
-    """
-
-    _method: str | None = None
-    _endpoint: str | None = None
-    _route: str | None = None
-    _query: Any | None = None
-    _body: AbstractBodyRequest | None = None
-    _sign_attrs = None
+class Endpoint(SignedEndpointInterface, ABC):
+    _method: str
+    _endpoint: str
+    _route: str
+    _query: Any
+    _body: Any
 
     def __init__(
         self,
-        query: Any | None = None,
-        body: AbstractBodyRequest | None = None,
-        sign_attrs: tuple[str, ...] | None = None,
+        query: Any = None,
+        body: Any = None,
     ):
-        """Initialize the endpoint with query parameters and request body.
-
-        Args:
-            query (QP | None): Query parameters for the request
-            body (AbstractBodyRequest | None): Request body
-            sign_attrs (tuple | None): Attributes for signature generation
-        """
-        if type(self) is Endpoint:
-            raise TypeError("Endpoint is an abstract class and cannot be instantiated directly.")
-
-        self._query = query
-        self._body = body
-        self._sign_attrs = sign_attrs
-        logger.debug(
-            "Initialized endpoint: %s",
-            {
-                "method": self._method,
-                "endpoint": self._endpoint,
-                "has_query": query is not None,
-                "has_body": body is not None,
-                "has_sign_attrs": sign_attrs is not None,
-            },
-        )
-
-    @property
-    def method(self) -> str:
-        """Get the HTTP method for the endpoint.
-
-        Returns:
-            str | None: HTTP method (GET, POST, etc.)
-        """
         if self._method is None:
             raise RuntimeError("Endpoint _method has not been initialized.")
 
+        if self._endpoint is None:
+            raise RuntimeError("Endpoint _endpoint has not been initialized.")
+
+        if self._route is None:
+            raise RuntimeError("Endpoint _route has not been initialized.")
+
+        self._query = query
+        self._body = body
+
+    @property
+    def method(self) -> str:
         return self._method
 
     @property
     def endpoint(self) -> str:
-        """Get the API endpoint path.
-
-        Returns:
-            str | None: API endpoint path
-        """
-        if self._endpoint is None:
-            raise RuntimeError("Endpoint _endpoint has not been initialized.")
-
         return self._endpoint
 
     @property
     def route(self) -> str:
-        """Get the full API route including base URL.
-
-        Returns:
-            str | None: Full API route
-        """
-        if self._route is None:
-            raise RuntimeError("Endpoint _route has not been initialized.")
-
         return self._route
 
     @property
-    def body(self) -> AbstractBodyRequest | dict[str, Any] | None:
-        """Get the request body.
-
-        Returns:
-            AbstractBodyRequest | None: Request body or empty dict if None
-        """
-        return {} if self._body is None else self._body
-
-    def is_body_not_empty(self) -> bool:
-        """Check if the request has a body.
-
-        Returns:
-            bool: True if request has a body, False otherwise
-        """
-        has_body = self._body is not None
-        logger.debug("Checking request body: %s", has_body)
-        return has_body
+    def body(self) -> Any:
+        return self._body
 
     @property
-    def sign_attrs(self) -> tuple[str, ...] | None:
-        """Get attributes for signature generation.
-
-        Returns:
-            tuple | None: Attributes for signature generation
-        """
-        return self._sign_attrs
-
-    @property
-    def query(self) -> QP | None:
-        """Get the query parameters.
-
-        Returns:
-            QP | None: Query parameters or None
-        """
+    def query(self) -> Any:
         return self._query
-
-    @property
-    def params(self) -> dict[str, Any] | None:
-        """Get non-empty query parameters as a dictionary.
-
-        Returns:
-            dict: Dictionary of non-empty query parameters
-        """
-        params = self._query.get_not_empty_values() if self._query is not None else {}
-        logger.debug("Getting request parameters: %s", params)
-        return params
-
-    def get_sign_attrs(self) -> tuple[str, ...]:
-        """Get attributes to include in request signature.
-
-        This method determines which attributes to include in the signature
-        based on whether the request has a body or query parameters.
-
-        Returns:
-            tuple: Attributes to include in request signature
-        """
-        logger.debug("Getting signature attributes for request")
-        sign_attrs: tuple[str, ...] = ()
-
-        if isinstance(self.body, AbstractBodyRequest):
-            logger.debug("Using body attributes for signature")
-            sign_attrs += self.body.get_sign_attrs() if self.is_body_not_empty() else ()
-        else:
-            logger.debug("Using query parameters for signature")
-            sign_attrs += self.query.get_sign_attrs() if self.query is not None else ()
-
-        logger.debug("Generated signature attributes: %s", sign_attrs)
-        return sign_attrs

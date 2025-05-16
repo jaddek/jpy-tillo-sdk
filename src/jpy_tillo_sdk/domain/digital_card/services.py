@@ -1,9 +1,8 @@
-from typing import Any
+from typing import Any, final
 
 from httpx import Response
 
-from ...contracts import IssueDigitalCodeServiceAsyncInterface, IssueDigitalCodeServiceInterface, QueryParamsInterface
-from ...http_client import AsyncHttpClient, HttpClient
+from ...contracts import DigitalCardServiceAsyncInterface, DigitalCardServiceInterface, RequestQueryAbstract
 from .endpoints import (
     CancelDigitalCodeEndpoint,
     CancelDigitalUrlEndpoint,
@@ -17,121 +16,107 @@ from .endpoints import (
 )
 
 
-class IssueDigitalCodeServiceAsync(IssueDigitalCodeServiceAsyncInterface):
-    def __init__(self, *, client: AsyncHttpClient):
-        """Initialize the float service with an HTTP client.
-
-        Args:
-            client (HttpClient): The HTTP client instance for making requests
-        """
-        self.client = client
-
+@final
+class DigitalCardServiceAsync(DigitalCardServiceAsyncInterface):
     async def issue_digital_code(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
         body: IssueDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = IssueDigitalCodeEndpoint(body=body, query=query_params)
+        endpoint = IssueDigitalCodeEndpoint(body=body, query=query)
         return await self.client.request(endpoint=endpoint)
 
     async def order_digital_code(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
         body: OrderDigitalCodeAsyncEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = OrderDigitalCodeAsyncEndpoint(body=body, query=query_params)
+        endpoint = OrderDigitalCodeAsyncEndpoint(body=body, query=query)
         return await self.client.request(endpoint=endpoint)
 
     async def check_digital_order(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
     ) -> Response:
-        endpoint = CheckDigitalOrderStatusAsyncEndpoint(query=query_params)
+        endpoint = CheckDigitalOrderStatusAsyncEndpoint(query=query)
         return await self.client.request(endpoint=endpoint)
 
     async def top_up_digital_code(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
         body: TopUpDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = TopUpDigitalCodeEndpoint(body=body, query=query_params)
+        endpoint = TopUpDigitalCodeEndpoint(body=body, query=query)
         return await self.client.request(endpoint=endpoint)
 
     async def cancel_digital_url(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
         body: CancelDigitalUrlEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = CancelDigitalUrlEndpoint(body=body, query=query_params)
+        endpoint = CancelDigitalUrlEndpoint(body=body, query=query)
         return await self.client.request(endpoint=endpoint)
 
     async def cancel_digital_code(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
         body: CancelDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = CancelDigitalCodeEndpoint(body=body, query=query_params)
+        endpoint = CancelDigitalCodeEndpoint(body=body, query=query)
         return await self.client.request(endpoint=endpoint)
 
     async def check_balance(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
         body: CheckBalanceEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = CheckBalanceEndpoint(body=body, query=query_params)
+        endpoint = CheckBalanceEndpoint(body=body, query=query)
         return await self.client.request(endpoint=endpoint)
 
     async def check_stock(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
     ) -> Response:
-        endpoint = CheckStockEndpoint(query=query_params)
+        endpoint = CheckStockEndpoint(query=query)
         return await self.client.request(endpoint=endpoint)
 
     async def reverse_digital_code(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
         body: ReverseDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = ReverseDigitalCodeEndpoint(body=body, query=query_params)
+        endpoint = ReverseDigitalCodeEndpoint(body=body, query=query)
         return await self.client.request(endpoint=endpoint)
 
 
-class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
-    def __init__(self, *, client: HttpClient):
-        """Initialize the float service with an HTTP client.
-
-        Args:
-            client (HttpClient): The HTTP client instance for making requests
-        """
-        self.client = client
-
+@final
+class DigitalCardService(DigitalCardServiceInterface):
     def issue_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: RequestQueryAbstract | None = None,
         body: IssueDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = IssueDigitalCodeEndpoint(body=body, query=query_params)
+        endpoint = IssueDigitalCodeEndpoint(body=body, query=query)
         return self.client.request(endpoint=endpoint)
 
     def order_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: RequestQueryAbstract | None = None,
         body: OrderDigitalCodeAsyncEndpoint.RequestBody | None = None,
     ) -> Response:
-        endpoint = OrderDigitalCodeAsyncEndpoint(body=body, query=query_params)
+        endpoint = OrderDigitalCodeAsyncEndpoint(body=body, query=query)
         return self.client.request(endpoint=endpoint)
 
     def check_digital_order(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: RequestQueryAbstract | None = None,
     ) -> Response:
-        endpoint = CheckDigitalOrderStatusAsyncEndpoint(query=query_params)
+        endpoint = CheckDigitalOrderStatusAsyncEndpoint(query=query)
         return self.client.request(endpoint=endpoint)
 
     def top_up_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: RequestQueryAbstract | None = None,
         body: TopUpDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = TopUpDigitalCodeEndpoint(body=body)
@@ -139,7 +124,7 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def cancel_digital_url(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: RequestQueryAbstract | None = None,
         body: CancelDigitalUrlEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = CancelDigitalUrlEndpoint(body=body)
@@ -147,7 +132,7 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def cancel_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: RequestQueryAbstract | None = None,
         body: CancelDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = CancelDigitalCodeEndpoint(body=body)
@@ -155,7 +140,7 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def reverse_digital_code(
         self,
-        query_params: QueryParamsInterface | None = None,
+        query: RequestQueryAbstract | None = None,
         body: ReverseDigitalCodeEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = ReverseDigitalCodeEndpoint(body=body)
@@ -163,14 +148,14 @@ class IssueDigitalCodeService(IssueDigitalCodeServiceInterface):
 
     def check_stock(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
     ) -> Response:
-        endpoint = CheckStockEndpoint(query=query_params)
+        endpoint = CheckStockEndpoint(query=query)
         return self.client.request(endpoint=endpoint)
 
     def check_balance(
         self,
-        query_params: Any | None = None,
+        query: Any | None = None,
         body: CheckBalanceEndpoint.RequestBody | None = None,
     ) -> Response:
         endpoint = CheckBalanceEndpoint(body=body)

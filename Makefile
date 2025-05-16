@@ -29,7 +29,7 @@ help:
 	@echo "Run UV:"
 	@echo "  uvrr-check                - uv run ruff check - Ruff Check"
 	@echo "  uvrr-format               - uv run ruff format - Ruff Format"
-	@echo "  uvrp-tests                - uv run pytest - Tests"
+	@echo "  uvr-tests                - uv run pytest - Tests"
 	@echo "Run MyPy:"
 	@echo "  uvrb-mypy                - uv run mype src/"
 	@echo "Run Black:"

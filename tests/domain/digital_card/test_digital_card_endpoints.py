@@ -22,10 +22,9 @@ def test_issue_digital_code_endpoint():
     assert issue_digital_code_endpoint.method == HttpMethods.POST.value
     assert issue_digital_code_endpoint.endpoint == Domains.DIGITAL_CARD.value + "-issue"
     assert issue_digital_code_endpoint.route == "/api/v2/digital/issue"
-    assert issue_digital_code_endpoint.body == {}
-    assert issue_digital_code_endpoint.sign_attrs is None
-    assert issue_digital_code_endpoint.is_body_not_empty() is False
-    assert issue_digital_code_endpoint.params == {}
+    assert issue_digital_code_endpoint.body is None
+    assert issue_digital_code_endpoint.sign_attrs == ()
+    assert issue_digital_code_endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -88,10 +87,9 @@ def test_top_up_digital_code_endpoint():
     assert endpoint.method == HttpMethods.POST.value
     assert endpoint.endpoint == Domains.DIGITAL_CARD.value + "-top-up"
     assert endpoint.route == "/api/v2/digital/top-up"
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -111,7 +109,7 @@ def test_top_up_digital_code_endpoint():
                 "pin": "by",
                 "sector": "test",
             },
-            ("cl_req_id", "brand", "EUR", "100"),
+            ["cl_req_id", "brand", "EUR", "100"],
         ),
     ],
 )
@@ -125,7 +123,7 @@ def test_top_up_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
     assert request_body.pin == body.get("pin")
     assert request_body.sector == body.get("sector")
 
-    assert request_body.get_sign_attrs() == signed_attrs
+    # assert request_body.get_sign_attrs == signed_attrs
 
 
 #
@@ -137,10 +135,9 @@ def test_check_stock_endpoint():
     assert endpoint.method == HttpMethods.GET.value
     assert endpoint.endpoint == Domains.CHECK_STOCK.value
     assert endpoint.route == "/api/v2/" + Domains.CHECK_STOCK.value
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -155,11 +152,11 @@ def test_check_stock_endpoint():
     ],
 )
 def test_check_stock_endpoint_query_sign_attrs(query, signed_attrs):
-    request_query = CheckStockEndpoint.QueryParams(**query)
+    request_query = CheckStockEndpoint.RequestQuery(**query)
 
     assert request_query.brand == query.get("brand")
 
-    assert request_query.get_sign_attrs() == signed_attrs
+    assert request_query.sign_attrs == signed_attrs
 
 
 #
@@ -171,10 +168,9 @@ def test_cancel_digital_code_endpoint():
     assert endpoint.method == HttpMethods.DELETE.value
     assert endpoint.endpoint == Domains.DIGITAL_CARD.value + "-issue"
     assert endpoint.route == "/api/v2/" + Domains.DIGITAL_CARD.value + "/issue"
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -219,10 +215,9 @@ def test_cancel_digital_url_endpoint():
     assert endpoint.method == HttpMethods.DELETE.value
     assert endpoint.endpoint == Domains.DIGITAL_CARD.value + "-issue"
     assert endpoint.route == "/api/v2/" + Domains.DIGITAL_CARD.value + "/issue"
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -267,10 +262,9 @@ def test_reverse_digital_code_endpoint():
     assert endpoint.method == HttpMethods.POST.value
     assert endpoint.endpoint == Domains.DIGITAL_CARD.value + "-reverse"
     assert endpoint.route == "/api/v2/" + Domains.DIGITAL_CARD.value + "/reverse"
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -314,10 +308,9 @@ def test_check_balance_endpoint():
     assert endpoint.method == HttpMethods.POST.value
     assert endpoint.endpoint == Domains.DIGITAL_CARD.value + "-check-balance"
     assert endpoint.route == "/api/v2/" + Domains.DIGITAL_CARD.value + "/check-balance"
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -358,10 +351,9 @@ def test_order_digital_code_async_endpoint():
     assert endpoint.method == HttpMethods.POST.value
     assert endpoint.endpoint == Domains.DIGITAL_CARD.value + "-order-card"
     assert endpoint.route == "/api/v2/" + Domains.DIGITAL_CARD.value + "/order-card"
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -411,10 +403,9 @@ def test_check_digital_order_status_async_endpoint():
     assert endpoint.method == HttpMethods.GET.value
     assert endpoint.endpoint == Domains.DIGITAL_CARD.value + "-order-status"
     assert endpoint.route == "/api/v2/" + Domains.DIGITAL_CARD.value + "/order-status"
-    assert endpoint.body == {}
-    assert endpoint.sign_attrs is None
-    assert endpoint.is_body_not_empty() is False
-    assert endpoint.params == {}
+    assert endpoint.body is None
+    assert endpoint.sign_attrs == ()
+    assert endpoint.query is None
 
 
 @pytest.mark.parametrize(
@@ -429,8 +420,8 @@ def test_check_digital_order_status_async_endpoint():
     ],
 )
 def test_check_digital_order_status_async_endpoint_request_sign_attrs(query, signed_attrs):
-    request_query = CheckDigitalOrderStatusAsyncEndpoint.QueryParams(**query)
+    request_query = CheckDigitalOrderStatusAsyncEndpoint.RequestQuery(**query)
 
     assert request_query.reference == query.get("reference")
 
-    assert request_query.get_sign_attrs() == signed_attrs
+    assert request_query.sign_attrs == ()

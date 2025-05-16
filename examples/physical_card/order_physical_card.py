@@ -19,10 +19,6 @@ TILLO_API_KEY = ""
 TILLO_SECRET = ""
 TILLO_HTTP_CLIENT_OPTIONS = {}
 
-TILLO_API_KEY = "531f9263eede2f86a944aea966b71624c6abaa5f8b6d292f082146eb2e1e48bd"
-TILLO_SECRET = "18420be9a3eeca4012229277cb60b3c9afbaa0190e0d72ee1c9046fa88086d0e"
-TILLO_HTTP_CLIENT_OPTIONS = {"base_url": "https://sandbox.tillo.dev", "http2": True}
-
 
 def order_physical_card() -> Response:
     sync_client = create_client(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)

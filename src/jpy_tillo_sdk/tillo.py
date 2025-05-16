@@ -1,15 +1,6 @@
 from typing import Any
 
-from .contracts import (
-    BrandServiceAsyncInterface,
-    BrandServiceInterface,
-    FloatServiceAsyncInterface,
-    FloatServiceInterface,
-    IssueDigitalCodeServiceInterface,
-    TemplateServiceAsyncInterface,
-    TemplateServiceInterface,
-    TilloInterface,
-)
+from .contracts import DigitalCardServiceInterface, TemplateServiceAsyncInterface, TilloInterface
 from .domain.brand.services import (
     BrandService,
     BrandServiceAsync,
@@ -17,13 +8,15 @@ from .domain.brand.services import (
     TemplateServiceAsync,
 )
 from .domain.digital_card.services import (
-    IssueDigitalCodeService,
-    IssueDigitalCodeServiceAsync,
+    DigitalCardService,
+    DigitalCardServiceAsync,
 )
 from .domain.float.services import FloatService, FloatServiceAsync
 from .errors import AuthorizationErrorInvalidAPITokenOrSecret
 from .http_client import AsyncHttpClient, HttpClient
 from .http_client_factory import create_client, create_client_async
+
+# TBrandService = TypeVar('TBrandService', bound=ServiceInterface)
 
 
 class Tillo(TilloInterface):
@@ -62,11 +55,11 @@ class Tillo(TilloInterface):
         self.__brands_async: BrandServiceAsync | None = None
         self.__brand_templates: TemplateService | None = None
         self.__brand_templates_async: TemplateServiceAsync | None = None
-        self.__digital_card: IssueDigitalCodeService | None = None
-        self.__digital_card_async: IssueDigitalCodeServiceAsync | None = None
+        self.__digital_card: DigitalCardService | None = None
+        self.__digital_card_async: DigitalCardServiceAsync | None = None
 
     @property
-    def floats_async(self) -> FloatServiceAsyncInterface:
+    def floats_async(self) -> FloatServiceAsync:
         """Get the asynchronous floats service instance.
 
         Returns:
@@ -78,7 +71,7 @@ class Tillo(TilloInterface):
         return self.__floats_async
 
     @property
-    def floats(self) -> FloatServiceInterface:
+    def floats(self) -> FloatService:
         """Get the synchronous floats service instance.
 
         Returns:
@@ -90,7 +83,7 @@ class Tillo(TilloInterface):
         return self.__floats
 
     @property
-    def brands(self) -> BrandServiceInterface:
+    def brands(self) -> BrandService:
         """Get the brand service instance.
 
         Returns:
@@ -102,7 +95,7 @@ class Tillo(TilloInterface):
         return self.__brands
 
     @property
-    def brands_async(self) -> BrandServiceAsyncInterface:
+    def brands_async(self) -> BrandServiceAsync:
         """Get the brand service instance.
 
         Returns:
@@ -114,7 +107,7 @@ class Tillo(TilloInterface):
         return self.__brands_async
 
     @property
-    def templates(self) -> TemplateServiceInterface:
+    def templates(self) -> TemplateService:
         """Get the template service instance.
 
         Returns:
@@ -138,31 +131,31 @@ class Tillo(TilloInterface):
         return self.__brand_templates_async
 
     @property
-    def digital_card(self) -> IssueDigitalCodeServiceInterface:
+    def digital_card(self) -> DigitalCardServiceInterface:
         """Get the digital card service instance.
 
         Note: This feature is not yet implemented.
 
         Returns:
-            IssueDigitalCodeService: Service for managing digital card operations.
+            DigitalCardService: Service for managing digital card operations.
         """
         if self.__digital_card is None:
-            self.__digital_card = IssueDigitalCodeService(client=self.__http_client)
+            self.__digital_card = DigitalCardService(client=self.__http_client)
 
         return self.__digital_card
 
     @property
-    def digital_card_async(self) -> IssueDigitalCodeServiceAsync:
+    def digital_card_async(self) -> DigitalCardServiceAsync:
         """Get the digital card service instance asynchronously.
 
         Note: This feature is not yet implemented.
 
         Returns:
-            IssueDigitalCodeServiceAsync: Service for managing digital card operations.
+            DigitalCardServiceAsync: Service for managing digital card operations.
 
         """
         if self.__digital_card_async is None:
-            self.__digital_card_async = IssueDigitalCodeServiceAsync(client=self.__async_http_client)
+            self.__digital_card_async = DigitalCardServiceAsync(client=self.__async_http_client)
 
         return self.__digital_card_async
 

@@ -1,27 +1,34 @@
 import dataclasses
+import time
+from collections.abc import Generator
+from typing import Any
 from unittest.mock import AsyncMock, Mock
 
 import pytest
 from httpx import Response
 
-from jpy_tillo_sdk.endpoint import AbstractBodyRequest, Endpoint
+from jpy_tillo_sdk.contracts import RequestBodyAbstract
+from jpy_tillo_sdk.endpoint import Endpoint
+from jpy_tillo_sdk.http_client import HttpClient
 
 
 class MockEndpoint(Endpoint):
-    def __init__(self, method="GET", endpoint="/test", route="https://api.test.com/test", body=None):
-        super().__init__()
+    def __init__(
+        self,
+        method: str = "GET",
+        endpoint: str = "/test",
+        route: str = "https://api.test.com/test",
+        body: Any = None,
+        query: Any = None,
+    ) -> None:
         self._method = method
         self._endpoint = endpoint
         self._route = route
-        self._params = {}
-        self._body = body or Mock(get_sign_attrs=Mock(return_value=()))
-        self._query = Mock(get_sign_attrs=Mock(return_value=()))
-
-    def is_body_not_empty(self):
-        return False
+        self._params: dict[str, Any] = {}
+        super().__init__(body=body, query=query)
 
 
-def test_get_request_headers(http_client):
+def test_get_request_headers(http_client: HttpClient) -> None:
     headers = http_client._get_request_headers("GET", "/test", ())
 
     assert headers["Accept"] == "application/json"
@@ -32,7 +39,7 @@ def test_get_request_headers(http_client):
     assert headers["User-Agent"] == "JpyTilloSDKClient/0.2"
 
 
-def test_http_client_request(http_client, monkeypatch):
+def test_http_client_request(http_client: HttpClient, monkeypatch: Generator[pytest.MonkeyPatch]) -> None:
     endpoint = MockEndpoint()
     mock_response = Mock(spec=Response)
     mock_response.status_code = 200
@@ -54,9 +61,9 @@ def test_http_client_request(http_client, monkeypatch):
     mock_client.request.assert_called_once_with(
         url=endpoint.route,
         method=endpoint.method,
-        params=endpoint.params,
+        params=endpoint.query,
         json=None,
-        headers=http_client._get_request_headers(endpoint.method, endpoint.endpoint),
+        headers=http_client._get_request_headers(endpoint.method, endpoint.endpoint, endpoint.sign_attrs),
     )
 
 
@@ -86,21 +93,20 @@ async def test_async_http_client_request(async_http_client, monkeypatch):
     mock_client.request.assert_called_once_with(
         url=endpoint.route,
         method=endpoint.method,
-        params=endpoint.params,
+        params=endpoint.query,
         json=None,
-        headers=async_http_client._get_request_headers(endpoint.method, endpoint.endpoint),
+        headers=async_http_client._get_request_headers(endpoint.method, endpoint.endpoint, []),
     )
 
 
 def test_request_with_body(http_client, monkeypatch):
     @dataclasses.dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
-        test: str = "data"
+    class RequestBody(RequestBodyAbstract):
+        data: str
 
-        def get_sign_attrs(self):
-            return ()
-
-    endpoint = MockEndpoint(body=RequestBody())
+    current_time = time.time().__str__()
+    body = RequestBody(data=current_time)
+    endpoint = MockEndpoint(body=body)
 
     mock_response = Mock(spec=Response)
     mock_response.status_code = 200
@@ -122,7 +128,7 @@ def test_request_with_body(http_client, monkeypatch):
     mock_client.request.assert_called_once_with(
         url=endpoint.route,
         method=endpoint.method,
-        params=endpoint.params,
-        json={"test": "data"},
-        headers=http_client._get_request_headers(endpoint.method, endpoint.endpoint, endpoint.body.get_sign_attrs()),
+        params=endpoint.query,
+        json={"data": current_time},
+        headers=http_client._get_request_headers(endpoint.method, endpoint.endpoint, endpoint.sign_attrs),
     )

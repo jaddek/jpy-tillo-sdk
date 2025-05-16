@@ -1,7 +1,9 @@
 import pytest
 from httpx import Response
 
-from jpy_tillo_sdk.domain.float.endpoints import RequestPaymentTransferEndpoint
+from jpy_tillo_sdk.domain.float.endpoints import (
+    RequestPaymentTransferEndpointRequestBody,
+)
 from jpy_tillo_sdk.domain.float.services import FloatService, FloatServiceAsync
 from jpy_tillo_sdk.enums import Currency
 
@@ -29,7 +31,7 @@ def test_request_payment_transfer(mock_http_client):
     float_service = FloatService(client=mock_http_client)
 
     response = float_service.request_payment_transfer(
-        RequestPaymentTransferEndpoint.RequestBody(
+        RequestPaymentTransferEndpointRequestBody(
             currency=Currency.EUR,
             amount="100",
             payment_reference="PAY_REF",
@@ -45,7 +47,7 @@ async def test_request_payment_transfer_async(mock_async_http_client):
     float_service = FloatServiceAsync(client=mock_async_http_client)
 
     response = await float_service.request_payment_transfer(
-        RequestPaymentTransferEndpoint.RequestBody(
+        RequestPaymentTransferEndpointRequestBody(
             currency=Currency.EUR,
             amount="100",
             payment_reference="PAY_REF",

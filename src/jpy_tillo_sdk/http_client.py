@@ -75,6 +75,11 @@ class AbstractClient(ClientInterface, ABC):
 
 
 class AsyncHttpClient(AbstractClient):
+    def __init__(self, tillo_client_options: dict[str, Any] | None, signer: SignatureBridge):
+        super().__init__(tillo_client_options, signer)
+
+        self.client = AsyncClient(**tillo_client_options)
+
     async def request(self, endpoint: Endpoint) -> Response:  # type: ignore
         json: dict[str, Any] | None = None
         params: dict[str, Any] | None = None
@@ -103,30 +108,33 @@ class AsyncHttpClient(AbstractClient):
         )
 
         try:
-            async with AsyncClient(**self.tillo_client_options) as client:
-                logger.debug(
-                    "Sending async request to %s with method %s",
-                    endpoint.route,
-                    endpoint.method,
-                )
-                response = await client.request(
-                    url=endpoint.route,
-                    method=endpoint.method,
-                    params=params,
-                    json=json,
-                    headers=headers,
-                )
-                logger.debug("Received response with status code: %d", response.status_code)
+            logger.debug(
+                "Sending async request to %s with method %s",
+                endpoint.route,
+                endpoint.method,
+            )
+            response = await self.client.request(
+                url=endpoint.route,
+                method=endpoint.method,
+                params=params,
+                json=json,
+                headers=headers,
+            )
+            logger.debug("Received response with status code: %d", response.status_code)
 
-                if response.status_code != 200:
-                    self._catch_non_200_response(response)
-                return response
+            if response.status_code != 200:
+                self._catch_non_200_response(response)
+            return response
         except Exception as e:
             logger.error("Error making async request to %s: %s", endpoint.route, str(e))
             raise
 
 
 class HttpClient(AbstractClient):
+    def __init__(self, tillo_client_options: dict[str, Any] | None, signer: SignatureBridge):
+        super().__init__(tillo_client_options, signer)
+        self.client = Client(**tillo_client_options)
+
     def request(
         self,
         endpoint: Endpoint | EndpointInterface,
@@ -157,25 +165,24 @@ class HttpClient(AbstractClient):
         )
 
         try:
-            with Client(**self.tillo_client_options) as client:
-                logger.debug(
-                    "Sending sync request to %s with method %s",
-                    endpoint.route,
-                    endpoint.method,
-                )
-                response = client.request(
-                    url=endpoint.route,
-                    method=endpoint.method,
-                    params=params,
-                    json=json,
-                    headers=headers,
-                )
-                logger.debug("Received response with status code: %d", response.status_code)
+            logger.debug(
+                "Sending sync request to %s with method %s",
+                endpoint.route,
+                endpoint.method,
+            )
+            response = self.client.request(
+                url=endpoint.route,
+                method=endpoint.method,
+                params=params,
+                json=json,
+                headers=headers,
+            )
+            logger.debug("Received response with status code: %d", response.status_code)
 
-                if response.status_code != 200:
-                    self._catch_non_200_response(response)
+            if response.status_code != 200:
+                self._catch_non_200_response(response)
 
-                return response
+            return response
         except Exception as e:
             logger.error("Error making sync request to %s: %s", endpoint.route, str(e))
             raise

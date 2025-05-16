@@ -1,16 +1,17 @@
 import asyncio
 
-from jpy_tillo_sdk import tillo
+from jpy_tillo_sdk import tillo as __tillo
 from jpy_tillo_sdk.domain.brand.endpoints import TemplatesListEndpointRequestQuery
 
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
 TILLO_HTTP_CLIENT_OPTIONS = {"base_url": "https://sandbox.tillo.dev", "http2": True}
 
+tillo = __tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-def get_brand_templates():
-    client = tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
-    response = client.templates.get_templates_list(
+
+def get_brand_templates(tillo):
+    response = tillo.templates.get_templates_list(
         TemplatesListEndpointRequestQuery(
             brand="amazon-de",
         )
@@ -19,12 +20,11 @@ def get_brand_templates():
     print(response.text)
 
 
-get_brand_templates()
+get_brand_templates(tillo)
 
 
-async def get_brand_templates_async():
-    client = tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
-    response = await client.templates_async.get_brand_templates(TemplatesListEndpointRequestQuery(brand="amazon-de"))
+async def get_brand_templates_async(tillo):
+    response = await tillo.templates_async.get_brand_templates(TemplatesListEndpointRequestQuery(brand="amazon-de"))
 
     print(response.text)
 

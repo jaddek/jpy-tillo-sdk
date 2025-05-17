@@ -26,7 +26,7 @@ import logging
 from typing import Any
 
 from .errors import AuthorizationErrorInvalidAPITokenOrSecret
-from .http_client import AsyncHttpClient, HttpClient
+from .http_client import AsyncHttpClient, ErrorHandler, HttpClient, RequestDataExtractor
 from .signature import SignatureBridge, SignatureGenerator
 
 logger = logging.getLogger("tillo.http_client_factory")
@@ -82,7 +82,7 @@ def create_client_async(api_key: str, secret_key: str, tillo_client_params: dict
         raise AuthorizationErrorInvalidAPITokenOrSecret()
 
     signer = create_signer(api_key, secret_key)
-    client = AsyncHttpClient(tillo_client_params, signer)
+    client = AsyncHttpClient(tillo_client_params, error_handler=ErrorHandler(), extractor=RequestDataExtractor(signer))
     logger.debug("Asynchronous HTTP client created successfully")
     return client
 
@@ -119,6 +119,6 @@ def create_client(
         raise AuthorizationErrorInvalidAPITokenOrSecret()
 
     signer = create_signer(api_key, secret_key)
-    client = HttpClient(tillo_client_params, signer)
+    client = HttpClient(tillo_client_params, error_handler=ErrorHandler(), extractor=RequestDataExtractor(signer))
     logger.debug("Synchronous HTTP client created successfully")
     return client

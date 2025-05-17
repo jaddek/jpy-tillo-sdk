@@ -27,3 +27,6 @@ async def check_floats_async(_tillo):
 
 
 asyncio.run(check_floats_async(tillo))
+
+tillo.close_sync()
+asyncio.run(tillo.close_async())

@@ -1,9 +1,10 @@
 import logging
 from abc import ABC
 from dataclasses import asdict
-from typing import Any
+from typing import Any, Generic, TypeAlias, TypeVar, cast, final
 
-from httpx import AsyncClient, Client, Response
+from httpx import AsyncBaseTransport, AsyncClient, BaseTransport, Client, Response
+from httpx._client import BaseClient
 
 from .contracts import ClientInterface, EndpointInterface, RequestBodyAbstract, RequestQueryAbstract
 from .endpoint import Endpoint
@@ -13,39 +14,8 @@ from .signature import SignatureBridge
 logger = logging.getLogger("tillo.http_client")
 
 
-class AbstractClient(ClientInterface, ABC):
-    _signer: SignatureBridge
-
-    def __init__(self, tillo_client_options: dict[str, Any] | None, signer: SignatureBridge):
-        self.tillo_client_options = tillo_client_options or {}
-        self._signer = signer
-        logger.debug("Initialized HTTP client with options: %s", tillo_client_options)
-
-    def _get_request_headers(self, method: str, endpoint: str, sign_attrs: tuple[str, ...]) -> dict[str, Any]:
-        logger.debug("Generating headers for %s %s", method, endpoint)
-
-        (request_api_key, request_signature, request_timestamp) = self._signer.sign(
-            endpoint,
-            method,
-            sign_attrs,
-        )
-
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "API-Key": request_api_key,
-            "Signature": request_signature,
-            "Timestamp": request_timestamp,
-            "User-Agent": "JpyTilloSDKClient/0.2",
-        }
-
-        logger.debug(
-            "Generated headers: %s",
-            {k: v for k, v in headers.items() if k not in ["Signature", "API-Key"]},
-        )
-        return headers
-
-    def _catch_non_200_response(
+class ErrorHandler:
+    def handle(
         self,
         response: Response,
     ) -> None:
@@ -74,38 +44,91 @@ class AbstractClient(ClientInterface, ABC):
                 raise AuthenticationFailed(response)
 
 
-class AsyncHttpClient(AbstractClient):
-    def __init__(self, tillo_client_options: dict[str, Any] | None, signer: SignatureBridge):
-        super().__init__(tillo_client_options, signer)
+class RequestDataExtractor:
+    _signer: SignatureBridge
 
-        self.client = AsyncClient(**tillo_client_options)
+    def __init__(self, signer: SignatureBridge) -> None:
+        self._signer = signer
 
-    async def request(self, endpoint: Endpoint) -> Response:  # type: ignore
-        json: dict[str, Any] | None = None
-        params: dict[str, Any] | None = None
+    def extract_request_headers(self, endpoint: EndpointInterface) -> dict[str, Any]:
+        logger.debug("Generating headers for %s %s", endpoint.method, endpoint.endpoint)
 
-        if isinstance(endpoint.body, RequestBodyAbstract):
-            json = asdict(endpoint.body)
-
-        if isinstance(endpoint.query, RequestQueryAbstract):
-            params = asdict(endpoint.query)
-
-        logger.info("Making async request to %s %s", endpoint.method, endpoint.endpoint)
-        logger.debug(
-            "Request details: %s",
-            {
-                "method": endpoint.method,
-                "endpoint": endpoint.endpoint,
-                "route": endpoint.route,
-                "body": endpoint.body,
-            },
-        )
-
-        headers = self._get_request_headers(
-            endpoint.method,
+        request_api_key, request_signature, request_timestamp = self._signer.sign(
             endpoint.endpoint,
+            endpoint.method,
             endpoint.sign_attrs,
         )
+
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "API-Key": request_api_key,
+            "Signature": request_signature,
+            "Timestamp": request_timestamp,
+            "User-Agent": "JpyTilloSDKClient/0.3",
+        }
+
+        logger.debug(
+            "Generated headers: %s",
+            {k: v for k, v in headers.items() if k not in ["Signature", "API-Key"]},
+        )
+
+        return headers
+
+    def extract_request_params(self, endpoint: EndpointInterface) -> tuple[dict[str, Any] | None, ...]:
+        json: dict[str, Any] | None = asdict(endpoint.body) if isinstance(endpoint.body, RequestBodyAbstract) else None
+        params: dict[str, Any] | None = (
+            asdict(endpoint.query) if isinstance(endpoint.query, RequestQueryAbstract) else None
+        )
+
+        return params, json
+
+    def extract_all(self, endpoint: EndpointInterface) -> tuple[dict[str, Any] | None, ...]:
+        params, json = self.extract_request_params(endpoint)
+
+        return (
+            self.extract_request_headers(endpoint),
+            params,
+            json,
+        )
+
+
+TClient = TypeVar("TClient", bound=BaseClient)
+UTransport: TypeAlias = BaseTransport | AsyncBaseTransport | None
+
+
+class AbstractClient(ClientInterface, ABC, Generic[TClient]):
+    _extractor: RequestDataExtractor
+    _error_handler: ErrorHandler
+    _client: TClient | None = None
+    _transport: UTransport = None
+
+    def __init__(
+        self,
+        tillo_client_options: dict[str, Any] | None,
+        *,
+        extractor: RequestDataExtractor,
+        error_handler: ErrorHandler,
+        transport: UTransport = None,
+        client: TClient | None = None,
+    ):
+        self.tillo_client_options = tillo_client_options or {}
+        self._extractor = extractor
+        self._error_handler = error_handler
+        self._client = client
+        self._transport = transport
+
+
+@final
+class AsyncHttpClient(AbstractClient["AsyncClient"]):
+    async def request(self, endpoint: Endpoint) -> Response:  # type: ignore
+        headers, params, json = self._extractor.extract_all(endpoint)
+
+        if self._client is None:
+            self._client = AsyncClient(
+                transport=cast(AsyncBaseTransport, self._transport),
+                **self.tillo_client_options,
+            )
 
         try:
             logger.debug(
@@ -113,7 +136,8 @@ class AsyncHttpClient(AbstractClient):
                 endpoint.route,
                 endpoint.method,
             )
-            response = await self.client.request(
+
+            response = await self._client.request(
                 url=endpoint.route,
                 method=endpoint.method,
                 params=params,
@@ -123,46 +147,27 @@ class AsyncHttpClient(AbstractClient):
             logger.debug("Received response with status code: %d", response.status_code)
 
             if response.status_code != 200:
-                self._catch_non_200_response(response)
+                self._error_handler.handle(response)
             return response
         except Exception as e:
             logger.error("Error making async request to %s: %s", endpoint.route, str(e))
-            raise
+            raise e
+
+    async def close_connection(self) -> None:
+        if isinstance(self._client, AsyncClient):
+            await self._client.aclose()
 
 
-class HttpClient(AbstractClient):
-    def __init__(self, tillo_client_options: dict[str, Any] | None, signer: SignatureBridge):
-        super().__init__(tillo_client_options, signer)
-        self.client = Client(**tillo_client_options)
-
+@final
+class HttpClient(AbstractClient[Client]):
     def request(
         self,
         endpoint: Endpoint | EndpointInterface,
     ) -> Response:
-        json: dict[str, Any] | None = None
-        params: dict[str, Any] | None = None
+        headers, params, json = self._extractor.extract_all(endpoint)
 
-        if isinstance(endpoint.body, RequestBodyAbstract):
-            json = asdict(endpoint.body)
-
-        if isinstance(endpoint.query, RequestQueryAbstract):
-            params = asdict(endpoint.query)
-
-        logger.info("Making sync request to %s %s", endpoint.method, endpoint.endpoint)
-        logger.debug(
-            "Request details: %s",
-            {
-                "method": endpoint.method,
-                "endpoint": endpoint.endpoint,
-                "route": endpoint.route,
-            },
-        )
-
-        headers = self._get_request_headers(
-            endpoint.method,
-            endpoint.endpoint,
-            endpoint.sign_attrs,
-        )
+        if self._client is None:
+            self._client = Client(transport=cast(BaseTransport, self._transport), **self.tillo_client_options)
 
         try:
             logger.debug(
@@ -170,7 +175,8 @@ class HttpClient(AbstractClient):
                 endpoint.route,
                 endpoint.method,
             )
-            response = self.client.request(
+
+            response = self._client.request(
                 url=endpoint.route,
                 method=endpoint.method,
                 params=params,
@@ -180,9 +186,13 @@ class HttpClient(AbstractClient):
             logger.debug("Received response with status code: %d", response.status_code)
 
             if response.status_code != 200:
-                self._catch_non_200_response(response)
+                self._error_handler.handle(response)
 
             return response
         except Exception as e:
             logger.error("Error making sync request to %s: %s", endpoint.route, str(e))
             raise
+
+    def close_connection(self) -> None:
+        if self._client is not None:
+            self._client.close()

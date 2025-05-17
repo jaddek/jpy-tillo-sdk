@@ -46,4 +46,6 @@ async def request_payment_transfer_async(_tillo):
 
 
 asyncio.run(request_payment_transfer_async(tillo))
-asyncio.run(request_payment_transfer_async(tillo))
+
+tillo.close_sync()
+asyncio.run(tillo.close_async())

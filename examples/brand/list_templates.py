@@ -30,3 +30,6 @@ async def get_brand_templates_async(tillo):
 
 
 asyncio.run(get_brand_templates_async())
+
+tillo.close_sync()
+asyncio.run(tillo.close_async())

@@ -24,5 +24,10 @@ async def get_available_brands_async(_tillo):
 
     print(response.text)
 
+    await _tillo.close_async()
+
 
 asyncio.run(get_available_brands_async(tillo))
+
+tillo.close_sync()
+asyncio.run(tillo.close_async())

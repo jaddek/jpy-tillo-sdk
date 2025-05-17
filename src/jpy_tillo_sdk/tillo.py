@@ -46,8 +46,8 @@ class Tillo(TilloInterface):
         self.__api_key = api_key
         self.__secret = secret
         self.__options = options
-        self.__async_http_client = self.__get_async_client()
-        self.__http_client = self.__get_client()
+        self.__async_http_client: AsyncHttpClient = self.__get_async_client()
+        self.__http_client: HttpClient = self.__get_client()
 
         self.__floats_async: FloatServiceAsync | None = None
         self.__floats: FloatService | None = None
@@ -202,3 +202,9 @@ class Tillo(TilloInterface):
             HttpClient: Configured synchronous HTTP client instance.
         """
         return create_client(self.__api_key, self.__secret, self.__options)
+
+    def close_sync(self) -> None:
+        self.__http_client.close_connection()
+
+    async def close_async(self) -> None:
+        await self.__async_http_client.close_connection()

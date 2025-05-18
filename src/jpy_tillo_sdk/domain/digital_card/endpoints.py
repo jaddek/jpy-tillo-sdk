@@ -6,7 +6,7 @@ from .shared import FaceValue
 
 
 @dataclass(frozen=True)
-class OrderDigitalCodeRequestBody(SignatureAttributesInterface):
+class IssueDigitalCodeRequestBody(SignatureAttributesInterface):
     @dataclass(frozen=True)
     class Personalisation:
         to_name: str | None = None

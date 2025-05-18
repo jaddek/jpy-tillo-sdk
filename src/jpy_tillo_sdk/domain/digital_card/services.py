@@ -13,9 +13,9 @@ from .endpoints import (
     CheckDigitalOrderStatusAsyncEndpoint,
     CheckStockEndpoint,
     IssueDigitalCodeEndpoint,
+    IssueDigitalCodeRequestBody,
     OrderDigitalCodeAsyncEndpoint,
     OrderDigitalCodeAsyncRequestBody,
-    OrderDigitalCodeRequestBody,
     ReverseDigitalCodeEndpoint,
     ReverseDigitalCodeRequestBody,
     TopUpDigitalCodeEndpoint,
@@ -28,7 +28,7 @@ class DigitalCardServiceAsync(DigitalCardServiceAsyncInterface):
     async def issue_digital_code(
         self,
         query: SignatureAttributesInterface | None = None,
-        body: OrderDigitalCodeRequestBody | None = None,
+        body: IssueDigitalCodeRequestBody | None = None,
     ) -> Response:
         endpoint = IssueDigitalCodeEndpoint(body=body, query=query)
         return await self.client.request(endpoint=endpoint)
@@ -101,7 +101,7 @@ class DigitalCardService(DigitalCardServiceInterface):
     def issue_digital_code(
         self,
         query: SignatureAttributesInterface | None = None,
-        body: OrderDigitalCodeRequestBody | None = None,
+        body: IssueDigitalCodeRequestBody | None = None,
     ) -> Response:
         endpoint = IssueDigitalCodeEndpoint(body=body, query=query)
         return self.client.request(endpoint=endpoint)

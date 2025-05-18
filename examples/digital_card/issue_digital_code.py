@@ -2,7 +2,7 @@ import asyncio
 import uuid
 
 from jpy_tillo_sdk import tillo as __tillo
-from jpy_tillo_sdk.domain.digital_card.endpoints import OrderDigitalCodeRequestBody
+from jpy_tillo_sdk.domain.digital_card.endpoints import IssueDigitalCodeRequestBody
 from jpy_tillo_sdk.domain.digital_card.shared import FaceValue
 from jpy_tillo_sdk.enums import Currency, DeliveryMethod, FulfilmentType, Sector
 
@@ -15,7 +15,7 @@ tillo = __tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
 
 def issue_digital_code(_tillo) -> None:
-    body = OrderDigitalCodeRequestBody(
+    body = IssueDigitalCodeRequestBody(
         client_request_id=str(uuid.uuid4()),
         brand="costa",
         face_value=FaceValue(
@@ -36,7 +36,7 @@ issue_digital_code(tillo)
 
 
 async def issue_digital_code_async(_tillo) -> None:
-    body = OrderDigitalCodeRequestBody(
+    body = IssueDigitalCodeRequestBody(
         client_request_id=str(uuid.uuid4()),
         brand="costa",
         face_value=FaceValue(

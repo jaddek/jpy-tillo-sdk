@@ -6,7 +6,7 @@ from typing import Any, Generic, TypeAlias, TypeVar, cast, final
 from httpx import AsyncBaseTransport, AsyncClient, BaseTransport, Client, Response
 from httpx._client import BaseClient
 
-from .contracts import ClientInterface, EndpointInterface, RequestBodyAbstract, RequestQueryAbstract
+from .contracts import ClientInterface, EndpointInterface, SignatureAttributesInterface
 from .endpoint import Endpoint
 from .errors import AuthenticationFailed, InvalidIpAddress, UnprocessableContent, ValidationError
 from .signature import SignatureBridge
@@ -76,9 +76,11 @@ class RequestDataExtractor:
         return headers
 
     def extract_request_params(self, endpoint: EndpointInterface) -> tuple[dict[str, Any] | None, ...]:
-        json: dict[str, Any] | None = asdict(endpoint.body) if isinstance(endpoint.body, RequestBodyAbstract) else None
+        json: dict[str, Any] | None = (
+            asdict(endpoint.body) if isinstance(endpoint.body, SignatureAttributesInterface) else None
+        )
         params: dict[str, Any] | None = (
-            asdict(endpoint.query) if isinstance(endpoint.query, RequestQueryAbstract) else None
+            asdict(endpoint.query) if isinstance(endpoint.query, SignatureAttributesInterface) else None
         )
 
         return params, json

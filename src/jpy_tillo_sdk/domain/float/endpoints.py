@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 
-from ...contracts import RequestBodyAbstract, RequestQueryAbstract
+from ...contracts import SignatureAttributesInterface
 from ...endpoint import Endpoint
 from ...enums import Currency
 
 
 @dataclass(frozen=True)
-class CheckFloatsEndpointRequestQuery(RequestQueryAbstract):
+class CheckFloatsEndpointRequestQuery(SignatureAttributesInterface):
     currency: Currency | None = None
 
     @property
@@ -21,7 +21,7 @@ class CheckFloatsEndpoint(Endpoint):
 
 
 @dataclass(frozen=True)
-class RequestPaymentTransferEndpointRequestBody(RequestBodyAbstract):
+class RequestPaymentTransferEndpointRequestBody(SignatureAttributesInterface):
     @dataclass(frozen=True)
     class ProformaInvoiceParams:
         company_name: str | None = None

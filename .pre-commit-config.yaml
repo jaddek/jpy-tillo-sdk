@@ -21,7 +21,7 @@ repos:
     hooks:
       - id: mypy
         args: ["--strict", "--ignore-missing-imports", "--check-untyped-defs"]
-        exclude: ^examples|^src/jpy_tillo_sdk/domain/physical_card|^tests
+        exclude: ^examples|^tests
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.19.1

@@ -1,56 +1,48 @@
 import asyncio
 import uuid
 
-from httpx import Response
+from jpy_tillo_sdk import tillo as __tillo
+from jpy_tillo_sdk.domain.physical_card.endpoints import CashOutOriginalTransactionRequestBody
+from jpy_tillo_sdk.enums import Sector
 
-from jpy_tillo_sdk.domain.physical_card.factory import (
-    create_cash_out_original_transaction_request,
-)
-from jpy_tillo_sdk.domain.physical_card.services import (
-    PhysicalGiftCardsService,
-)
-from jpy_tillo_sdk.http_client_factory import (
-    create_client,
-    create_client_async,
-)
-
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
 TILLO_HTTP_CLIENT_OPTIONS = {}
 
+tillo = __tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-def cancel_activate_physical_card() -> Response:
-    sync_client = create_client(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-    body = create_cash_out_original_transaction_request(
+def cancel_activate_physical_card(_tillo) -> None:
+    body = CashOutOriginalTransactionRequestBody(
         client_request_id=str(uuid.uuid4()),
         original_client_request_id=str(uuid.uuid4()),
         brand="costa",
         code="ABCD12324",
-        pin="",
+        pin="1234",
+        sector=Sector.GIFT_CARD_MALL.value,
     )
 
-    return PhysicalGiftCardsService.cash_out_original_transaction_physical_card(client=sync_client, body=body)
+    result = tillo.physical_card.cash_out_original_transaction(body=body)
+
+    print(result)
 
 
-print(cancel_activate_physical_card().json())
+cancel_activate_physical_card(tillo)
 
 
-async def cancel_activate_physical_card_async() -> Response:
-    async_client = create_client_async(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
-
-    body = create_cash_out_original_transaction_request(
+async def cancel_activate_physical_card_async(_tillo) -> None:
+    body = CashOutOriginalTransactionRequestBody(
         client_request_id=str(uuid.uuid4()),
         original_client_request_id=str(uuid.uuid4()),
         brand="costa",
         code="ABCD12324",
-        pin="",
+        pin="1234",
+        sector=Sector.GIFT_CARD_MALL.value,
     )
 
-    return await PhysicalGiftCardsService.cash_out_original_transaction_physical_card_async(
-        client=async_client, body=body
-    )
+    result = tillo.physical_card.cash_out_original_transaction(body=body)
+
+    print(result)
 
 
-asyncio.run(cancel_activate_physical_card_async())
+asyncio.run(cancel_activate_physical_card_async(tillo))

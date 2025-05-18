@@ -2,7 +2,10 @@ import logging
 from abc import ABC
 from typing import Any
 
-from jpy_tillo_sdk.contracts import EndpointInterface, RequestBodyAbstract, RequestQueryAbstract
+from jpy_tillo_sdk.contracts import (
+    EndpointInterface,
+    SignatureAttributesInterface,
+)
 
 logger = logging.getLogger("tillo.endpoint")
 
@@ -15,10 +18,10 @@ class SignedEndpointInterface(EndpointInterface, ABC):
         logger.debug("Getting signature attributes for request")
         _sign_attrs: list[str] = []
 
-        if isinstance(self.body, RequestBodyAbstract):
+        if isinstance(self.body, SignatureAttributesInterface):
             _sign_attrs += self.body.sign_attrs
 
-        if isinstance(self.query, RequestQueryAbstract):
+        if isinstance(self.query, SignatureAttributesInterface):
             _sign_attrs += self.query.sign_attrs
 
         _sign_attrs = [attr for attr in _sign_attrs if attr is not None]

@@ -12,6 +12,8 @@ from .domain.digital_card.services import (
     DigitalCardServiceAsync,
 )
 from .domain.float.services import FloatService, FloatServiceAsync
+from .domain.physical_card.services import PhysicalCardsAsyncService, PhysicalCardsService
+from .domain.webhook.services import WebhookService, WebhookServiceAsync
 from .errors import AuthorizationErrorInvalidAPITokenOrSecret
 from .http_client import AsyncHttpClient, HttpClient
 from .http_client_factory import create_client, create_client_async
@@ -57,6 +59,10 @@ class Tillo(TilloInterface):
         self.__brand_templates_async: TemplateServiceAsync | None = None
         self.__digital_card: DigitalCardService | None = None
         self.__digital_card_async: DigitalCardServiceAsync | None = None
+        self.__physical_card: PhysicalCardsService | None = None
+        self.__physical_card_async: PhysicalCardsAsyncService | None = None
+        self.__webhook: WebhookService | None = None
+        self.__webhook_async: WebhookServiceAsync | None = None
 
     @property
     def floats_async(self) -> FloatServiceAsync:
@@ -160,18 +166,18 @@ class Tillo(TilloInterface):
         return self.__digital_card_async
 
     @property
-    def physical_card(self) -> None:
-        """Get the physical card service instance.
+    def physical_card(self) -> PhysicalCardsService:
+        if self.__physical_card is None:
+            self.__physical_card = PhysicalCardsService(client=self.__http_client)
 
-        Note: This feature is not yet implemented.
+        return self.__physical_card
 
-        Returns:
-            PhysicalGiftCardsService: Service for managing physical gift card operations.
+    @property
+    def physical_card_async(self) -> PhysicalCardsAsyncService:
+        if self.__physical_card_async is None:
+            self.__physical_card_async = PhysicalCardsAsyncService(client=self.__async_http_client)
 
-        Raises:
-            NotImplementedError: This feature is not yet implemented.
-        """
-        raise NotImplementedError("Physical card service is not yet implemented")
+        return self.__physical_card_async
 
     @property
     def webhook(self) -> None:
@@ -185,7 +191,21 @@ class Tillo(TilloInterface):
         Raises:
             NotImplementedError: This feature is not yet implemented.
         """
-        ...
+        raise NotImplementedError("Webhook service is not yet implemented")
+
+    @property
+    async def webhook_async(self) -> None:
+        """Get the webhook service instance.
+
+        Note: This feature is not yet implemented.
+
+        Returns:
+            WebhookService: Service for managing webhook operations.
+
+        Raises:
+            NotImplementedError: This feature is not yet implemented.
+        """
+        raise NotImplementedError("Webhook service is not yet implemented")
 
     def __get_async_client(self) -> AsyncHttpClient:
         """Create and return an asynchronous HTTP client.

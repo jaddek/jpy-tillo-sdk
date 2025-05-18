@@ -30,7 +30,7 @@ class TilloException(Exception):
 
     response: Response | None = None
 
-    def __init__(self, response: Response | None) -> None:
+    def __init__(self, response: Response | None = None) -> None:
         self.response = response
 
     TILLO_ERROR_CODE: str | None = None
@@ -81,7 +81,11 @@ class AuthorizationErrorInvalidAPITokenOrSecret(AuthenticationError):
     invalid, or expired.
     """
 
-    pass
+    TILLO_ERROR_CODE: str | None = "-1"
+    HTTP_ERROR_CODE: int | None = -1
+    MESSAGE: str | None = "Invalid API or Secret Key provided."
+    DESCRIPTION: str | None = "Check API token or secret key provided for Tillo SDK."
+    API_VERSION: int | None = 0
 
 
 # API-Specific Errors

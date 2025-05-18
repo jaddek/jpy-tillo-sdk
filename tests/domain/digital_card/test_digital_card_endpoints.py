@@ -2,16 +2,23 @@ import pytest
 
 from jpy_tillo_sdk.domain.digital_card.endpoints import (
     CancelDigitalCodeEndpoint,
-    CancelDigitalUrlEndpoint,
+    CancelDigitalCodeRequestBody,
+    CancelDigitalUrlRequestBody,
     CheckBalanceEndpoint,
+    CheckBalanceRequestBody,
     CheckDigitalOrderStatusAsyncEndpoint,
+    CheckDigitalOrderStatusAsyncRequestQuery,
     CheckStockEndpoint,
+    CheckStockRequestQuery,
     IssueDigitalCodeEndpoint,
     OrderDigitalCodeAsyncEndpoint,
+    OrderDigitalCodeAsyncRequestBody,
     ReverseDigitalCodeEndpoint,
+    ReverseDigitalCodeRequestBody,
     TopUpDigitalCodeEndpoint,
+    TopUpDigitalCodeRequestBody,
 )
-from jpy_tillo_sdk.domain.digital_card.models import FaceValue
+from jpy_tillo_sdk.domain.digital_card.shared import FaceValue
 from jpy_tillo_sdk.enums import Domains
 from jpy_tillo_sdk.http_methods import HttpMethods
 
@@ -29,20 +36,20 @@ def test_issue_digital_code_endpoint():
 
 @pytest.mark.parametrize(
     "body,signed_attrs",
-    [({}, ())],
+    [({"client_request_id": "1", "brand": "h-and-m"}, ("1", "h-and-m"))],
 )
 def test_issue_digital_code_endpoint_request_sign_attrs_if_body_is_empty(body, signed_attrs):
-    request_body = IssueDigitalCodeEndpoint.RequestBody(**body)
+    request_body = OrderDigitalCodeAsyncRequestBody(**body)
 
-    assert request_body.client_request_id is None
-    assert request_body.brand is None
+    assert request_body.client_request_id == "1"
+    assert request_body.brand == "h-and-m"
     assert request_body.face_value is None
     assert request_body.delivery_method is None
     assert request_body.fulfilment_by is None
     assert request_body.sector is None
     assert request_body.personalisation is None
 
-    assert request_body.get_sign_attrs() == signed_attrs
+    assert request_body.sign_attrs == signed_attrs
 
 
 @pytest.mark.parametrize(
@@ -68,7 +75,7 @@ def test_issue_digital_code_endpoint_request_sign_attrs_if_body_is_empty(body, s
     ],
 )
 def test_issue_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
-    request_body = IssueDigitalCodeEndpoint.RequestBody(**body)
+    request_body = OrderDigitalCodeAsyncRequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
     assert request_body.brand == body.get("brand")
@@ -78,7 +85,7 @@ def test_issue_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
     assert request_body.sector == body.get("sector")
     assert request_body.personalisation == body.get("personalisation")
 
-    assert request_body.get_sign_attrs() == signed_attrs
+    assert request_body.sign_attrs == signed_attrs
 
 
 def test_top_up_digital_code_endpoint():
@@ -114,7 +121,7 @@ def test_top_up_digital_code_endpoint():
     ],
 )
 def test_top_up_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
-    request_body = TopUpDigitalCodeEndpoint.RequestBody(**body)
+    request_body = TopUpDigitalCodeRequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
     assert request_body.brand == body.get("brand")
@@ -152,14 +159,11 @@ def test_check_stock_endpoint():
     ],
 )
 def test_check_stock_endpoint_query_sign_attrs(query, signed_attrs):
-    request_query = CheckStockEndpoint.RequestQuery(**query)
+    request_query = CheckStockRequestQuery(**query)
 
     assert request_query.brand == query.get("brand")
 
     assert request_query.sign_attrs == signed_attrs
-
-
-#
 
 
 def test_cancel_digital_code_endpoint():
@@ -195,7 +199,7 @@ def test_cancel_digital_code_endpoint():
     ],
 )
 def test_cancel_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
-    request_body = CancelDigitalCodeEndpoint.RequestBody(**body)
+    request_body = CancelDigitalCodeRequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
     assert request_body.original_client_request_id == body.get("original_client_request_id")
@@ -203,7 +207,7 @@ def test_cancel_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
     assert request_body.code == body.get("code")
     assert request_body.sector == body.get("sector")
 
-    assert request_body.get_sign_attrs() == signed_attrs
+    assert request_body.sign_attrs == signed_attrs
 
 
 #
@@ -242,7 +246,7 @@ def test_cancel_digital_url_endpoint():
     ],
 )
 def test_cancel_digital_url_endpoint_request_sign_attrs(body, signed_attrs):
-    request_body = CancelDigitalUrlEndpoint.RequestBody(**body)
+    request_body = CancelDigitalUrlRequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
     assert request_body.original_client_request_id == body.get("original_client_request_id")
@@ -250,7 +254,7 @@ def test_cancel_digital_url_endpoint_request_sign_attrs(body, signed_attrs):
     assert request_body.url == body.get("url")
     assert request_body.sector == body.get("sector")
 
-    assert request_body.get_sign_attrs() == signed_attrs
+    assert request_body.sign_attrs == signed_attrs
 
 
 #
@@ -288,7 +292,7 @@ def test_reverse_digital_code_endpoint():
     ],
 )
 def test_reverse_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
-    request_body = ReverseDigitalCodeEndpoint.RequestBody(**body)
+    request_body = ReverseDigitalCodeRequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
     assert request_body.original_client_request_id == body.get("original_client_request_id")
@@ -296,7 +300,7 @@ def test_reverse_digital_code_endpoint_request_sign_attrs(body, signed_attrs):
     assert request_body.brand == body.get("brand")
     assert request_body.sector == body.get("sector")
 
-    assert request_body.get_sign_attrs() == signed_attrs
+    assert request_body.sign_attrs == signed_attrs
 
 
 #
@@ -332,14 +336,14 @@ def test_check_balance_endpoint():
     ],
 )
 def test_check_balance_endpoint_request_sign_attrs(body, signed_attrs):
-    request_body = CheckBalanceEndpoint.RequestBody(**body)
+    request_body = CheckBalanceRequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
     assert request_body.face_value == body.get("face_value")
     assert request_body.brand == body.get("brand")
     assert request_body.reference == body.get("reference")
 
-    assert request_body.get_sign_attrs() == signed_attrs
+    assert request_body.sign_attrs == signed_attrs
 
 
 #
@@ -380,7 +384,7 @@ def test_order_digital_code_async_endpoint():
     ],
 )
 def test_order_digital_code_async_endpoint_request_sign_attrs(body, signed_attrs):
-    request_body = OrderDigitalCodeAsyncEndpoint.RequestBody(**body)
+    request_body = OrderDigitalCodeAsyncRequestBody(**body)
 
     assert request_body.client_request_id == body.get("client_request_id")
     assert request_body.brand == body.get("brand")
@@ -391,7 +395,7 @@ def test_order_digital_code_async_endpoint_request_sign_attrs(body, signed_attrs
     assert request_body.sector == body.get("sector")
     assert request_body.personalisation == body.get("personalisation")
 
-    assert request_body.get_sign_attrs() == signed_attrs
+    assert request_body.sign_attrs == signed_attrs
 
 
 #
@@ -420,7 +424,7 @@ def test_check_digital_order_status_async_endpoint():
     ],
 )
 def test_check_digital_order_status_async_endpoint_request_sign_attrs(query, signed_attrs):
-    request_query = CheckDigitalOrderStatusAsyncEndpoint.RequestQuery(**query)
+    request_query = CheckDigitalOrderStatusAsyncRequestQuery(**query)
 
     assert request_query.reference == query.get("reference")
 

@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import final
 
-from ...contracts import RequestQueryAbstract
+from ...contracts import SignatureAttributesInterface
 from ...endpoint import Endpoint
 
 
 @final
 @dataclass(frozen=True)
-class BrandEndpointRequestQuery(RequestQueryAbstract):
+class BrandEndpointRequestQuery(SignatureAttributesInterface):
     detail: bool | None = None
     currency: str | None = None
     country: str | None = None
@@ -27,7 +27,7 @@ class BrandEndpoint(Endpoint):
 
 @final
 @dataclass(frozen=True)
-class TemplatesListEndpointRequestQuery(RequestQueryAbstract):
+class TemplatesListEndpointRequestQuery(SignatureAttributesInterface):
     brand: str | None = None
 
     @property
@@ -44,7 +44,7 @@ class TemplatesListEndpoint(Endpoint):
 
 @final
 @dataclass(frozen=True)
-class DownloadBrandTemplateEndpointRequestQuery(RequestQueryAbstract):
+class DownloadBrandTemplateEndpointRequestQuery(SignatureAttributesInterface):
     brand: str | None = None
     template: str | None = None
 

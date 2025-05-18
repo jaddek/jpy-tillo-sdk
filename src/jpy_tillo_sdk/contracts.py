@@ -38,21 +38,8 @@ class EndpointInterface(ABC):
     def sign_attrs(self) -> tuple[str, ...]: ...
 
 
+@dataclass(frozen=True)
 class SignatureAttributesInterface(ABC):
-    @property
-    @abstractmethod
-    def sign_attrs(self) -> tuple[str, ...]: ...
-
-
-@dataclass(frozen=True)
-class RequestBodyAbstract(SignatureAttributesInterface):
-    @property
-    def sign_attrs(self) -> tuple[str, ...]:
-        return ()
-
-
-@dataclass(frozen=True)
-class RequestQueryAbstract(SignatureAttributesInterface):
     @property
     @abstractmethod
     def sign_attrs(self) -> tuple[str, ...]: ...
@@ -272,6 +259,130 @@ class DigitalCardServiceAsyncInterface(AsyncServiceInterface, ABC):
     async def reverse_digital_code(
         self,
         query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+
+class PhysicalCardsAsyncServiceInterface(AsyncServiceInterface, ABC):
+    @abstractmethod
+    def activate_physical_card_async(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def cancel_activate_physical_card_async(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def order_status_async(
+        self,
+        body: Any,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def cash_out_original_transaction_physical_card_async(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def balance_check_physical_async(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def order_physical_card_async(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def cancel_top_up_on_physical_card_async(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def top_up_physical_card_async(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    async def fulfil_physical_card_order_async(
+        self,
+        body: Any = None,
+    ) -> Response: ...
+
+
+class PhysicalCardsServiceInterface(SyncServiceInterface, ABC):
+    @abstractmethod
+    def activate_physical_card(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    def cancel_activate_physical_card(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    def order_status(
+        self,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    def cash_out_original_transaction(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    def balance_check_physical(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    def order_physical_card(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    def cancel_top_up(
+        self,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    def top_up_physical_card(
+        self,
+        body: Any = None,
+    ) -> Response: ...
+
+    @abstractmethod
+    def fulfil_order(
+        self,
         body: Any = None,
     ) -> Response: ...
 
@@ -547,7 +658,7 @@ class TilloInterface(ABC):
 
     @property
     @abstractmethod
-    def physical_card(self) -> None:
+    def physical_card(self) -> PhysicalCardsServiceInterface:
         """Get the physical card service instance.
 
         Returns:
@@ -556,6 +667,22 @@ class TilloInterface(ABC):
         Example:
             ```python
             physical_card_service = tillo.physical_card()
+            card = physical_card_service.order_card(amount=100.00)
+            ```
+        """
+        ...
+
+    @property
+    @abstractmethod
+    def physical_card_async(self) -> PhysicalCardsAsyncServiceInterface:
+        """Get the physical card service instance.
+
+        Returns:
+            PhysicalGiftCardsService: Service for managing physical gift card operations.
+
+        Example:
+            ```python
+            physical_card_service = tillo.physical_card_async()
             card = physical_card_service.order_card(amount=100.00)
             ```
         """

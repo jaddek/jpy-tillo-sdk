@@ -1,0 +1,11 @@
+{
+  "code": "000",
+  "status": "success",
+  "message": "Order statuses",
+  "data": {
+    "some reference": {
+      "reference": "some reference",
+      "status": "not found"
+    }
+  }
+}

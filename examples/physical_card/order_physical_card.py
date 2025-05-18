@@ -1,56 +1,43 @@
 import asyncio
 import uuid
 
-from httpx import Response
+from jpy_tillo_sdk import tillo as __tillo
+from jpy_tillo_sdk.domain.physical_card.endpoints import OrderPhysicalCardRequestBody
+from jpy_tillo_sdk.domain.physical_card.shared import FaceValue
+from jpy_tillo_sdk.enums import Currency
 
-from jpy_tillo_sdk.domain.physical_card.factory import (
-    create_order_new_card_request,
-)
-from jpy_tillo_sdk.domain.physical_card.services import (
-    PhysicalGiftCardsService,
-)
-from jpy_tillo_sdk.http_client_factory import (
-    create_client,
-    create_client_async,
-)
-
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
 TILLO_HTTP_CLIENT_OPTIONS = {}
 
+tillo = __tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-def order_physical_card() -> Response:
-    sync_client = create_client(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-    body = create_order_new_card_request(
-        client_request_id=str(uuid.uuid4()),
-        brand="costa",
-        amount="100",
+def order_physical_card(_tillo) -> None:
+    result = _tillo.physical_card.order_physical_card(
+        body=OrderPhysicalCardRequestBody(
+            client_request_id=str(uuid.uuid4()),
+            brand="amazon-de",
+            face_value=FaceValue(currency=Currency.EUR, amount="100"),
+        )
     )
 
-    return PhysicalGiftCardsService.cash_out_original_transaction_physical_card(
-        client=sync_client, body=body
+    print(result)
+
+
+order_physical_card(tillo)
+
+
+async def order_physical_card_async(_tillo) -> None:
+    result = await _tillo.physical_card_async.order_physical_card(
+        body=OrderPhysicalCardRequestBody(
+            client_request_id=str(uuid.uuid4()),
+            brand="amazon-de",
+            face_value=FaceValue(currency=Currency.EUR, amount="100"),
+        )
     )
 
-
-print(order_physical_card().json())
-
-
-async def order_physical_card_async() -> Response:
-    async_client = create_client_async(
-        TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS
-    )
-
-    body = create_order_new_card_request(
-        client_request_id=str(uuid.uuid4()),
-        brand="costa",
-        amount="100",
-    )
-
-    return await PhysicalGiftCardsService.cash_out_original_transaction_physical_card_async(
-        client=async_client, body=body
-    )
+    print(result)
 
 
-asyncio.run(order_physical_card_async())
+asyncio.run(order_physical_card_async(tillo))

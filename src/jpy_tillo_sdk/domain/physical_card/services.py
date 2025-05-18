@@ -1,278 +1,263 @@
-from typing import Optional
+import logging
 
 from httpx import Response
 
+from ...contracts import PhysicalCardsAsyncServiceInterface, PhysicalCardsServiceInterface, SignatureAttributesInterface
 from .endpoints import (
     ActivatePhysicalCardEndpoint,
-    CancelActivatePhysicalCardEndpoint,
-    CashOutOriginalTransactionPhysicalCardEndpoint,
-    TopUpPhysicalCardEndpoint,
+    ActivatePhysicalCardERequestBody,
     BalanceCheckPhysicalEndpoint,
-    OrderPhysicalCardEndpoint,
-    PhysicalCardOrderStatusEndpoint,
+    BalanceCheckPhysicalRequestBody,
+    CancelActivateEndpoint,
+    CancelActivateRequestBody,
+    CancelTopUpRequestBody,
+    CashOutOriginalTransactionEndpoint,
+    CashOutOriginalTransactionRequestBody,
     FulfilPhysicalCardOrderEndpoint,
+    FulfilPhysicalCardOrderEndpointRequestBody,
+    OrderPhysicalCardEndpoint,
+    OrderPhysicalCardRequestBody,
+    PhysicalCardOrderStatusEndpoint,
+    PhysicalCardOrderStatusRequestBody,
+    TopUpPhysicalCardEndpoint,
+    TopUpPhysicalCardRequestBody,
 )
-from ...http_client import HttpClient, AsyncHttpClient
+
+logger = logging.getLogger("tillo.brand_physical_cards")
 
 
-class PhysicalGiftCardsService:
-    @staticmethod
-    def activate_physical_card(
-            client: HttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[ActivatePhysicalCardEndpoint.RequestBody] = None,
-    ) -> Response:
-        endpoint = ActivatePhysicalCardEndpoint(
-            body=body,
-            query=query_params,
-        )
-
-        response = client.request(endpoint=endpoint)
-
-        return response
-
-    @staticmethod
+class PhysicalCardsAsyncService(PhysicalCardsAsyncServiceInterface):
     async def activate_physical_card_async(
-            client: AsyncHttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[ActivatePhysicalCardEndpoint.RequestBody] = None,
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: ActivatePhysicalCardERequestBody | None = None,
     ) -> Response:
-        endpoint = ActivatePhysicalCardEndpoint(body=body, query=query_params)
+        endpoint = ActivatePhysicalCardEndpoint(body=body, query=query)
 
-        response = await client.request(
+        response = await self._client.request(
             endpoint=endpoint,
         )
 
         return response
 
-    @staticmethod
-    def cancel_activate_physical_card(
-            client: HttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[CancelActivatePhysicalCardEndpoint.RequestBody] = None,
-    ) -> Response:
-        endpoint = CancelActivatePhysicalCardEndpoint(
-            body=body,
-            query=query_params,
-        )
-
-        response = client.request(endpoint=endpoint)
-
-        return response
-
-    @staticmethod
     async def cancel_activate_physical_card_async(
-            client: AsyncHttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[CancelActivatePhysicalCardEndpoint.RequestBody] = None,
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: CancelActivateRequestBody | None = None,
     ) -> Response:
-        endpoint = CancelActivatePhysicalCardEndpoint(body=body, query=query_params)
+        endpoint = CancelActivateEndpoint(body=body, query=query)
 
-        response = await client.request(
+        response = await self._client.request(
             endpoint=endpoint,
         )
 
         return response
 
-    @staticmethod
-    def cash_out_original_transaction_physical_card(
-            client: HttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[CashOutOriginalTransactionPhysicalCardEndpoint.RequestBody] = None,
+    async def order_status_async(self, body: PhysicalCardOrderStatusRequestBody) -> Response:
+        endpoint = PhysicalCardOrderStatusEndpoint(
+            body=body,
+        )
+
+        response = await self._client.request(endpoint=endpoint)
+
+        return response
+
+    async def cash_out_original_transaction_physical_card_async(
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: CashOutOriginalTransactionRequestBody | None = None,
+    ) -> Response:
+        endpoint = CashOutOriginalTransactionEndpoint(body=body, query=query)
+
+        response = await self._client.request(
+            endpoint=endpoint,
+        )
+
+        return response
+
+    async def balance_check_physical_async(
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: BalanceCheckPhysicalRequestBody | None = None,
+    ) -> Response:
+        endpoint = BalanceCheckPhysicalEndpoint(
+            body=body,
+            query=query,
+        )
+
+        response = await self._client.request(endpoint=endpoint)
+
+        return response
+
+    async def order_physical_card_async(
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: OrderPhysicalCardRequestBody | None = None,
+    ) -> Response:
+        endpoint = OrderPhysicalCardEndpoint(
+            body=body,
+            query=query,
+        )
+
+        response = await self._client.request(endpoint=endpoint)
+
+        return response
+
+    async def cancel_top_up_on_physical_card_async(
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: CancelTopUpRequestBody | None = None,
+    ) -> Response:
+        endpoint = CancelActivateEndpoint(
+            body=body,
+            query=query,
+        )
+
+        response = await self._client.request(endpoint=endpoint)
+
+        return response
+
+    async def top_up_physical_card_async(
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: TopUpPhysicalCardRequestBody | None = None,
+    ) -> Response:
+        endpoint = TopUpPhysicalCardEndpoint(
+            body=body,
+            query=query,
+        )
+
+        response = await self._client.request(endpoint=endpoint)
+
+        return response
+
+    async def fulfil_physical_card_order_async(
+        self, body: FulfilPhysicalCardOrderEndpointRequestBody | None = None
+    ) -> Response:
+        endpoint = FulfilPhysicalCardOrderEndpoint(
+            body=body,
+        )
+
+        response = await self._client.request(endpoint=endpoint)
+
+        return response
+
+
+class PhysicalCardsService(PhysicalCardsServiceInterface):
+    def activate_physical_card(
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: ActivatePhysicalCardERequestBody | None = None,
     ) -> Response:
         endpoint = ActivatePhysicalCardEndpoint(
             body=body,
-            query=query_params,
+            query=query,
         )
 
-        response = client.request(endpoint=endpoint)
+        response = self._client.request(endpoint=endpoint)
 
         return response
 
-    @staticmethod
-    async def cash_out_original_transaction_physical_card_async(
-            client: AsyncHttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[CashOutOriginalTransactionPhysicalCardEndpoint.RequestBody] = None,
+    def cancel_activate_physical_card(
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: CancelActivateRequestBody | None = None,
     ) -> Response:
-        endpoint = CashOutOriginalTransactionPhysicalCardEndpoint(
-            body=body, query=query_params
+        endpoint = CancelActivateEndpoint(
+            body=body,
+            query=query,
         )
 
-        response = await client.request(
-            endpoint=endpoint,
-        )
+        response = self._client.request(endpoint=endpoint)
 
         return response
 
-    @staticmethod
+    def cash_out_original_transaction(
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: CashOutOriginalTransactionRequestBody | None = None,
+    ) -> Response:
+        endpoint = ActivatePhysicalCardEndpoint(
+            body=body,
+            query=query,
+        )
+
+        response = self._client.request(endpoint=endpoint)
+
+        return response
+
     def top_up_physical_card(
-            client: HttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[TopUpPhysicalCardEndpoint.RequestBody] = None,
+        self,
+        body: TopUpPhysicalCardRequestBody | None = None,
     ) -> Response:
         endpoint = TopUpPhysicalCardEndpoint(
             body=body,
-            query=query_params,
         )
 
-        response = client.request(endpoint=endpoint)
+        response = self._client.request(endpoint=endpoint)
 
         return response
 
-    @staticmethod
-    async def top_up_physical_card_async(
-            client: AsyncHttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[TopUpPhysicalCardEndpoint.RequestBody] = None,
+    def cancel_top_up(
+        self,
+        body: CancelTopUpRequestBody | None = None,
     ) -> Response:
-        endpoint = TopUpPhysicalCardEndpoint(
+        endpoint = CancelActivateEndpoint(
             body=body,
-            query=query_params,
         )
 
-        response = await client.request(endpoint=endpoint)
+        response = self._client.request(endpoint=endpoint)
 
         return response
 
-    @staticmethod
-    def cancel_top_up_on_physical_card(
-            client: HttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[CancelActivatePhysicalCardEndpoint.RequestBody] = None,
-    ) -> Response:
-        endpoint = CancelActivatePhysicalCardEndpoint(
-            body=body,
-            query=query_params,
-        )
-
-        response = client.request(endpoint=endpoint)
-
-        return response
-
-    @staticmethod
-    async def cancel_top_up_on_physical_card_async(
-            client: AsyncHttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[CancelActivatePhysicalCardEndpoint.RequestBody] = None,
-    ) -> Response:
-        endpoint = CancelActivatePhysicalCardEndpoint(
-            body=body,
-            query=query_params,
-        )
-
-        response = await client.request(endpoint=endpoint)
-
-        return response
-
-    @staticmethod
     def order_physical_card(
-            client: HttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[OrderPhysicalCardEndpoint.RequestBody] = None,
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: OrderPhysicalCardRequestBody | None = None,
     ) -> Response:
         endpoint = OrderPhysicalCardEndpoint(
             body=body,
-            query=query_params,
+            query=query,
         )
 
-        response = client.request(endpoint=endpoint)
+        response = self._client.request(endpoint=endpoint)
 
         return response
 
-    @staticmethod
-    async def order_physical_card_async(
-            client: AsyncHttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[OrderPhysicalCardEndpoint.RequestBody] = None,
+    def order_status(
+        self,
+        body: PhysicalCardOrderStatusRequestBody | None = None,
     ) -> Response:
-        endpoint = OrderPhysicalCardEndpoint(
-            body=body,
-            query=query_params,
-        )
-
-        response = await client.request(endpoint=endpoint)
-
-        return response
-
-    @staticmethod
-    def physical_card_order_status(
-            client: HttpClient,
-            body: PhysicalCardOrderStatusEndpoint.RequestBody
-    ):
         endpoint = PhysicalCardOrderStatusEndpoint(
             body=body,
         )
 
-        response = client.request(endpoint=endpoint)
+        response = self._client.request(endpoint=endpoint)
 
         return response
 
-    @staticmethod
-    async def physical_card_order_status_async(
-            client: AsyncHttpClient,
-            body: PhysicalCardOrderStatusEndpoint.RequestBody
-    ):
-        endpoint = PhysicalCardOrderStatusEndpoint(
-            body=body,
-        )
-
-        response = await client.request(endpoint=endpoint)
-
-        return response
-
-    @staticmethod
-    def fulfil_physical_card_order(
-            client: HttpClient,
-            body: FulfilPhysicalCardOrderEndpoint.RequestBody
-    ):
+    def fulfil_order(
+        self,
+        body: FulfilPhysicalCardOrderEndpointRequestBody | None = None,
+    ) -> Response:
         endpoint = FulfilPhysicalCardOrderEndpoint(
             body=body,
         )
 
-        response = client.request(endpoint=endpoint)
+        response = self._client.request(endpoint=endpoint)
 
         return response
 
-    @staticmethod
-    async def fulfil_physical_card_order_async(
-            client: AsyncHttpClient,
-            body: FulfilPhysicalCardOrderEndpoint.RequestBody
-    ):
-        endpoint = FulfilPhysicalCardOrderEndpoint(
-            body=body,
-        )
-
-        response = await client.request(endpoint=endpoint)
-
-        return response
-
-    @staticmethod
     def balance_check_physical(
-            client: HttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[BalanceCheckPhysicalEndpoint.RequestBody] = None,
+        self,
+        query: SignatureAttributesInterface | None = None,
+        body: BalanceCheckPhysicalRequestBody | None = None,
     ) -> Response:
         endpoint = BalanceCheckPhysicalEndpoint(
             body=body,
-            query=query_params,
+            query=query,
         )
 
-        response = client.request(endpoint=endpoint)
-
-        return response
-
-    @staticmethod
-    async def balance_check_physical_async(
-            client: AsyncHttpClient,
-            query_params: Optional[dict] = None,
-            body: Optional[BalanceCheckPhysicalEndpoint.RequestBody] = None,
-    ) -> Response:
-        endpoint = BalanceCheckPhysicalEndpoint(
-            body=body,
-            query=query_params,
-        )
-
-        response = await client.request(endpoint=endpoint)
+        response = self._client.request(endpoint=endpoint)
 
         return response

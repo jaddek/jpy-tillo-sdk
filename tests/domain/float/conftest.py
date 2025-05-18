@@ -1,15 +1,16 @@
-from unittest.mock import Mock, AsyncMock
+from unittest.mock import AsyncMock, Mock
 
 import pytest
 from httpx import Response
 
-from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.http_client import AsyncHttpClient, HttpClient
 
 
 @pytest.fixture
 def mock_http_client():
     client = Mock(spec=HttpClient)
     client.request.return_value = Mock(spec=Response)
+    client.request.return_value.status_code = 200
     return client
 
 
@@ -17,4 +18,5 @@ def mock_http_client():
 def mock_async_http_client():
     client = AsyncMock(spec=AsyncHttpClient)
     client.request.return_value = Mock(spec=Response)
+    client.request.return_value.status_code = 200
     return client

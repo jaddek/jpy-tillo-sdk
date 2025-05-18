@@ -1,82 +1,75 @@
-from abc import ABC, abstractmethod
-from dataclasses import dataclass, asdict
-from typing import Optional
+import logging
+from abc import ABC
+from typing import Any
+
+from jpy_tillo_sdk.contracts import (
+    EndpointInterface,
+    SignatureAttributesInterface,
+)
+
+logger = logging.getLogger("tillo.endpoint")
 
 
-@dataclass(frozen=True)
-class QP(ABC):
-    def get_not_empty_values(self) -> dict:
-        return {k: v for k, v in self.__dict__.items() if v is not None}
-
-    def get_sign_attrs(self) -> tuple:
-        return ()
-
-
-@dataclass(frozen=True)
-class AbstractBodyRequest(ABC):
-    @abstractmethod
-    def get_sign_attrs(self) -> tuple:
-        return ()
-
-    def get_as_dict(self) -> dict:
-        return asdict(self)
-
-
-class Endpoint(ABC):
-    _method: Optional[str] = None
-    _endpoint: Optional[str] = None
-    _route: Optional[str] = None
-    _query: Optional[QP] = None
-    _body: Optional[AbstractBodyRequest] = None
-    _sign_attrs = None
-
-    def __init__(
-            self,
-            query: Optional[QP] = None,
-            body: Optional[AbstractBodyRequest] = None,
-            sign_attrs: Optional[tuple] = None,
-    ):
-        self._query = query
-        self._body = body
-        self._sign_attrs = sign_attrs
+class SignedEndpointInterface(EndpointInterface, ABC):
+    _sign_attrs: list[str] = []
 
     @property
-    def method(self) -> Optional[str]:
+    def sign_attrs(self) -> tuple[str, ...]:
+        logger.debug("Getting signature attributes for request")
+        _sign_attrs: list[str] = []
+
+        if isinstance(self.body, SignatureAttributesInterface):
+            _sign_attrs += self.body.sign_attrs
+
+        if isinstance(self.query, SignatureAttributesInterface):
+            _sign_attrs += self.query.sign_attrs
+
+        _sign_attrs = [attr for attr in _sign_attrs if attr is not None]
+
+        logger.debug("Generated signature attributes: %s", _sign_attrs)
+        return tuple(_sign_attrs)
+
+
+class Endpoint(SignedEndpointInterface, ABC):
+    _method: str
+    _endpoint: str
+    _route: str
+    _query: Any
+    _body: Any
+
+    def __init__(
+        self,
+        query: Any = None,
+        body: Any = None,
+    ):
+        if self._method is None:
+            raise RuntimeError("Endpoint _method has not been initialized.")
+
+        if self._endpoint is None:
+            raise RuntimeError("Endpoint _endpoint has not been initialized.")
+
+        if self._route is None:
+            raise RuntimeError("Endpoint _route has not been initialized.")
+
+        self._query = query
+        self._body = body
+
+    @property
+    def method(self) -> str:
         return self._method
 
     @property
-    def endpoint(self) -> Optional[str]:
+    def endpoint(self) -> str:
         return self._endpoint
 
     @property
-    def route(self) -> Optional[str]:
+    def route(self) -> str:
         return self._route
 
     @property
-    def body(self) -> Optional[AbstractBodyRequest]:
-        return {} if self._body is None else self._body
-
-    def is_body_not_empty(self) -> bool:
-        return self._body is not None
+    def body(self) -> Any:
+        return self._body
 
     @property
-    def sign_attrs(self) -> Optional[tuple]:
-        return self._sign_attrs
-
-    @property
-    def query(self) -> QP | None:
+    def query(self) -> Any:
         return self._query
-
-    @property
-    def params(self) -> dict:
-        return self._query.get_not_empty_values() if self._query is not None else {}
-
-    def get_sign_attrs(self) -> tuple:
-        sign_attrs: tuple = ()
-
-        if self.is_body_not_empty():
-            sign_attrs += self.body.get_sign_attrs() if self.is_body_not_empty() else ()
-        else:
-            sign_attrs += self.query.get_sign_attrs() if self.query is not None else ()
-
-        return sign_attrs

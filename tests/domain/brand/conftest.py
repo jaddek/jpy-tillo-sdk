@@ -1,9 +1,9 @@
-from unittest.mock import Mock, AsyncMock
+from unittest.mock import AsyncMock, Mock
 
 import pytest
 from httpx import Response
 
-from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.http_client import AsyncHttpClient, HttpClient
 
 
 @pytest.fixture

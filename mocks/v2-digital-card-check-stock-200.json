@@ -1,0 +1,10 @@
+{
+  "code": "000",
+  "status": "success",
+  "message": "Stock levels for [hello-fresh]",
+  "data": {
+    "hello-fresh": {
+      "45.00": "OUT"
+    }
+  }
+}

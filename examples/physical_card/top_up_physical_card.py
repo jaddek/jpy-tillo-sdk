@@ -3,59 +3,51 @@ import uuid
 
 from httpx import Response
 
-from jpy_tillo_sdk.domain.physical_card.factory import (
-    create_top_up_physical_card_request,
-)
-from jpy_tillo_sdk.domain.physical_card.services import (
-    PhysicalGiftCardsService,
-)
-from jpy_tillo_sdk import Currency
-from jpy_tillo_sdk.http_client_factory import (
-    create_client,
-    create_client_async,
-)
+from jpy_tillo_sdk import tillo as __tillo
+from jpy_tillo_sdk.domain.physical_card.endpoints import TopUpPhysicalCardRequestBody
+from jpy_tillo_sdk.domain.physical_card.shared import FaceValue
+from jpy_tillo_sdk.enums import Currency, Sector
 
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
 TILLO_HTTP_CLIENT_OPTIONS = {}
 
+tillo = __tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-def top_up_physical_card() -> Response:
-    sync_client = create_client(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-    body = create_top_up_physical_card_request(
+def top_up_physical_card(_tillo) -> Response:
+    body = TopUpPhysicalCardRequestBody(
+        client_request_id=(uuid.uuid4()),
+        brand="h-and-m",
+        face_value=FaceValue(
+            currency=Currency.GBP,
+            amount="100",
+        ),
+        code="1234",
+        pin="1234",
+        sector=Sector.GIFT_CARD_MALL,
+    )
+
+    return _tillo.physical_card.top_up_physical_card(body=body)
+
+
+top_up_physical_card(tillo)
+
+
+async def top_up_physical_card_async(_tillo) -> Response:
+    body = TopUpPhysicalCardRequestBody(
         client_request_id=str(uuid.uuid4()),
-        brand="costa",
-        currency=Currency.GBP,
-        amount="10",
-        code="ABCD12324",
-        pin="",
+        brand="h-and-m",
+        face_value=FaceValue(
+            currency=Currency.GBP,
+            amount="100",
+        ),
+        code="1234",
+        pin="1234",
+        sector=Sector.GIFT_CARD_MALL,
     )
 
-    return PhysicalGiftCardsService.top_up_physical_card(client=sync_client, body=body)
+    return await _tillo.physical_card_async.top_up_physical_card_async(body=body)
 
 
-print(top_up_physical_card().json())
-
-
-async def top_up_physical_card_async() -> Response:
-    async_client = create_client_async(
-        TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS
-    )
-
-    body = create_top_up_physical_card_request(
-        client_request_id=str(uuid.uuid4()),
-        brand="costa",
-        currency=Currency.GBP,
-        amount="10",
-        code="ABCD12324",
-        pin="",
-    )
-
-    return await PhysicalGiftCardsService.top_up_physical_card_async(
-        client=async_client, body=body
-    )
-
-
-asyncio.run(top_up_physical_card_async())
+asyncio.run(top_up_physical_card_async(tillo))

@@ -1,59 +1,56 @@
 import asyncio
 import uuid
 
-from jpy_tillo_sdk.domain.digital_card.factory import (
-    create_standard_issue_request,
-)
-from jpy_tillo_sdk.domain.digital_card.services import (
-    IssueDigitalCodeService,
-)
-from jpy_tillo_sdk import Currency
-from jpy_tillo_sdk.http_client_factory import (
-    create_client,
-    create_client_async,
-)
+from jpy_tillo_sdk import tillo as __tillo
+from jpy_tillo_sdk.domain.digital_card.endpoints import IssueDigitalCodeRequestBody
+from jpy_tillo_sdk.domain.digital_card.shared import FaceValue
+from jpy_tillo_sdk.enums import Currency, DeliveryMethod, FulfilmentType, Sector
 
-TILLO_HOST = ""
 TILLO_API_KEY = ""
 TILLO_SECRET = ""
-TILLO_HTTP_CLIENT_OPTIONS = {}
+TILLO_HTTP_CLIENT_OPTIONS = {"base_url": "https://sandbox.tillo.dev", "http2": True}
 
 
-def issue_digital_code():
-    sync_client = create_client(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
+tillo = __tillo.Tillo(TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS)
 
-    body = create_standard_issue_request(
+
+def issue_digital_code(_tillo) -> None:
+    body = IssueDigitalCodeRequestBody(
         client_request_id=str(uuid.uuid4()),
         brand="costa",
-        currency=Currency.GBP,
-        amount="10",
+        face_value=FaceValue(
+            currency=Currency.GBP.value,
+            amount="100",
+        ),
+        sector=Sector.GIFT_CARD_MALL.value,
+        delivery_method=DeliveryMethod.URL.value,
+        fulfilment_by=FulfilmentType.PARTNER.value,
     )
 
-    response = IssueDigitalCodeService.issue_digital_code(sync_client, body=body)
+    response = _tillo.digital_card.issue_digital_code(body=body)
 
     print(response.text)
 
 
-issue_digital_code()
+issue_digital_code(tillo)
 
 
-async def issue_digital_code_async():
-    async_client = create_client_async(
-        TILLO_API_KEY, TILLO_SECRET, TILLO_HTTP_CLIENT_OPTIONS
-    )
-
-    body = create_standard_issue_request(
+async def issue_digital_code_async(_tillo) -> None:
+    body = IssueDigitalCodeRequestBody(
         client_request_id=str(uuid.uuid4()),
         brand="costa",
-        currency=Currency.GBP,
-        amount="10",
+        face_value=FaceValue(
+            currency=Currency.EUR.value,
+            amount="100",
+        ),
+        sector=Sector.GIFT_CARD_MALL.value,
+        delivery_method=DeliveryMethod.URL.value,
+        fulfilment_by=FulfilmentType.PARTNER.value,
     )
 
-    response = await IssueDigitalCodeService.issue_digital_code_async(
-        async_client, body=body
-    )
+    response = await _tillo.digital_card_async.issue_digital_code(body=body)
 
     print(response.text)
 
 
-asyncio.run(issue_digital_code_async())
+asyncio.run(issue_digital_code_async(tillo))

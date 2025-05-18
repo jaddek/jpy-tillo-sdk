@@ -1,0 +1,14 @@
+{
+  "status_code": 200,
+  "content": {
+    "code": "000",
+    "status": "success",
+    "message": "Payment transfer request registered",
+    "data": {
+      "float": "universal-float",
+      "currency": "GBP",
+      "amount": "100.00",
+      "payment_reference": "OUR_REF"
+    }
+  }
+}

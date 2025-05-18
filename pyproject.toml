@@ -4,17 +4,20 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jpy-tillo-sdk"
-version = "0.2.1"
+version = "0.3.0"
 description = "The package for developers to interact with the Tillo APIv2"
 authors = [
     { name = "Anton Nazarov", email = "tonynazarov@gmail.com" }
 ]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 license = "MIT"
 dependencies = [
+    "black>=25.1.0",
+    "coverage>=7.8.0",
     "httpx[http2]>=0.28.1,<0.29.0",
+    "mypy>=1.15.0",
 ]
 
 [dependency-groups]
@@ -46,3 +49,17 @@ filename = "VERSION"
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
 pythonpath = ["."]
+
+[tool.black]
+line-length = 120
+
+[tool.ruff]
+line-length = 120
+lint.select = ["E", "F", "B", "I"]  # Errors, Pyflakes, Bugbear, isort
+fix = true
+
+[tool.mypy]
+exclude = [
+    "src/jpy_tillo_sdk/domain/physical_card/",
+    "examples"
+]

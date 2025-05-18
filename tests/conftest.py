@@ -1,8 +1,9 @@
 from unittest.mock import Mock
 
+import httpx
 import pytest
 
-from jpy_tillo_sdk.http_client import HttpClient, AsyncHttpClient
+from jpy_tillo_sdk.http_client import AsyncHttpClient, ErrorHandler, HttpClient
 from jpy_tillo_sdk.signature import SignatureBridge, SignatureGenerator
 
 
@@ -19,13 +20,28 @@ def client_options():
 
 
 @pytest.fixture
-def http_client(mock_signer, client_options):
-    return HttpClient(client_options, mock_signer)
+def http_client(mock_signer, client_options) -> HttpClient:
+    async def mock_handler(request: httpx.Request) -> httpx.Response:
+        assert request.url == httpx.URL("https://api.example.com/data")
+        return httpx.Response(200, json={"mocked": True})
+
+    transport = httpx.MockTransport(mock_handler)
+    eh = ErrorHandler()
+    http_client = HttpClient(client_options, mock_signer, transport=transport, error_handler=eh)
+    return http_client
 
 
 @pytest.fixture
-def async_http_client(mock_signer, client_options):
-    return AsyncHttpClient(client_options, mock_signer)
+def async_http_client(mock_signer, client_options, httpx_mock_async) -> AsyncHttpClient:
+    async def mock_handler(request: httpx.Request) -> httpx.Response:
+        assert request.url == httpx.URL("https://api.example.com/data")
+        return httpx.Response(200, json={"mocked": True})
+
+    transport = httpx.MockTransport(mock_handler)
+    http_client = AsyncHttpClient(client_options, mock_signer, transport=transport)  # type: ignore[arg-type]
+
+    return http_client
+
 
 @pytest.fixture
 def api_key():

@@ -1,8 +1,17 @@
 from dataclasses import dataclass
-from typing import Optional
 
-from ...endpoint import Endpoint, QP, AbstractBodyRequest
+from ...contracts import SignatureAttributesInterface
+from ...endpoint import Endpoint
 from ...enums import Currency
+
+
+@dataclass(frozen=True)
+class CheckFloatsEndpointRequestQuery(SignatureAttributesInterface):
+    currency: Currency | None = None
+
+    @property
+    def sign_attrs(self) -> tuple[str, ...]:
+        return ()
 
 
 class CheckFloatsEndpoint(Endpoint):
@@ -10,44 +19,34 @@ class CheckFloatsEndpoint(Endpoint):
     _endpoint: str = "check-floats"
     _route: str = "/api/v2/check-floats"
 
-    @dataclass(frozen=True)
-    class QueryParams(QP):
-        currency: Optional[Currency] = None
 
-        def get_sign_attrs(self) -> tuple:
-            return ()
+@dataclass(frozen=True)
+class RequestPaymentTransferEndpointRequestBody(SignatureAttributesInterface):
+    @dataclass(frozen=True)
+    class ProformaInvoiceParams:
+        company_name: str | None = None
+        address_line_1: str | None = None
+        address_line_2: str | None = None
+        address_line_3: str | None = None
+        address_line_4: str | None = None
+        city: str | None = None
+        post_code: str | None = None
+        county: str | None = None
+        country: str | None = None
+
+    currency: Currency
+    amount: str
+    payment_reference: str
+    finance_email: str
+    proforma_invoice: ProformaInvoiceParams | None = None
+    float: str = Currency.UNIVERSAL_FLOAT.value
 
     @property
-    def query(self) -> QueryParams | None:
-        return self._query
-
+    def sign_attrs(self) -> tuple[str, ...]:
+        return ()
 
 
 class RequestPaymentTransferEndpoint(Endpoint):
     _method: str = "POST"
     _endpoint: str = "float-request-payment-transfer"
     _route: str = "/api/v2/float/request-payment-transfer"
-
-    @dataclass(frozen=True)
-    class RequestBody(AbstractBodyRequest):
-        @dataclass(frozen=True)
-        class ProformaInvoiceParams:
-            company_name: Optional[str] = None,
-            address_line_1: Optional[str] = None,
-            address_line_2: Optional[str] = None,
-            address_line_3: Optional[str] = None,
-            address_line_4: Optional[str] = None,
-            city: Optional[str] = None,
-            post_code: Optional[str] = None,
-            county: Optional[str] = None,
-            country: Optional[str] = None,
-
-        currency: Currency
-        amount: str
-        payment_reference: str
-        finance_email: str
-        proforma_invoice: Optional[ProformaInvoiceParams] = None
-        float: str = "universal-float"
-
-        def get_sign_attrs(self) -> tuple:
-            return ()

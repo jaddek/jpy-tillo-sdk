@@ -1,0 +1,26 @@
+{
+  "code": "000",
+  "status": "success",
+  "message": "Order has finished processing",
+  "data": {
+    "reference": "a6404b20-1111-1111-1111-035a01d8c540",
+    "status": "SUCCESS",
+    "face_value": {
+      "amount": 10,
+      "currency": "GBP"
+    },
+    "cost_value": {
+      "amount": 9,
+      "currency": "GBP"
+    },
+    "discount": "10.00",
+    "brand": "costa",
+    "url": "https:\/\/sandbox.revealyourgift.com\/9e60f39e-1111-1111-1111-3d0f3d5c454f\/edb43755-1111-1111-1111-3e6c462e3db2",
+    "expiration_date": "2020-01-01T23:59:59+00:00",
+    "barcode": {
+      "type": "QRCODE",
+      "string": "0AAAAAA",
+      "url": "https:\/\/sandbox.revealyourgift.com\/barcode2d?type=QRCODE&code=0AAAAAA"
+    }
+  }
+}

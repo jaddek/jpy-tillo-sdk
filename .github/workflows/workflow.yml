@@ -20,7 +20,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
         with:
-          version: "0.5.26"
+          version: "0.7.2"
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
@@ -42,7 +42,7 @@ jobs:
     strategy:
       matrix:
         os: [ "ubuntu-latest", "macos-latest", "windows-latest" ]
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - name: Checkout code
@@ -51,7 +51,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
         with:
-          version: "0.5.26"
+          version: "0.7.2"
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
@@ -75,6 +75,12 @@ jobs:
 
       - name: Run Ruff
         run: uv run ruff check
+
+      - name: Run Black
+        run: uv run black . --check
+
+      - name: Run MyPy
+        run: uv run mypy ./src --strict --ignore-missing-imports --check-untyped-defs
 
       - name: Run Pytests
         run: uv run pytest tests
@@ -109,7 +115,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
         with:
-          version: "0.5.26"
+          version: "0.7.2"
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
@@ -120,8 +126,8 @@ jobs:
           UV_PUBLISH_TOKEN: ${{ secrets.PP_TK }}
         run: |
           uv build
-          uv publish 
+          uv publish
 
       - name: Clean up
         run: |
-          rm -rf dist  
+          rm -rf dist
